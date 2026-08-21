@@ -1,7 +1,8 @@
 ---
 site_name: "LAB-11197: Deep-dive into Cisco RoomOS xAPIs" # This must begin with the session ID, e.g. LABXXX-1234 This is my Cisco Live Lab
+dev_addr: 127.0.0.1:8002
 site_description: "LAB-11197: Deep-dive into Cisco RoomOS xAPIs" # must be same as "site_name"
-site_author: Bobby McGonigle
+site_author: Bobby McGonigle, Christopher Norman
 copyright: Copyright &copy; 2026 Cisco
 theme:
   name: material
@@ -15,6 +16,8 @@ theme:
     - search.suggest
     - content.code.copy
     - toc.integrate
+    - content.tooltips
+    - content.footnote.tooltips
   custom_dir: docs/overrides
   palette:
     # Palette toggle for light mode
@@ -39,6 +42,7 @@ extra:
   site_event: test
 extra_css:
   - stylesheets/extra.css
+  - stylesheets/customTextHighlight.css  
 extra_javascript:
   - template_assets/js/newLoad.js
   - template_assets/js/setInfo.js
@@ -84,23 +88,162 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+    # Extensions below enabled by Bobby
+  - pymdownx.details
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.snippets:
+      base_path: ["snippets"]
 nav:
-  - Home: index.md
-  - Welcome: welcome.md
-  - Lab:
-      - Overview: overview.md
-      - Lab 1 - Getting Started: lab1_getting_started.md
-      - Conclusion: conclusion.md
-  - Topologies: topologies.md
-  - How to use this guide:
-      - Setting up and using the tool:
-        - Initial Setup: howToUse/initialSetup.md
-        - Using the tool after the initial setup: howToUse/postInitial.md
-        - Publishing your changes: howToUse/syncChanges.md
-      - Useful Tools and Resources: howToUse/usefulTools.md
-      - Importing from Word (docx): howToUse/importingFromWord.md
-      - Styling and Advanced Features:
-        - Custom Features: howToUse/customFeatures.md
-        - Custom Admonitions: howToUse/admonition.md
-      - Looking for Inspiration: howToUse/previousEventLabs.md
-      - Before the Event: howToUse/beforeTheEvent.md
+  - Home&nbsp<i class="fa-solid fa-house" style="color:#B197FC;"></i>: index.md
+  - Lab Setup&nbsp<i class="fa-solid fa-gear"></i>: Main-Lab/Setup/stp_intro.md # Changed from Lab Prerequisites. Moved Prerequisites to each major lab folder
+  - "RoomOS xAPI & UserInterfaces&nbsp<i class=\"fa-solid fa-video\" style=\"color: #428bff;\"></i>": 
+    - RoomOS Introduction: Main-Lab/RoomOS/rxp_intro.md
+    # - RoomOS Lab Prerequisites: Main-Lab/RoomOS/rxp_prerequisites.md
+    - RoomOS xAPI:
+      - What are RoomOS xAPI: Main-Lab/RoomOS/rxp_xapi/rxp_xapi_intro.md
+      - SSH <sup><sup>{{ config.cProps.rxp.sectionIds.ssh }}</sup></sup>: Main-Lab/RoomOS/rxp_xapi/rxp_xapi_ssh.md
+      # - Serial <sup><sup>{{ config.cProps.rxp.sectionIds.serial }}</sup></sup>: Main-Lab/RoomOS/rxp_xapi/rxp_xapi_serial.md
+      - HTTP <sup><sup>{{ config.cProps.rxp.sectionIds.http }}</sup></sup>: Main-Lab/RoomOS/rxp_xapi/rxp_xapi_http.md
+      # - WebSockets <sup><sup>{{ config.cProps.rxp.sectionIds.websocket }}</sup></sup>: Main-Lab/RoomOS/rxp_xapi/rxp_xapi_websockets.md
+      # - Webex Cloud <sup><sup>{{ config.cProps.rxp.sectionIds.cloud }}</sup></sup>: Main-Lab/RoomOS/rxp_xapi/rxp_xapi_cloud.md
+      - Macros <sup><sup>{{ config.cProps.rxp.sectionIds.macro }}</sup></sup>: Main-Lab/RoomOS/rxp_xapi/rxp_xapi_macros.md
+      # - JSXAPI <sup><sup>{{ config.cProps.rxp.sectionIds.jsxapi }}</sup></sup>: Main-Lab/RoomOS/rxp_xapi/rxp_xapi_jsxapi.md
+    - RoomOS UserInterfaces: 
+      - What are RoomOS UserInterfaces: Main-Lab/RoomOS/rxp_userInterface/rxp_ui_intro.md
+      - Features <sup><sup>{{ config.cProps.rxp.sectionIds.ui.features }}</sup></sup>: Main-Lab/RoomOS/rxp_userInterface/rxp_ui_features.md
+      - Extensions <sup><sup>{{ config.cProps.rxp.sectionIds.ui.extensions }}</sup></sup>: Main-Lab/RoomOS/rxp_userInterface/rxp_ui_extensions.md
+      - Messages <sup><sup>{{ config.cProps.rxp.sectionIds.ui.messages }}</sup></sup>: Main-Lab/RoomOS/rxp_userInterface/rxp_ui_messages.md
+      - Web Content <sup><sup>{{ config.cProps.rxp.sectionIds.ui.webContent }}</sup></sup>: Main-Lab/RoomOS/rxp_userInterface/rxp_ui_webContent.md
+    - Solution Exercises:
+      - Abstract & Best Practices: Main-Lab/RoomOS/rxp_exercises/rxp_exe_intro.md
+      - Macro Based Exercises: 
+        - Quick Docs:
+          - Part 1 - Start Simple <sup><sup>{{ config.cProps.rxp.sectionIds.exe.macros.quickDocs_pt1 }}</sup></sup>: Main-Lab/RoomOS/rxp_exercises/macros/rxp_exe_Quick_Docs_PT1.md
+          - Part 2 - Optimize <sup><sup>{{ config.cProps.rxp.sectionIds.exe.macros.quickDocs_pt2 }}</sup></sup>: Main-Lab/RoomOS/rxp_exercises/macros/rxp_exe_Quick_Docs_PT2.md
+        # - Quick Dial Button <sup><sup>{{ config.cProps.rxp.sectionIds.exe.macros.quickDial }}</sup></sup>: Main-Lab/RoomOS/rxp_exercises/macros/rxp_exe_Quick_Dial_Button.md
+        # - Camera Compositions <sup><sup>{{ config.cProps.rxp.sectionIds.exe.macros.cameraComposition }}</sup></sup>: Main-Lab/RoomOS/rxp_exercises/macros/rxp_exe_Camera_Compositions.md
+        # - Codec to Codec Communication <sup><sup>{{ config.cProps.rxp.sectionIds.exe.macros.codecToCodec }}</sup></sup>: Main-Lab/RoomOS/rxp_exercises/macros/rxp_exe_Codec_To_Codec_Comms.md
+  # - "PhoneOS xAPI&nbsp<i class=\"fa-solid fa-phone\" style=\"color: #00c753;\"></i>": 
+  #   - PhoneOS Introduction: Main-Lab/PhoneOS/pxp_intro.md
+  #   - PhoneOS Lab Prerequisites: Main-Lab/PhoneOS/pxp_prerequisites.md
+    # - PhoneOS Conclusion: Main-Lab/Deployment/dep_conclusion.md
+  - "Deployment&nbsp<i class=\"fa-solid fa-cloud-arrow-up\" style=\"color: #ff0000;\"></i>": 
+    - Deployment Introduction: Main-Lab/Deployment/dep_intro.md
+    - Deployment Lab Prerequisites: Main-Lab/Deployment/dep_prerequisites.md
+    - Control Hub:
+      - Tag Your Pod Device <sup><sup>{{config.cProps.dep.sectionIds.cH}}.1</sup></sup>: Main-Lab/Deployment/dep_controlHub/dep_controlHub_prepDevices.md
+      - Configuration Templates <sup><sup>{{config.cProps.dep.sectionIds.cH}}.2</sup></sup>: Main-Lab/Deployment/dep_controlHub/dep_controlHub_configTemplates.md
+      - Run Commands <sup><sup>{{config.cProps.dep.sectionIds.cH}}.3</sup></sup>:  Main-Lab/Deployment/dep_controlHub/dep_controlHub_runCommands.md
+    - CE-Deploy:
+      - Connect Your Organization <sup><sup>{{config.cProps.dep.sectionIds.cD}}.1</sup></sup>: Main-Lab/Deployment/dep_ceDeploy/dep_ceDeploy_cloud_localVsCloud.md
+      - Bulk xAPI Commands <sup><sup>{{config.cProps.dep.sectionIds.cD}}.2</sup></sup>: Main-Lab/Deployment/dep_ceDeploy/dep_ceDeploy_cloud_runCommands.md
+      - Personalization <sup><sup>{{config.cProps.dep.sectionIds.cD}}.3</sup></sup>: Main-Lab/Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployBranding.md
+      - Macros & UI Extensions <sup><sup>{{config.cProps.dep.sectionIds.cD}}.4</sup></sup>: Main-Lab/Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployMacros.md
+      - Device Users & On-Premise Access <sup><sup>{{config.cProps.dep.sectionIds.cD}}.5</sup></sup>: Main-Lab/Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployLocalUsers.md
+      - On-Prem Toolkit <sup><sup>{{config.cProps.dep.sectionIds.cD}}.6</sup></sup>: Main-Lab/Deployment/dep_ceDeploy/dep_ceDeploy_cloud_backupsAndLogs.md
+      - Fleet Intelligence <sup><sup>{{config.cProps.dep.sectionIds.cD}}.7</sup></sup>: Main-Lab/Deployment/dep_ceDeploy/dep_ceDeploy_cloud_dashboards.md
+    - Deployment Conclusion: Main-Lab/Deployment/dep_conclusion.md
+  - Tools&nbsp<i class="fa-solid fa-gear"></i>: Main-Lab/Resources/res_tools.md
+  - Resources&nbsp<i class="fa-solid fa-globe" style="color:#ffd903;"></i>: 
+    - Guides: Main-Lab/Resources/res_guides.md
+    - Communities: Main-Lab/Resources/res_communities.md
+cProps:
+  auth: 
+    roomosIp: <w class="ipAddress">[ROOMOS_IP_ADDRESS]</w>
+    roomosUser: <w class="username">[ROOMOS_USERNAME]</w>
+    roomosPass: <w class="password">[ROOMOS_PASSWORD]</w>
+    devToken: <w class="webexToken">[WEBEX_TOKEN]</w>
+  devNotice: | 
+  commentedDevNotice: |
+    !!! important "Under Construction"
+
+        This Lab is under development for Webex One 2025
+
+        If you're looking to use the collateral made for WebexOne 2024, please use the link below
+
+        [https://webexcc-sa.github.io/LAB-1451-24/](https://webexcc-sa.github.io/LAB-1451-24/){:target="_blank"}
+  acronyms: | 
+    *[OSD]: On Screen Display
+    *[SSH]: Secure Shell
+    *[HTTP]: Hypertext Transfer Protocol
+    *[HTTPS]: Hypertext Transfer Protocol Secure
+    *[WS]: WebSocket
+    *[WSS]: WebSocket Secure
+    *[UI]: User Interface
+    *[PiP]: Picture in Picture
+    *[PIP]: Picture in Picture
+    *[MainSource]: Your camera feed rendered in SelfView or sent to the Far End of a Video Call
+    *[URL]: Uniform Resource Locator
+    *[XML]: Extensible Markup Language
+  rxp:
+    x: placeholder
+    name: RoomOS xAPI & UserInterfaces
+    sectionCleanup: |         
+      !!! important
+
+          - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
+          - Under the <hl_3>Section Cleanup</hl_3> Page, select the <hl_0>Run Section Cleanup?</hl_0> button
+          - Select <hl_7>Yes, Run the Cleanup Script</hl_7>
+
+          <figure markdown="span">
+              <!-- docs/Main-Lab/RoomOS/rxp_xapi/ -->
+            ![Section cleanup](./images/SubscriptionAssitantMacro-ConfirmCleanup.png){ width="400" }
+            <figcaption>Section Cleanup Confirmation</figcaption>
+          </figure>
+
+          This will reverse the changes we've made to the endpoint, and leave us ready for the next section
+
+
+          ??? question "You can run the cleanup via the terminal as well"
+
+              Copy the contents below into your terminal window and run them all at once
+
+              ```shell title="Type into terminal and press Enter"
+              xFeedback DeregisterAll
+              xCommand HttpFeedback Deregister FeedbackSlot: 1
+              xCommand HttpFeedback Deregister FeedbackSlot: 2
+              xCommand HttpFeedback Deregister FeedbackSlot: 3
+              xCommand HttpFeedback Deregister FeedbackSlot: 4
+              xConfiguration Audio DefaultVolume: 50
+              xCommand UserInterface Extensions Panel Remove PanelId: wx1_lab_multilineCommand
+              xCommand Video SelfView Set Mode: Off FullscreenMode: Off
+              xCommand Video Input SetMainVideoSource ConnectorId: 1
+              xCommand Audio Volume SetToDefault Device: Internal
+              ```
+          
+          Feel free to close your Terminal Window
+    sectionIds:
+      ssh: rxp-1
+      serial: rxp-2
+      http: rxp-3
+      websocket: rxp-4
+      cloud: rxp-5
+      macro: rxp-6
+      jsxapi: rxp-7
+      ui:
+        features: rxu-1
+        extensions: rxu-2
+        messages: rxu-3
+        webContent: rxu-4
+      exe:
+        bestPractice: rxe-0
+        macros:
+          quickDocs_pt1: rxe-m1
+          quickDocs_pt2: rxe-m2
+          quickDial: rxe-m3
+          cameraComposition: rxe-m4
+          codecToCodec: rxe-m5
+  pxp:
+    x: placeholder
+  stp:
+    x: placeholder
+  dep:
+    sectionIds:
+      cH: dep-1
+      cD: dep-2
+  res: 
+    x: placeholder

@@ -1,0 +1,111 @@
+/* docs/css/custom_highlights.css */
+
+/* Base styles for all custom highlights */
+.custom-highlight-0,
+.custom-highlight-1,
+.custom-highlight-2,
+.custom-highlight-3,
+.custom-highlight-4,
+.custom-highlight-5,
+.custom-highlight-6,
+.custom-highlight-7 {
+  color: inherit; /* Ensures text color remains readable against background */
+  padding: 0.1em 0.2em; /* Small padding around the text */
+  border-radius: 0.2em; /* Slightly rounded corners for a softer look */
+}
+
+/* --- Custom Highlight 0 (.custom-highlight-0) - Replicating Original --- */
+
+/* Light Mode: Yellow with 50% opacity (from ffff0080) */
+.custom-highlight-0 {
+  background-color: rgba(255, 255, 0, 0.5); /* #ffff0080 */
+}
+
+/* Dark Mode: A specific blue with 30% opacity (from 4287ff4d) */
+[data-md-color-scheme="slate"] .custom-highlight-0 {
+  background-color: rgba(66, 135, 255, 0.3); /* #4287ff4d */
+}
+
+/* --- Custom Highlight 1 (.custom-highlight-1) --- */
+
+/* Light Mode: A vibrant, slightly transparent green */
+.custom-highlight-1 {
+  background-color: rgba(144, 238, 144, 0.5); /* Light Green with 50% opacity */
+}
+
+/* Dark Mode: A cool, slightly transparent turquoise */
+[data-md-color-scheme="slate"] .custom-highlight-1 {
+  background-color: rgba(64, 224, 208, 0.5); /* Turquoise with 50% opacity */
+}
+
+/* --- Custom Highlight 2 (.custom-highlight-2) --- */
+
+/* Light Mode: A soft, slightly transparent plum/purple */
+.custom-highlight-2 {
+  background-color: rgba(221, 160, 221, 0.5); /* Plum with 50% opacity */
+}
+
+/* Dark Mode: A bright, slightly transparent hot pink */
+[data-md-color-scheme="slate"] .custom-highlight-2 {
+  background-color: rgba(255, 105, 180, 0.5); /* Hot Pink with 50% opacity */
+}
+
+/* --- Custom Highlight 3 (.custom-highlight-3) --- */
+
+/* Light Mode: A clear, slightly transparent light sky blue */
+.custom-highlight-3 {
+  background-color: rgba(135, 206, 250, 0.5); /* Light Sky Blue with 50% opacity */
+}
+
+/* Dark Mode: A warm, slightly transparent orange */
+[data-md-color-scheme="slate"] .custom-highlight-3 {
+  background-color: rgba(255, 165, 0, 0.5); /* Orange with 50% opacity */
+}
+
+/* --- Custom Highlight 4 (.custom-highlight-4) --- */
+
+/* Light Mode: A soft, slightly transparent peach */
+.custom-highlight-4 {
+  background-color: rgba(255, 218, 185, 0.6); /* Peach Puff with 60% opacity */
+}
+
+/* Dark Mode: A muted, slightly transparent gold */
+[data-md-color-scheme="slate"] .custom-highlight-4 {
+  background-color: rgba(255, 215, 0, 0.3); /* Gold with 30% opacity */
+}
+
+/* --- Custom Highlight 5 (.custom-highlight-5) --- */
+
+/* Light Mode: A vibrant, slightly transparent coral */
+.custom-highlight-5 {
+  background-color: rgba(255, 127, 80, 0.5); /* Coral with 50% opacity */
+}
+
+/* Dark Mode: A deep, slightly transparent violet */
+[data-md-color-scheme="slate"] .custom-highlight-5 {
+  background-color: rgba(138, 43, 226, 0.4); /* Blue Violet with 40% opacity */
+}
+
+/* --- Custom Highlight 6 (.custom-highlight-6) --- */
+
+/* Light Mode: A light, slightly transparent lavender */
+.custom-highlight-6 {
+  background-color: rgba(230, 230, 250, 0.6); /* Lavender with 60% opacity */
+}
+
+/* Dark Mode: A subtle, slightly transparent dark green */
+[data-md-color-scheme="slate"] .custom-highlight-6 {
+  background-color: rgba(0, 100, 0, 0.4); /* Dark Green with 40% opacity */
+}
+
+/* --- Custom Highlight 7 (.custom-highlight-7) --- */
+
+/* Light Mode: A bright, slightly transparent lime green */
+.custom-highlight-7 {
+  background-color: rgba(50, 205, 50, 0.5); /* Lime Green with 50% opacity */
+}
+
+/* Dark Mode: A rich, slightly transparent crimson */
+[data-md-color-scheme="slate"] .custom-highlight-7 {
+  background-color: rgba(220, 20, 60, 0.4); /* Crimson with 40% opacity */
+}
