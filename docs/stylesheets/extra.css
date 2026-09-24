@@ -97,7 +97,7 @@ form#info button:hover{
 
 /* Target a button with class .md-clipboard that is a direct child of a <pre> with class .no-copy-code-button */
 pre.no-copy-code-button > button.md-clipboard {
-    display: none !important;
+  display: none !important;
 }
 
 roomosfind::after, .roomosfind::after {
@@ -147,4 +147,42 @@ roomosfind {
   color: black; /* Text color for the baby blue background */
   border-color: var(--md-accent-fg-color); /* Border matches hover background */
   box-shadow: var(--md-shadow-z2);
+}
+
+.code-label {
+  margin: 1em 0;
+  overflow: hidden;
+  border-radius: 0.12rem;
+  background: var(--md-code-bg-color);
+  color: var(--md-code-fg-color);
+}
+
+.code-label::before {
+  display: block;
+  padding: 0.55rem 1rem 0.45rem;
+  border-bottom: 1px solid color-mix(
+    in srgb,
+    var(--md-code-fg-color) 14%,
+    transparent
+  );
+  background: var(--md-code-bg-color);
+  color: var(--md-code-fg-color);
+  content: attr(data-title);
+  font-family: var(--md-text-font-family);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.code-label pre {
+  margin: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.code-label pre code {
+  display: block;
+  padding: 0.7rem 1rem;
+  background: transparent;
+  font-size: var(--md-code-font-size);
 }

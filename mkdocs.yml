@@ -152,8 +152,10 @@ nav:
     - Guides: Main-Lab/Resources/res_guides.md
     - Communities: Main-Lab/Resources/res_communities.md
 cProps:
+  labId: LAB-11197
+  xAPI_PDF: https://www.cisco.com/c/dam/en/us/td/docs/telepresence/endpoint/roomos-2602/api-reference-guide-roomos-2602.pdf
   auth: 
-    roomosIp: <w class="ipAddress">[ROOMOS_IP_ADDRESS]</w>
+    roomosIp: <w class="ipAddress">[ROOMOS_HOST_ADDRESS]</w>
     roomosUser: <w class="username">[ROOMOS_USERNAME]</w>
     roomosPass: <w class="password">[ROOMOS_PASSWORD]</w>
     devToken: <w class="webexToken">[WEBEX_TOKEN]</w>

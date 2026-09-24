@@ -3,17 +3,17 @@
 
 !!! example "Welcome"
 
-    This section of the lab consists 3 main sections. 
+    This section of the lab consists 3 main courses. 
 
-    RoomOS xAPI will teach you to interact with the RoomOS xAPI stack from several different integration points, such as SSH, HTTP and Macros. The xAPI are the building blocks to help you bring your solution to life.
+    <hl_0>RoomOS xAPI</hl_0> will teach you to interact with the RoomOS xAPI stack from several different integration points, such as SSH, HTTP and Macros. The xAPI are the building blocks to help you bring your solutions to life.
 
-    RoomOS UserInterfaces will guide you through the customizable interfaces of the device. These pieces help you communicate with your users and build new experiences.
+    <hl_0>RoomOS UserInterfaces</hl_0> will guide you through the customizable interfaces of the device. These pieces help you communicate with your users and build new experiences.
 
-    Solution Exercises discusses best practices for developing any customization with the RoomOS xAPI and contains walkthroughs of real solutions for you to build leveraging what you learned from the RoomOS xAPI and UserInterfaces sections
+    <hl_0>Solution Exercises</hl_0> discusses best practices for developing any customization with the RoomOS xAPI and contains walkthroughs of real solutions for you to build leveraging what you learned from the RoomOS xAPI and UserInterfaces sections
 
-    !!! important 
+    !!! important "Before you start!"
 
-        Before you start, if you're running through this lab at Webex One, please ensure the Subscription Assistant UI is available on your RoomOS Device. 
+        If you're running through this lab at Webex One, please ensure the Subscription Assistant UI is available on your RoomOS Device and move on to the next section.
         
         If it's not, follow the instructions below to download and install the Subscription Assistant Macro.
 
@@ -31,15 +31,15 @@
             === "Download"
 
                 <figure markdown="span">
-                    [![SubAssist Macro](../GlobalImages/cisco-logo-transparent.png){ width="300" }](https://raw.githubusercontent.com/WebexCC-SA/LAB-1451/main/docs/Main-Lab/DownloadContent/Lab-1451_Subscription-Assistant.zip)
-                    <figcaption>Lab-1451_Subscription-Assistant Macro</figcaption>
+                    [![SubAssist Macro](../GlobalImages/cisco-logo-transparent.png){ width="300" }](https://raw.githubusercontent.com/WebexCC-SA/{{ config.cProps.labId }}/main/docs/Main-Lab/DownloadContent/Subscription-Assistant.zip)
+                    <figcaption>Subscription-Assistant Macro</figcaption>
                 </figure>
 
             === "Install"
 
                 !!! gif
 
-                    - Locate the `Lab-1451_Subscription-Assistant_Part-2.zip` file you downloaded
+                    - Locate the `Subscription-Assistant_Part-2.zip` file you downloaded
                     - Unzip it's Contents
                     - Login into the WebUI of your RoomOS Device
                     <pre><code>https://{{config.cProps.auth.roomosIp}}</code></pre>

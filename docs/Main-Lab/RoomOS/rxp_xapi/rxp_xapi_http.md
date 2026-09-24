@@ -1,5 +1,6 @@
 {{ config.cProps.devNotice }}
 {{ config.cProps.acronyms }}
+
 # Access RoomOS xAPI via HTTP ~(section\ {{config.cProps.rxp.sectionIds.http}})~
 
 !!! abstract
@@ -54,14 +55,17 @@
               Target Codec->>- My Customization: Responds 200 OK
             ```
 
-
 ## Section {{config.cProps.rxp.sectionIds.http}} Requirements
 
 !!! important ""
 
-    !!! note inline end
+    !!! important inline end
 
         This lab assumes you have access to a Cisco RoomOS Device that is already setup and ready for use. If your device is not registered and online, please do so before beginning
+
+    **Required Learning**
+
+    - SSH Section {{config.cProps.rxp.sectionIds.ssh}}
 
     **Hardware**
 
@@ -82,13 +86,12 @@
     - RoomOS Device
         - Either the current On Premise or Cloud Stable release
 
-
 ## Section {{config.cProps.rxp.sectionIds.http}} Setup
 
 !!! important ""
 
     - If joining from a Lab at WebexOne, Postman should be installed on your loaner laptop already, if not, please install the application now using the link below
-    
+
     - In addition to the Postman application, please download the Postman Collection listed below
 
     - We'll also be leveraging a Webhook testing site, click the link below to open this is site in a new tab
@@ -104,7 +107,7 @@
               ![Postman Download](https://voyager.postman.com/logo/postman-logo-icon-orange.svg){ width="75" }
           </figure>
         </a>
-    
+
     -   <i class="fa-solid fa-download"></i> __Click the icon below for the Section {{config.cProps.rxp.sectionIds.http}} Postman Collection__
 
         ---
@@ -127,24 +130,24 @@
     </div>
 
 ## **HTTP Authentication and Format** ~({{config.cProps.rxp.sectionIds.http}}.1)~
- 
+
 !!! blank ""
 
     <h4>URL Structure ~({{config.cProps.rxp.sectionIds.http}}.1.1)~</h4>
 
-    The request URL for your Codec will change depending on whether you're making a Get or Post Call
+    The request URL for your Codec will change depending on whether you're making a GET or POST request
 
     Click the tabs below to see an example of each URL structure
 
     !!! example ""
 
-        === "Get URL"
+        === "GET URL"
 
-            https://[YOUR_DEVICE_IP]/<hl_0>getxml?location=[YOUR_XAPI_PATH_BODY]</hl_0>
+            https://{{config.cProps.auth.roomosIp}}/<hl_0>getxml?location=[YOUR_XAPI_PATH_BODY]</hl_0>
 
-        === "Post URL"
+        === "POST URL"
 
-            https://[YOUR_DEVICE_IP]/<hl_0>putxml</hl_0>
+            https://{{config.cProps.auth.roomosIp}}/<hl_0>putxml</hl_0>
 
 
     - - -
@@ -183,9 +186,7 @@
 
     <h4>Request Headers ~({{config.cProps.rxp.sectionIds.http}}.1.3)~</h4>
 
-    HTTP Requests have a myriad of headers that could be used, and this is usually defined by the device or service you're communicating with. For Cisco RoomOS devices using local authentication your requests will use the following headers
-
-    Your Get and Post requests will use this Authorization in one of its 2 headers
+    HTTP Requests have a myriad of headers that could be used, and this is usually defined by the device or service you're communicating with. For Cisco RoomOS devices using local authentication, your requests will use the following headers
 
     | Key                         | Value                             |
     | :---------------------------| :---------------------------------|
@@ -194,83 +195,100 @@
 
     - - -
 
-    <h4>URL Parameter Format ~({{config.cProps.rxp.sectionIds.http}}.1.4)~</h4>
+    <h4>GET Request Path Format ~({{config.cProps.rxp.sectionIds.http}}.1.4)~</h4>
 
-    When retrieving xStatus or xConfiguration information, you'll perform an HTTP Get request. Get requests using HTTP and local authentication will target this base url
+    When retrieving xStatus or xConfiguration information, you'll perform an HTTP Get request.
 
-    <pre><code>https://<hl_0>[YOUR_DEVICE_IP]</hl_0>/getxml</code></pre>
+    <div class="code-label" data-title="GET requests using HTTP will target this base url">
+        <pre><code>https://<hl_5>{{config.cProps.auth.roomosIp}}</hl_5>/getxml</code></pre>
+    </div>
 
     The xAPI path you want to target is then defined as a URL parameter
 
-    This xAPI path is separated by a <hl_3>/</hl_3> and is placed behind the parameter <hl_6>?location=</hl_6> the prefix <hl_7>x</hl_7> is removed from that start of the xAPI Path
-
-    ??? "Click here to see the difference between a shell path and a Local HTTP Get Path"
-
-        === "Shell Path"
-            <pre class="no-copy-code-button"><code> <hl_7>x</hl_7><hl_1>Path Bookings Current Id</hl_1> </code></pre>
-
-        === "Local HTTP GET Path"
-            <pre class="no-copy-code-button"><code>https://<hl_0>[YOUR_DEVICE_IP]</hl_0>/getxml?location=<hl_1>Status</hl_1><hl_3>/</hl_3><hl_1>Bookings</hl_1><hl_3>/</hl_3><hl_1>Current</hl_1><hl_3>/</hl_3><hl_1>Id</hl_1></code></pre>
+    The xAPI path is separated by a <hl_3>/</hl_3> and is placed behind the parameter <hl_6>?location=</hl_6> the prefix <hl_7>x</hl_7> is removed from the top level node of the xAPI Path
 
     !!! example ""
 
         === "xConfiguration Example"
 
-            xAPI: xConfiguration SystemUnit Name
+            <div class="code-label" data-title="Shell xAPI Path">
+              <pre><code>xConfiguration SystemUnit Name</code></pre>
+            </div>
 
-            URL: https://<hl_0>[YOUR_DEVICE_IP]</hl_0>/getxml?location\=<hl_1>Configuration</hl_1><hl_3>/</hl_3><hl_1>SystemUnit</hl_1><hl_3>/</hl_3><hl_1>Name</hl_1>
+
+            <div class="code-label" data-title="URL with xAPI Path">
+              <pre><code>https://<hl_5>{{config.cProps.auth.roomosIp}}</hl_5>/getxml?location\=<hl_1>Configuration</hl_1><hl_3>/</hl_3><hl_1>SystemUnit</hl_1><hl_3>/</hl_3><hl_1>Name</hl_1></code></pre>
+            </div>
 
         === "xStatus Example"
 
-            xAPI: xStatus Logging ExtendedLogging Mode
+            <div class="code-label" data-title="Shell xAPI Path">
+              <pre><code>xStatus Logging ExtendedLogging Mode</code></pre>
+            </div>
 
-            URL: https://<hl_0>[YOUR_DEVICE_IP]</hl_0>/getxml?location\=<hl_1>Status</hl_1><hl_3>/</hl_3><hl_1>Logging</hl_1><hl_3>/</hl_3><hl_1>ExtendedLogging</hl_1><hl_3>/</hl_3><hl_1>Mode</hl_1>
 
-    <h4>Body Format ~({{config.cProps.rxp.sectionIds.http}}.1.5)~</h4>
+            <div class="code-label" data-title="URL with xAPI Path">
+              <pre><code>https://<hl_5>{{config.cProps.auth.roomosIp}}</hl_5>/getxml?location\=<hl_1>Status</hl_1><hl_3>/</hl_3><hl_1>Logging</hl_1><hl_3>/</hl_3><hl_1>ExtendedLogging</hl_1><hl_3>/</hl_3><hl_1>Mode</hl_1></code></pre>
+            </div>
 
-    When issuing a change to an xConfig or issuing an xCommand, you'll perform an HTTP POST request. POST requests using HTTP and local authentication will target this base url
+    <h4>POST Request Body Format ~({{config.cProps.rxp.sectionIds.http}}.1.5)~</h4>
 
-    <pre><code>https://<hl_0>[YOUR_DEVICE_IP]</hl_0>/putxml</code></pre>
-    
+    When setting xConfigurations or running xCommand over HTTP, you’ll perform a POST Request. 
+
+    <div class="code-label" data-title="POST requests using HTTP will target this base url">
+        <pre><code>https://<hl_5>{{config.cProps.auth.roomosIp}}</hl_5>/putxml</code></pre>
+    </div>
+
     The xAPI path you want to target is then defined in the body of the request
-    
+
     The body is structured as XML and is formatted as a string. The entire xAPI path, parameters and any values are defined within this XML string.
+
+    The xAPI path is separated by a <hl_3>opening and closing XML tags</hl_3>. The prefix <hl_7>x</hl_7> is removed from the top level node of the xAPI Path
 
     !!! example ""
 
-        URL: https://[YOUR_DEVICE_IP]/putxml
+        <div class="code-label" data-title="URL">
+          <pre><code>https://<hl_5>{{config.cProps.auth.roomosIp}}</hl_5>/putxml</code></pre>
+        </div>
 
         Click the tabs below to see an example xConfiguration and xCommand body structured as XML
 
         !!! important ""
 
+            === "xCommand Example"
+
+                <div class="code-label" data-title="Shell xAPI Path">
+                  <pre><code>xCommand Cameras Background Get Image: value Size: value</code></pre>
+                </div>
+
+                <div class="code-label" data-title="XML Body Structure">
+                  <pre><code><hl_3>&lt;</hl_3><hl_1>Command</hl_1><hl_3>&gt;</hl_3>
+                  <hl_3>&lt;</hl_3><hl_1>Cameras</hl_1><hl_3>&gt;</hl_3>
+                    <hl_3>&lt;</hl_3><hl_1>Background</hl_1><hl_3>&gt;</hl_3>
+                      <hl_3>&lt;</hl_3><hl_1>Get</hl_1><hl_3>&gt;</hl_3>
+                        <hl_3>&lt;</hl_3><hl_1>Image</hl_1><hl_3>&gt;</hl_3>User1<hl_3>&lt;/</hl_3><hl_1>Image</hl_1><hl_3>&gt;</hl_3>
+                        <hl_3>&lt;</hl_3><hl_1>Size</hl_1><hl_3>&gt;</hl_3>Large<hl_3>&lt;/</hl_3><hl_1>Size</hl_1><hl_3>&gt;</hl_3>
+                      <hl_3>&lt;/</hl_3><hl_1>Get</hl_1><hl_3>&gt;</hl_3>
+                    <hl_3>&lt;/</hl_3><hl_1>Background</hl_1><hl_3>&gt;</hl_3>
+                  <hl_3>&lt;/</hl_3><hl_1>Cameras</hl_1><hl_3>&gt;</hl_3>
+                <hl_3>&lt;/</hl_3><hl_1>Command</hl_1><hl_3>&gt;</hl_3></code></pre>
+                </div>
+
             === "xConfiguration Example"
 
-                - <{--x--}{++Configuration++}></{--x--}{++Configuration++}>
-                - <{--x--}{++Command++}></{--x--}{++Configuration++}>
-                - <{--x--}{++Status++}></{--x--}{++Configuration++}>
+                <div class="code-label" data-title="Shell xAPI Path">
+                  <pre><code>xConfiguration Cameras Background Enabled: False</code></pre>
+                </div>
 
-                ``` { .xml , title="Example XML Structure" } 
-                <Parent>
-                  <Child>
-                    <ChildParameter>Value<ChildParameter>
-                  </Child>
-                <Parent>
-                ```
-                
-            === "xCommand Example"
-            
-                - <{--x--}{++Configuration++}></{--x--}{++Configuration++}>
-                - <{--x--}{++Command++}></{--x--}{++Configuration++}>
-                - <{--x--}{++Status++}></{--x--}{++Configuration++}>
-
-                ``` { .xml , title="Example XML Structure" } 
-                <Parent>
-                  <Child>
-                    <ChildParameter>Value<ChildParameter>
-                  </Child>
-                <Parent>
-                ```
+                <div class="code-label" data-title="XML Body Structure">
+                  <pre><code><hl_3>&lt;</hl_3><hl_1>Configuration</hl_1><hl_3>&gt;</hl_3>
+                  <hl_3>&lt;</hl_3><hl_1>Cameras</hl_1><hl_3>&gt;</hl_3>
+                    <hl_3>&lt;</hl_3><hl_1>Background</hl_1><hl_3>&gt;</hl_3>
+                      <hl_3>&lt;</hl_3><hl_1>Enabled</hl_1><hl_3>&gt;</hl_3>False<hl_3>&lt;/</hl_3><hl_1>Enabled</hl_1><hl_3>&gt;</hl_3>
+                    <hl_3>&lt;/</hl_3><hl_1>Background</hl_1><hl_3>&gt;</hl_3>
+                  <hl_3>&lt;/</hl_3><hl_1>Cameras</hl_1><hl_3>&gt;</hl_3>
+                <hl_3>&lt;/</hl_3><hl_1>Configuration</hl_1><hl_3>&gt;</hl_3></code></pre>
+                </div>
 
     - - -
 
@@ -297,11 +315,11 @@
               redirect: "follow"
             };
 
-            fetch("https://[YOUR_DEVICE_IP]/getxml?location=Configuration/SystemUnit/Name", requestOptions)
+            fetch("https://{{config.cProps.auth.roomosIp}}/getxml?location=Configuration/SystemUnit/Name", requestOptions)
               .then((response) => response.text())
               .then((result) => console.log(result))
               .catch((error) => console.error(error));
-            
+
             /* Below is the Response Body after making a Successful Request
 
             <?xml version="1.0"?>
@@ -329,7 +347,7 @@
               redirect: "follow"
             };
 
-            fetch("https://[YOUR_DEVICE_IP]/putxml", requestOptions)
+            fetch("https://{{config.cProps.auth.roomosIp}}/putxml", requestOptions)
               .then((response) => response.text())
               .then((result) => console.log(result))
               .catch((error) => console.error(error));
@@ -349,7 +367,7 @@
             ```javascript
             import xapi from 'xapi';
 
-            const destinationIp = '[YOUR_DEVICE_IP]';
+            const destinationIp = '{{config.cProps.auth.roomosIp}}';
             const headers = ['Content-Type: text/xml', `Authorization: Basic ${btoa('[YOUR_AUTH]')}`];
 
 
@@ -375,13 +393,13 @@
 
             getPath('Configuration/SystemUnit/Name');
             ```
-        
+
         === "Post"
 
             ```javascript
             import xapi from 'xapi';
 
-            const destinationIp = '[YOUR_DEVICE_IP]';
+            const destinationIp = '{{config.cProps.auth.roomosIp}}';
             const headers = ['Content-Type: text/xml', `Authorization: Basic ${btoa('[YOUR_AUTH]')}`];
 
 
@@ -432,7 +450,7 @@
             ``` Python
             import requests
 
-            url = "https://[YOUR_DEVICE_IP]/getxml?location=Configuration/SystemUnit/Name"
+            url = "https://{{config.cProps.auth.roomosIp}}/getxml?location=Configuration/SystemUnit/Name"
 
             payload = ""
             headers = {
@@ -457,7 +475,7 @@
             ``` Python
             import requests
 
-            url = "https://[YOUR_DEVICE_IP]/putxml"
+            url = "https://{{config.cProps.auth.roomosIp}}/putxml"
 
             payload = "<Configuration><SystemUnit><Name>My New System Name</Name></SystemUnit></Configuration>"
             headers = {
@@ -468,7 +486,7 @@
             response = requests.request("POST", url, headers=headers, data=payload)
 
             print(response.text)
-            
+
             # Below is the Response Body after making a Successful Request
 
             # <?xml version="1.0"?>
@@ -478,8 +496,6 @@
             #     </SystemUnit>
             # </Configuration>
             ```
-    
-
 
 ## **Import and Configure the section {{config.cProps.rxp.sectionIds.http}}.1 Postman Collection** ~({{config.cProps.rxp.sectionIds.http}}.2)~
 
@@ -487,7 +503,7 @@ Whereas we'll be using Postman, this tool will automatically take our basic auth
 
 This collection has most pieces structured as we'd need it to and will be used through sections {{config.cProps.rxp.sectionIds.http}}.3 through {{config.cProps.rxp.sectionIds.http}}.5
 
-- - -
+---
 
 <h4>Import Collection</h4>
 
@@ -502,19 +518,19 @@ This collection has most pieces structured as we'd need it to and will be used t
       ![Import Lab Postman Collection](./images/2-3-2_Import-PostmanCollection.gif){ width="600" }
     </figure>
 
-- - -
+---
 
 <h4>Configure Postman Collection for sections {{config.cProps.rxp.sectionIds.http}}.3 through {{config.cProps.rxp.sectionIds.http}}.5</h4>
 
 - Click on the ==WX1-Lab:1451-HTTP-Postman-Collection== root folder
 - Select Variables
 - Add the following information for your codec in both the `Initial Value` and `Current Value` fields
-    - device_username
-    - device_password
-    - device_ipAddress
+  - device_username
+  - device_password
+  - device_ipAddress
 - Select Save (or one of the keyboard shortcuts for your computer)
-    - ++control+s++ for Windows
-    - ++command+s++ for Mac
+  - ++control+s++ for Windows
+  - ++command+s++ for Mac
 
 ??? gif "View Configure Postman Collection for sections {{config.cProps.rxp.sectionIds.http}}.3 through {{config.cProps.rxp.sectionIds.http}}.5"
 
@@ -526,9 +542,9 @@ This collection has most pieces structured as we'd need it to and will be used t
 
 !!! Abstract
 
-   Throughout section {{config.cProps.rxp.sectionIds.http}}.3, you'll learn how to format and execute xCommands via HTTP using Postman.
+Throughout section {{config.cProps.rxp.sectionIds.http}}.3, you'll learn how to format and execute xCommands via HTTP using Postman.
 
-   The techniques outlined here will correspond to the methods needed for setting new xConfiguration Values in section {{config.cProps.rxp.sectionIds.http}}.4
+The techniques outlined here will correspond to the methods needed for setting new xConfiguration Values in section {{config.cProps.rxp.sectionIds.http}}.4
 
 ???+ lesson "Lesson: Execute an xCommand ~({{config.cProps.rxp.sectionIds.http}}.3.1)~"
 
@@ -566,14 +582,6 @@ This collection has most pieces structured as we'd need it to and will be used t
           </Video>
         </Command>
         ```
-
-    ??? failure "View Failed Response"
-
-        If you have a failed response, review the errors as it will point out how to resolve your particular issue in your XML payload and try again
-
-        <figure markdown>
-          ![Failed HTTP Response](./images/2-3-3_Execute-xCommand-AllFailure.png){ width="600" }
-        </figure>
 
 ??? lesson "Lesson: Execute multiple xCommands in a single request ~({{config.cProps.rxp.sectionIds.http}}.3.2)~"
 
@@ -657,15 +665,7 @@ This collection has most pieces structured as we'd need it to and will be used t
             </Command>
             ```
 
-    ??? failure "View Failed Response"
-
-        If you have a failed response, review the errors as it will point out how to resolve your particular issue in your XML payload and try again
-
-        <figure markdown>
-          ![Failed HTTP Response](./images/2-3-3_Execute-xCommand-AllFailure.png){ width="600" }
-        </figure>
-
-??? lesson "Lesson: Execute an xCommand with multiple arguments with the same name  ~({{config.cProps.rxp.sectionIds.http}}.3.3)~"
+??? lesson "Lesson: Execute an xCommand with multiple arguments with the same name ~({{config.cProps.rxp.sectionIds.http}}.3.3)~"
 
     !!! info
 
@@ -678,7 +678,7 @@ This collection has most pieces structured as we'd need it to and will be used t
         - xCommand UserInterface Message Rating Clear
         - xCommand Video Selfview Set
         - xCommand Video Input SetMainVideoSource
-    
+
     - **Task:** We'll be running multiple commands in conjunction to having multiple parameters in this lesson.
         - To clean up from the previous lesson, we'll send an xCommand to clear by replacing the Display Tags for both with Clear and deleting any parameters they had
             - `xCommand UserInterface WebView {--Display--}{++Clear++}`
@@ -696,7 +696,7 @@ This collection has most pieces structured as we'd need it to and will be used t
           ![OSD Output](./images/2-3-3_Execute-xCommand-MultipleSameNameParameter-OSD.png){ width="500" }
           <figcaption>What to expect on your OSD on a successful request</figcaption>
         </figure>
-    
+
     ??? success "View properly formatted XML and Successful Response"
 
         ![Successful HTTP Response](./images/2-3-3_Execute-xCommand-MultipleSameNameParameter-Success.png){ width="500", align=right }
@@ -754,15 +754,7 @@ This collection has most pieces structured as we'd need it to and will be used t
             </Command>
             ```
 
-    ??? failure "View Failed Response"
-
-        If you have a failed response, review the errors as it will point out how to resolve your particular issue in your XML payload and try again
-
-        <figure markdown>
-          ![Failed HTTP Response](./images/2-3-3_Execute-xCommand-AllFailure.png){ width="600" }
-        </figure> 
-
-??? lesson "Lesson: Execute an xCommand with a multiline argument  ~({{config.cProps.rxp.sectionIds.http}}.3.4)~"
+??? lesson "Lesson: Execute an xCommand with a multiline argument ~({{config.cProps.rxp.sectionIds.http}}.3.4)~"
 
     !!! info
 
@@ -783,7 +775,7 @@ This collection has most pieces structured as we'd need it to and will be used t
         - xCommand Video Selfview Set
         - xCommand Video Input SetMainVideoSource
         - xCommand UserInterface Extensions Panel Save
-    
+
     - **Task:** We'll be running multiple commands in conjunction to having a multiline argument.
         - We'll start by correcting our Camera View from the previous lesson, which will come pre-loaded in the Postman Collection
         - Your task is to structure the XML for {++xCommand UserInterface Extensions Panel Save++} and place it as the next xCommand in the XML structure given. Include the following Parameters and Values
@@ -804,7 +796,7 @@ This collection has most pieces structured as we'd need it to and will be used t
                 ```
 
     Once the Postman Request has been updated, ==Save== the request, select ==Send== and review the Postman Terminal's response and observe any changes to your device
-    
+
     ???+ warning "You're Wrapping XML around XML!"
 
         **Note:** Not all multiline arguments are in XML format; for example, {++xCommand UserInterface Extensions Panel Save++} is. It’s important to remember that any data placed within a `<body>` tag should always be written as a `String`. If your integration automatically injects this information, additional processing may be necessary.
@@ -883,14 +875,6 @@ This collection has most pieces structured as we'd need it to and will be used t
             </Command>
             ```
 
-    ??? failure "View Failed Response"
-
-        If you have a failed response, review the errors as it will point out how to resolve your particular issue in your XML payload and try again
-
-        <figure markdown>
-          ![Failed HTTP Response](./images/2-3-3_Execute-xCommand-AllFailure.png){ width="600" }
-        </figure> 
-
 ??? lesson "Lesson: Execute an xCommand which generates data and responds ~({{config.cProps.rxp.sectionIds.http}}.3.5)~"
 
     !!! info
@@ -922,14 +906,6 @@ This collection has most pieces structured as we'd need it to and will be used t
         </Command>
         ```
 
-    ??? failure "View Failed Response"
-
-        If you have a failed response, review the errors as it will point out how to resolve your particular issue in your XML payload and try again
-
-        <figure markdown>
-          ![Failed HTTP Response](./images/2-3-3_Execute-xCommand-AllFailure.png){ width="600" }
-        </figure>
-
 <!-- ??? challenge "Challenge: Open a Text Input Prompt!"
 
     - Duplicate the ==Execute an xCommand== request in Postman
@@ -955,11 +931,11 @@ This collection has most pieces structured as we'd need it to and will be used t
 
 !!! Abstract
 
-   Throughout section {{config.cProps.rxp.sectionIds.http}}.4, you'll continue to learn how to format XML payloads as you work to set new xConfigurations against the codec
+Throughout section {{config.cProps.rxp.sectionIds.http}}.4, you'll continue to learn how to format XML payloads as you work to set new xConfigurations against the codec
 
-   Unlike xCommands, you can then pull back the value of xConfigurations using a Get Request.
+Unlike xCommands, you can then pull back the value of xConfigurations using a Get Request.
 
-   The techniques outlined here will correspond to the methods needed for Getting xStatus Values in section {{config.cProps.rxp.sectionIds.http}}.5
+The techniques outlined here will correspond to the methods needed for Getting xStatus Values in section {{config.cProps.rxp.sectionIds.http}}.5
 
 ???+ lesson "Lesson: Set a new xConfiguration Value ~({{config.cProps.rxp.sectionIds.http}}.4.1)~"
 
@@ -979,22 +955,13 @@ This collection has most pieces structured as we'd need it to and will be used t
         </Configuration>
         ```
 
-    ??? failure "View Failed Response"
-
-        If you have a failed response, review the errors as it will point out how to resolve your particular issue in your XML payload and try again
-
-        <figure markdown>
-          ![Failed HTTP Response](./images/2-3-3_Execute-xCommand-AllFailure.png){ width="600" }
-        </figure>
-
-
 ??? lesson "Lesson: Set multiple xConfiguration Values in a single Request ~({{config.cProps.rxp.sectionIds.http}}.4.2)~"
 
-    - **xAPI(s):** 
+    - **xAPI(s):**
         - xConfiguration Audio DefaultVolume
         - xConfiguration SystemUnit Name
 
-    - **Task:** 
+    - **Task:**
         - We'll set the DefaultVolume back to 50, which will be preloaded into the Postman collection
         - Your task is to structure the XML for {++xConfiguration SystemUnit Name++} and place it as the next xCommand in the XML structure given. Set the Name to `Codec_X` where X is the # of your workstation pod or your name
 
@@ -1011,7 +978,7 @@ This collection has most pieces structured as we'd need it to and will be used t
               </SystemUnit>
             </Configuration>
             ```
-        
+
         === "Full XML Body"
 
             ``` { .xml }
@@ -1026,14 +993,6 @@ This collection has most pieces structured as we'd need it to and will be used t
               <!-- SystemUnit Name Should End Here -->
             </Configuration>
             ```
-
-    ??? failure "View Failed Response"
-
-        If you have a failed response, review the errors as it will point out how to resolve your particular issue in your XML payload and try again
-
-        <figure markdown>
-          ![Failed HTTP Response](./images/2-3-3_Execute-xCommand-AllFailure.png){ width="600" }
-        </figure>
 
 ??? lesson "Lesson: Getting an xConfiguration Value ~({{config.cProps.rxp.sectionIds.http}}.4.3)~"
 
@@ -1056,22 +1015,6 @@ This collection has most pieces structured as we'd need it to and will be used t
         === "Audio DefaultVolume URL"
 
             https://{{device_ipAddress}}/getxml?location\===Configuration/Audio/DefaultVolume==
-        
-    ??? failure "View Failed Response"
-
-        Something to note on xConfig Get Requests, is you'll still get a 200 OK if your auth and IP are correct when talking to the Codec
-
-        But a lack of response information can tell you that you may have a fault in your xAPI path in the URL
-
-        <figure markdown>
-          ![Failed HTTP Response](./images/2-3-4_Get-xConfig-WrongPath.png){ width="600" }
-          <figcaption>What to expect for a bad path</figcaption>
-        </figure>
-
-         <figure markdown>
-          ![Failed HTTP Response](./images/2-3-4_Get-xConfig-MissingPath.png){ width="600" }
-          <figcaption>What to expect for a missing path</figcaption>
-        </figure>
 
 ??? lesson "Lesson: Get multiple xConfiguration Values under a Common Node ~({{config.cProps.rxp.sectionIds.http}}.4.4)~"
 
@@ -1109,25 +1052,9 @@ This collection has most pieces structured as we'd need it to and will be used t
               </Audio>
             </Configuration>
             ```
-        
-    ??? failure "View Failed Response"
 
-        Something to note on xConfig Get Requests, is you'll still get a 200 OK if your auth and IP are correct when talking to the Codec
+??? curious ":thinking: What about Subscribing to an xConfiguration?"
 
-        But a lack of response information can tell you that you may have a fault in your xAPI path in the URL
-
-        <figure markdown>
-          ![Failed HTTP Response](./images/2-3-4_Get-xConfig-WrongPath.png){ width="600" }
-          <figcaption>What to expect for a bad path</figcaption>
-        </figure>
-
-         <figure markdown>
-          ![Failed HTTP Response](./images/2-3-4_Get-xConfig-MissingPath.png){ width="600" }
-          <figcaption>What to expect for a missing path</figcaption>
-        </figure>
-
-??? curious  ":thinking: What about Subscribing to an xConfiguration?"
-    
     Subscriptions via HTTP are possible, but require a process outside of using HTTP Post/Get commands. We'll need to leverage the HTTPFeedback feature of the codec and a tool that can receive a WebHook
 
     So we'll save HTTPFeedback for the end of section {{config.cProps.rxp.sectionIds.http}} and handle all HTTP based subscriptions there
@@ -1147,22 +1074,6 @@ This collection has most pieces structured as we'd need it to and will be used t
         === "Audio DefaultVolume URL"
 
             https://{{device_ipAddress}}/getxml?location\===Status/Audio/Volume==
-        
-    ??? failure "View Failed Response"
-
-        Something to note on xStatus Get Requests, is you'll still get a 200 OK if your auth and IP are correct when talking to the Codec
-
-        But a lack of response information can tell you that you may have a fault in your xAPI path in the URL
-
-        <figure markdown>
-          ![Failed HTTP Response](./images/2-3-4_Get-xConfig-WrongPath.png){ width="600" }
-          <figcaption>What to expect for a bad path</figcaption>
-        </figure>
-
-         <figure markdown>
-          ![Failed HTTP Response](./images/2-3-4_Get-xConfig-MissingPath.png){ width="600" }
-          <figcaption>What to expect for a missing path</figcaption>
-        </figure>
 
 ??? lesson "Lesson: Get multiple xStatus Values under a Common Node ~({{config.cProps.rxp.sectionIds.http}}.5.2)~"
 
@@ -1198,22 +1109,6 @@ This collection has most pieces structured as we'd need it to and will be used t
               </Audio>
             </Status>
             ```
-        
-    ??? failure "View Failed Response"
-
-        Something to note on xStatus Get Requests, is you'll still get a 200 OK if your auth and IP are correct when talking to the Codec
-
-        But a lack of response information can tell you that you may have a fault in your xAPI path in the URL
-
-        <figure markdown>
-          ![Failed HTTP Response](./images/2-3-4_Get-xConfig-WrongPath.png){ width="600" }
-          <figcaption>What to expect for a bad path</figcaption>
-        </figure>
-
-         <figure markdown>
-          ![Failed HTTP Response](./images/2-3-4_Get-xConfig-MissingPath.png){ width="600" }
-          <figcaption>What to expect for a missing path</figcaption>
-        </figure>
 
 ## **Using WebHooks to subscribe to xConfigurations, xStatuses and xEvents** ~({{config.cProps.rxp.sectionIds.http}}.6)~
 
@@ -1308,7 +1203,6 @@ This collection has most pieces structured as we'd need it to and will be used t
       ![Locate and Configure your Unique URL from Webhook.Site](./images/2-3-6_ConfigureWebHookPostman.gif){ width="600" }
     </figure>
 
-
 !!! info
 
     For all Webhook Examples below, we'll need to register HTTPFeedback slot by first running
@@ -1334,7 +1228,6 @@ This collection has most pieces structured as we'd need it to and will be used t
             - Under the xConfigurations Page, press any of the buttons on this page
             - Observe your {++Webhook.Site Terminal++} output, those responses you saw in the previous lesson should have stopped outputting in your {++Webhook.Site Terminal++}
                 - ==Optional==: Press those buttons and switches a few times to see more changes come in
-
 
 ??? lesson "Lesson: Subscribe to the full xStatus Branch ~({{config.cProps.rxp.sectionIds.http}}.6.2)~"
 
