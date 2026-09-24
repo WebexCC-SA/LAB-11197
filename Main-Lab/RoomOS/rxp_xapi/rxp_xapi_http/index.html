@@ -1,0 +1,3563 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="LAB-11197: Deep-dive into Cisco RoomOS xAPIs">
+      
+      
+        <meta name="author" content="Bobby McGonigle, Christopher Norman">
+      
+      
+      
+        <link rel="prev" href="../rxp_xapi_ssh/">
+      
+      
+        <link rel="next" href="../rxp_xapi_macros/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../template_assets/webex75.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>HTTP rxp-3 - LAB-11197: Deep-dive into Cisco RoomOS xAPIs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/customTextHighlight.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#access-roomos-xapi-via-http-section-rxp-3" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" class="md-header__button md-logo" aria-label="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" data-md-component="logo">
+      
+  <img src="../../../../template_assets/webexLogo91.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LAB-11197: Deep-dive into Cisco RoomOS xAPIs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              HTTP <sup><sup>rxp-3</sup></sup>
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="indigo" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home&nbsp;<i class="fa-solid fa-house" style="color:#B197FC;"></i>
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../Setup/stp_intro/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Lab Setup&nbsp;<i class="fa-solid fa-gear"></i>
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../rxp_intro/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  RoomOS xAPI &amp; UserInterfaces&nbsp;<i class="fa-solid fa-video" style="color: #428bff;"></i>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Deployment/dep_intro/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Deployment&nbsp;<i class="fa-solid fa-cloud-arrow-up" style="color: #ff0000;"></i>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../Resources/res_tools/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tools&nbsp;<i class="fa-solid fa-gear"></i>
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Resources/res_guides/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Resources&nbsp;<i class="fa-solid fa-globe" style="color:#ffd903;"></i>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" class="md-nav__button md-logo" aria-label="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" data-md-component="logo">
+      
+  <img src="../../../../template_assets/webexLogo91.png" alt="logo">
+
+    </a>
+    LAB-11197: Deep-dive into Cisco RoomOS xAPIs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home&nbsp;<i class="fa-solid fa-house" style="color:#B197FC;"></i>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Setup/stp_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Setup&nbsp;<i class="fa-solid fa-gear"></i>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked="">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS xAPI &amp; UserInterfaces&nbsp;<i class="fa-solid fa-video" style="color: #428bff;"></i>
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RoomOS xAPI &amp; UserInterfaces&nbsp;<i class="fa-solid fa-video" style="color: #428bff;"></i>
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked="">
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS xAPI
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RoomOS xAPI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rxp_xapi_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What are RoomOS xAPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rxp_xapi_ssh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH <sup><sup>rxp-1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP <sup><sup>rxp-3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP <sup><sup>rxp-3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#section-rxp-3-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section rxp-3 Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-rxp-3-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section rxp-3 Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-authentication-and-format-rxp-31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP Authentication and Format (rxp-3.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#import-and-configure-the-section-rxp-31-postman-collection-rxp-32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Import and Configure the section rxp-3.1 Postman Collection (rxp-3.2)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#executing-xcommands-rxp-33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executing xCommands (rxp-3.3)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-and-getting-xconfigurations-rxp-34" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting and Getting xConfigurations (rxp-3.4)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-xstatuses-rxp-35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting xStatuses (rxp-3.5)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-webhooks-to-subscribe-to-xconfigurations-xstatuses-and-xevents-rxp-36" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using WebHooks to subscribe to xConfigurations, xStatuses and xEvents (rxp-3.6)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-rxp-3-cleanup-rxp-37" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section rxp-3 Cleanup (rxp-3).7
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rxp_xapi_macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macros <sup><sup>rxp-6</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS UserInterfaces
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RoomOS UserInterfaces
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What are RoomOS UserInterfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features <sup><sup>rxu-1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extensions <sup><sup>rxu-2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_messages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Messages <sup><sup>rxu-3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_webContent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Content <sup><sup>rxu-4</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solution Exercises
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Solution Exercises
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_exercises/rxp_exe_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Abstract &amp; Best Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_2">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4_2" id="__nav_3_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macro Based Exercises
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Macro Based Exercises
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_2_1">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4_2_1" id="__nav_3_4_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_4_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_exercises/macros/rxp_exe_Quick_Docs_PT1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 1 - Start Simple <sup><sup>rxe-m1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_exercises/macros/rxp_exe_Quick_Docs_PT2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 2 - Optimize <sup><sup>rxe-m2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4">
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment&nbsp;<i class="fa-solid fa-cloud-arrow-up" style="color: #ff0000;"></i>
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment&nbsp;<i class="fa-solid fa-cloud-arrow-up" style="color: #ff0000;"></i>
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment Lab Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3">
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Hub
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Control Hub
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_controlHub/dep_controlHub_prepDevices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tag Your Pod Device <sup><sup>dep-1.1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_controlHub/dep_controlHub_configTemplates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration Templates <sup><sup>dep-1.2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_controlHub/dep_controlHub_runCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Run Commands <sup><sup>dep-1.3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4">
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CE-Deploy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CE-Deploy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_localVsCloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connect Your Organization <sup><sup>dep-2.1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_runCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bulk xAPI Commands <sup><sup>dep-2.2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployBranding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Personalization <sup><sup>dep-2.3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployMacros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macros &amp; UI Extensions <sup><sup>dep-2.4</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployLocalUsers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Device Users &amp; On-Premise Access <sup><sup>dep-2.5</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_backupsAndLogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    On-Prem Toolkit <sup><sup>dep-2.6</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fleet Intelligence <sup><sup>dep-2.7</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_conclusion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment Conclusion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Resources/res_tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools&nbsp;<i class="fa-solid fa-gear"></i>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources&nbsp;<i class="fa-solid fa-globe" style="color:#ffd903;"></i>
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Resources&nbsp;<i class="fa-solid fa-globe" style="color:#ffd903;"></i>
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Resources/res_guides/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Resources/res_communities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Communities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="access-roomos-xapi-via-http-section-rxp-3">Access RoomOS xAPI via <abbr title="Hypertext Transfer Protocol">HTTP</abbr> <sub>(section rxp-3)</sub></h1>
+<div class="admonition abstract">
+<p class="admonition-title">Abstract</p>
+<p>In this section, we'll dive into the various pieces of the RoomOS Device xAPI stack and how to make use of them in various ways over the Hypertext Transfer Protocol (<abbr title="Hypertext Transfer Protocol">HTTP</abbr>) using local authentication on a Cisco RoomOS Device.</p>
+<p>Here, we'll see the relationships between <abbr title="Hypertext Transfer Protocol">HTTP</abbr> and <abbr title="Secure Shell">SSH</abbr> on how to structure an xConfiguration, xCommand, xStatus and xEvents to a Cisco RoomOS device</p>
+<div class="admonition curious">
+<p class="admonition-title">Click the Tabs Below to see how <abbr title="Hypertext Transfer Protocol">HTTP</abbr> xAPI calls communicate</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Get Requests [xStatuses/xConfigs]</label><label for="__tabbed_1_2">Post Requests [xCommands/xConfigs]</label><label for="__tabbed_1_3">Subscriptions [HTTPFeedback]</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<pre class="mermaid"><code>%%{init: {'theme':'dark'}}%%
+sequenceDiagram
+  participant My Customization
+  participant Target Codec
+  My Customization-&gt;&gt;+Target Codec: xStatus/xConfig Get Request
+  Note over My Customization,Target Codec: If Device Online
+  Target Codec-&gt;&gt;- My Customization: Responds 200 OK</code></pre>
+</div>
+<div class="tabbed-block">
+<pre class="mermaid"><code>%%{init: {'theme':'dark'}}%%
+sequenceDiagram
+  participant My Customization
+  participant Target Codec
+  My Customization-&gt;&gt;+Target Codec: xCommand/xConfig Post Request
+  Note over My Customization,Target Codec: If Device Online
+  Target Codec-&gt;&gt;- My Customization: Responds 200 OK</code></pre>
+</div>
+<div class="tabbed-block">
+<pre class="mermaid"><code>%%{init: {'theme':'dark'}}%%
+sequenceDiagram
+  participant My Customization
+  participant Target Codec
+  activate Target Codec
+  Note over My Customization, Target Codec: WebHook Offered by My Customization&lt;br&gt;Configured in Target Codec
+  Target Codec --&gt;&gt;+ My Customization: Forwards Subscription Traffic
+  Note over My Customization,Target Codec: On Subscription callBack from Target Codec
+  deactivate Target Codec
+  activate My Customization
+  Target Codec-&gt;&gt;+ My Customization: Ex. xEvent UserInterface Extension Panel Clicked (QuickDial)
+  activate Target Codec
+  My Customization-&gt;&gt;+Target Codec: Responds with xCommand Dial Post Request
+  deactivate My Customization
+  Target Codec-&gt;&gt;- My Customization: Responds 200 OK</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 id="section-rxp-3-requirements">Section rxp-3 Requirements</h2>
+<div class="admonition important">
+<div class="admonition important inline end">
+<p class="admonition-title">Important</p>
+<p>This lab assumes you have access to a Cisco RoomOS Device that is already setup and ready for use. If your device is not registered and online, please do so before beginning</p>
+</div>
+<p><strong>Required Learning</strong></p>
+<ul>
+<li><abbr title="Secure Shell">SSH</abbr> Section rxp-1</li>
+</ul>
+<p><strong>Hardware</strong></p>
+<ul>
+<li>A Laptop</li>
+<li>A Cisco Desk, Board or Room Series Device running the most recent On Premise or Cloud Stable software<ul>
+<li>A Touch Controller is required when working on a Room Series Device. Either Room navigator or 3rd part touch display</li>
+<li>Preferred Device: Cisco Desk Pro</li>
+</ul>
+</li>
+<li>A minimum of 1 camera (Either Integrated or External)</li>
+</ul>
+<p><strong>Software</strong></p>
+<ul>
+<li>
+<p>Laptop</p>
+<ul>
+<li>Recommended Browser: Chrome or Firefox</li>
+<li>Postman</li>
+<li>Section rxp-3 Postman Collection</li>
+<li>Webhook.site</li>
+</ul>
+</li>
+<li>
+<p>RoomOS Device</p>
+<ul>
+<li>Either the current On Premise or Cloud Stable release</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="section-rxp-3-setup">Section rxp-3 Setup</h2>
+<div class="admonition important">
+<ul>
+<li>
+<p>If joining from a Lab at WebexOne, Postman should be installed on your loaner laptop already, if not, please install the application now using the link below</p>
+</li>
+<li>
+<p>In addition to the Postman application, please download the Postman Collection listed below</p>
+</li>
+<li>
+<p>We'll also be leveraging a Webhook testing site, click the link below to open this is site in a new tab</p>
+</li>
+</ul>
+<div class="grid cards" markdown="">
+<ul>
+<li>
+<p><i class="fa-solid fa-download"></i> <strong>Click the icon below for the Postman Download Page</strong></p>
+<hr>
+<p><a href="https://www.Postman.com/downloads/" target="_blank">
+  </a></p><figure markdown="span"><a href="https://www.Postman.com/downloads/" target="_blank">
+      <img alt="Postman Download" src="https://voyager.postman.com/logo/postman-logo-icon-orange.svg" width="75">
+  </a></figure><a href="https://www.Postman.com/downloads/" target="_blank">
+</a><p></p>
+</li>
+<li>
+<p><i class="fa-solid fa-download"></i> <strong>Click the icon below for the Section rxp-3 Postman Collection</strong></p>
+<hr>
+<p><a href="https://github.com/WebexCC-SA/LAB-1451/raw/refs/heads/main/docs/Main-Lab/DownloadContent/PostMan%20Collections/WX1-Lab-1451-HTTP-PostMan-Collection.postman_collection.json.zip" target="_blank">
+  </a></p><figure markdown="span"><a href="https://github.com/WebexCC-SA/LAB-1451/raw/refs/heads/main/docs/Main-Lab/DownloadContent/PostMan%20Collections/WX1-Lab-1451-HTTP-PostMan-Collection.postman_collection.json.zip" target="_blank">
+      <img alt="Postman Collection" src="https://voyager.postman.com/logo/postman-logo-icon-orange.svg" width="75">
+  </a></figure><a href="https://github.com/WebexCC-SA/LAB-1451/raw/refs/heads/main/docs/Main-Lab/DownloadContent/PostMan%20Collections/WX1-Lab-1451-HTTP-PostMan-Collection.postman_collection.json.zip" target="_blank">
+</a><p></p>
+</li>
+<li>
+<p><i class="fa-solid fa-globe"></i> <strong>Click the icon below for the WebHook Site</strong> <br><br></p>
+<hr>
+<p><a href="https://webhook.site/" target="_blank">
+  </a></p><figure markdown="span"><a href="https://webhook.site/" target="_blank">
+    <img alt="Webhook.site" src="https://cdn.webhook.site/icon.png" width="75">
+  </a></figure><a href="https://webhook.site/" target="_blank">
+</a><p></p>
+</li>
+</ul>
+</div>
+</div>
+<h2 id="http-authentication-and-format-rxp-31"><strong><abbr title="Hypertext Transfer Protocol">HTTP</abbr> Authentication and Format</strong> <sub>(rxp-3.1)</sub></h2>
+<div class="admonition blank">
+<p></p><h4><abbr title="Uniform Resource Locator">URL</abbr> Structure <sub>(rxp-3.1.1)</sub></h4><p></p>
+<p>The request <abbr title="Uniform Resource Locator">URL</abbr> for your Codec will change depending on whether you're making a GET or POST request</p>
+<p>Click the tabs below to see an example of each <abbr title="Uniform Resource Locator">URL</abbr> structure</p>
+<div class="admonition example">
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">GET <abbr title="Uniform Resource Locator">URL</abbr></label><label for="__tabbed_2_2">POST <abbr title="Uniform Resource Locator">URL</abbr></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>https://<w class="ipAddress">[ROOMOS_HOST_ADDRESS]</w>/<hl_0>getxml?location=[YOUR_XAPI_PATH_BODY]</hl_0></p>
+</div>
+<div class="tabbed-block">
+<p>https://<w class="ipAddress">[ROOMOS_HOST_ADDRESS]</w>/<hl_0>putxml</hl_0></p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<p></p><h4>Authentication Format <sub>(rxp-3.1.2)</sub></h4><p></p>
+<p>When using <abbr title="Hypertext Transfer Protocol">HTTP</abbr> to talk to a Cisco RoomOS Device locally, the device uses basic authentication to accept those requests. This authentication is formatted in base64 with it's username and password concatenated as a single string separated by a colon <hl_4><strong>:</strong></hl_4></p>
+<div class="admonition example">
+<p class="admonition-title">Click on the tabs below to see how a Username and Password transitions to an encoded base64 string</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:4"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><input id="__tabbed_3_3" name="__tabbed_3" type="radio"><input id="__tabbed_3_4" name="__tabbed_3" type="radio"><div class="tabbed-labels"><label for="__tabbed_3_1">Device Credentials &gt;</label><label for="__tabbed_3_2">Decoded String &gt;</label><label for="__tabbed_3_3">Encoded Base64 String &gt;</label><label for="__tabbed_3_4">Authorization Request Header</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><strong>Username</strong>: <hl_0>admin</hl_0>
+<br>
+<strong>Password</strong>: <hl_7>admin1234</hl_7></p>
+</div>
+<div class="tabbed-block">
+<p><hl_0>admin</hl_0><hl_4><strong>:</strong></hl_4><hl_7>admin1234</hl_7>
+<br>
+<br></p>
+</div>
+<div class="tabbed-block">
+<p><hl_5>YWRtaW46YWRtaW4xMjM0</hl_5>
+<br>
+<br></p>
+</div>
+<div class="tabbed-block">
+<p>"Authorization": "Basic <hl_5>YWRtaW46YWRtaW4xMjM0</hl_5>"
+<br>
+<br></p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<p></p><h4>Request Headers <sub>(rxp-3.1.3)</sub></h4><p></p>
+<p><abbr title="Hypertext Transfer Protocol">HTTP</abbr> Requests have a myriad of headers that could be used, and this is usually defined by the device or service you're communicating with. For Cisco RoomOS devices using local authentication, your requests will use the following headers</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>Content-Type</code></td>
+<td style="text-align: left;"><code>text/xml</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>Authorization</code></td>
+<td style="text-align: left;"><code>Basic [YOUR_BASE64_ENCODED_AUTH]</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p></p><h4>GET Request Path Format <sub>(rxp-3.1.4)</sub></h4><p></p>
+<p>When retrieving xStatus or xConfiguration information, you'll perform an <abbr title="Hypertext Transfer Protocol">HTTP</abbr> Get request.</p>
+<p></p><div class="code-label" data-title="GET requests using HTTP will target this base url">
+    <pre><code>https://<hl_5><w class="ipAddress">[ROOMOS_HOST_ADDRESS]</w></hl_5>/getxml</code></pre>
+</div><p></p>
+<p>The xAPI path you want to target is then defined as a <abbr title="Uniform Resource Locator">URL</abbr> parameter</p>
+<p>The xAPI path is separated by a <hl_3>/</hl_3> and is placed behind the parameter <hl_6>?location=</hl_6> the prefix <hl_7>x</hl_7> is removed from the top level node of the xAPI Path</p>
+<div class="admonition example">
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"><input id="__tabbed_4_2" name="__tabbed_4" type="radio"><div class="tabbed-labels"><label for="__tabbed_4_1">xConfiguration Example</label><label for="__tabbed_4_2">xStatus Example</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div class="code-label" data-title="Shell xAPI Path">
+  <pre><code>xConfiguration SystemUnit Name</code></pre>
+</div><p></p>
+<p></p><div class="code-label" data-title="URL with xAPI Path">
+  <pre><code>https://<hl_5><w class="ipAddress">[ROOMOS_HOST_ADDRESS]</w></hl_5>/getxml?location=<hl_1>Configuration</hl_1><hl_3>/</hl_3><hl_1>SystemUnit</hl_1><hl_3>/</hl_3><hl_1>Name</hl_1></code></pre>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div class="code-label" data-title="Shell xAPI Path">
+  <pre><code>xStatus Logging ExtendedLogging Mode</code></pre>
+</div><p></p>
+<p></p><div class="code-label" data-title="URL with xAPI Path">
+  <pre><code>https://<hl_5><w class="ipAddress">[ROOMOS_HOST_ADDRESS]</w></hl_5>/getxml?location=<hl_1>Status</hl_1><hl_3>/</hl_3><hl_1>Logging</hl_1><hl_3>/</hl_3><hl_1>ExtendedLogging</hl_1><hl_3>/</hl_3><hl_1>Mode</hl_1></code></pre>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+<p></p><h4>POST Request Body Format <sub>(rxp-3.1.5)</sub></h4><p></p>
+<p>When setting xConfigurations or running xCommand over <abbr title="Hypertext Transfer Protocol">HTTP</abbr>, you’ll perform a POST Request. </p>
+<p></p><div class="code-label" data-title="POST requests using HTTP will target this base url">
+    <pre><code>https://<hl_5><w class="ipAddress">[ROOMOS_HOST_ADDRESS]</w></hl_5>/putxml</code></pre>
+</div><p></p>
+<p>The xAPI path you want to target is then defined in the body of the request</p>
+<p>The body is structured as <abbr title="Extensible Markup Language">XML</abbr> and is formatted as a string. The entire xAPI path, parameters and any values are defined within this <abbr title="Extensible Markup Language">XML</abbr> string.</p>
+<p>The xAPI path is separated by a <hl_3>opening and closing <abbr title="Extensible Markup Language">XML</abbr> tags</hl_3>. The prefix <hl_7>x</hl_7> is removed from the top level node of the xAPI Path</p>
+<div class="admonition example">
+<p></p><div class="code-label" data-title="URL">
+  <pre><code>https://<hl_5><w class="ipAddress">[ROOMOS_HOST_ADDRESS]</w></hl_5>/putxml</code></pre>
+</div><p></p>
+<p>Click the tabs below to see an example xConfiguration and xCommand body structured as <abbr title="Extensible Markup Language">XML</abbr></p>
+<div class="admonition important">
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"><input id="__tabbed_5_2" name="__tabbed_5" type="radio"><div class="tabbed-labels"><label for="__tabbed_5_1">xCommand Example</label><label for="__tabbed_5_2">xConfiguration Example</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div class="code-label" data-title="Shell xAPI Path">
+  <pre><code>xCommand Cameras Background Get Image: value Size: value</code></pre>
+</div><p></p>
+<p></p><div class="code-label" data-title="XML Body Structure">
+  <pre><code><hl_3>&lt;</hl_3><hl_1>Command</hl_1><hl_3>&gt;</hl_3>
+  <hl_3>&lt;</hl_3><hl_1>Cameras</hl_1><hl_3>&gt;</hl_3>
+    <hl_3>&lt;</hl_3><hl_1>Background</hl_1><hl_3>&gt;</hl_3>
+      <hl_3>&lt;</hl_3><hl_1>Get</hl_1><hl_3>&gt;</hl_3>
+        <hl_3>&lt;</hl_3><hl_1>Image</hl_1><hl_3>&gt;</hl_3>User1<hl_3>&lt;/</hl_3><hl_1>Image</hl_1><hl_3>&gt;</hl_3>
+        <hl_3>&lt;</hl_3><hl_1>Size</hl_1><hl_3>&gt;</hl_3>Large<hl_3>&lt;/</hl_3><hl_1>Size</hl_1><hl_3>&gt;</hl_3>
+      <hl_3>&lt;/</hl_3><hl_1>Get</hl_1><hl_3>&gt;</hl_3>
+    <hl_3>&lt;/</hl_3><hl_1>Background</hl_1><hl_3>&gt;</hl_3>
+  <hl_3>&lt;/</hl_3><hl_1>Cameras</hl_1><hl_3>&gt;</hl_3>
+<hl_3>&lt;/</hl_3><hl_1>Command</hl_1><hl_3>&gt;</hl_3></code></pre>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div class="code-label" data-title="Shell xAPI Path">
+  <pre><code>xConfiguration Cameras Background Enabled: False</code></pre>
+</div><p></p>
+<p></p><div class="code-label" data-title="XML Body Structure">
+  <pre><code><hl_3>&lt;</hl_3><hl_1>Configuration</hl_1><hl_3>&gt;</hl_3>
+  <hl_3>&lt;</hl_3><hl_1>Cameras</hl_1><hl_3>&gt;</hl_3>
+    <hl_3>&lt;</hl_3><hl_1>Background</hl_1><hl_3>&gt;</hl_3>
+      <hl_3>&lt;</hl_3><hl_1>Enabled</hl_1><hl_3>&gt;</hl_3>False<hl_3>&lt;/</hl_3><hl_1>Enabled</hl_1><hl_3>&gt;</hl_3>
+    <hl_3>&lt;/</hl_3><hl_1>Background</hl_1><hl_3>&gt;</hl_3>
+  <hl_3>&lt;/</hl_3><hl_1>Cameras</hl_1><hl_3>&gt;</hl_3>
+<hl_3>&lt;/</hl_3><hl_1>Configuration</hl_1><hl_3>&gt;</hl_3></code></pre>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<details class="tip inline end">
+<summary>Take advantage of your Code Language</summary>
+<p>Many languages have built in function to help process data</p>
+<p>For instance, when working in ES6 or newer Javascript Environments, you can leverage the <code>btoa()</code> and <code>atob()</code> functions that are built into that language to quickly encode and decode strings to/from base64. Ex: <code>btoa('admin:admin1234')</code> = <mark>YWRtaW46YWRtaW4xMjM0=</mark>=</p>
+</details>
+<p></p><h4>Full <abbr title="Hypertext Transfer Protocol">HTTP</abbr> Get and Post examples <sub>(rxp-3.1.5)</sub></h4><p></p>
+<details class="success">
+<summary>Click to view a Full Example of each written using the JavaScript Fetch API <sub>(rxp-3.1.5.a)</sub></summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"><input id="__tabbed_6_2" name="__tabbed_6" type="radio"><div class="tabbed-labels"><label for="__tabbed_6_1">Get</label><label for="__tabbed_6_2">Post</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">myHeaders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Headers</span><span class="p">();</span>
+<span class="nx">myHeaders</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"Content-Type"</span><span class="p">,</span><span class="w"> </span><span class="s2">"text/xml"</span><span class="p">);</span>
+<span class="nx">myHeaders</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"Authorization"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Basic [YOUR_BASE64_ENCODED_AUTH]"</span><span class="p">);</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">requestOptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s2">"GET"</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="nx">myHeaders</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">redirect</span><span class="o">:</span><span class="w"> </span><span class="s2">"follow"</span>
+<span class="p">};</span>
+
+<span class="nx">fetch</span><span class="p">(</span><span class="s2">"https://&lt;w class="</span><span class="nx">ipAddress</span><span class="s2">"&gt;[ROOMOS_HOST_ADDRESS]&lt;/w&gt;/getxml?location=Configuration/SystemUnit/Name"</span><span class="p">,</span><span class="w"> </span><span class="nx">requestOptions</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">text</span><span class="p">())</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">))</span>
+<span class="w">  </span><span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">));</span>
+
+<span class="cm">/* Below is the Response Body after making a Successful Request</span>
+
+<span class="cm">&lt;?xml version="1.0"?&gt;</span>
+<span class="cm">&lt;Configuration product="Cisco Codec" version="ce11.20.1.7.913a6c7c769" apiVersion="4"&gt;</span>
+<span class="cm">    &lt;SystemUnit&gt;</span>
+<span class="cm">        &lt;Name valueSpaceRef="/Valuespace/STR_0_50_NoFilt"&gt; My Room Bar Pro&lt;/Name&gt;</span>
+<span class="cm">    &lt;/SystemUnit&gt;</span>
+<span class="cm">&lt;/Configuration&gt;</span>
+<span class="cm">*/</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">myHeaders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Headers</span><span class="p">();</span>
+<span class="nx">myHeaders</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"Content-Type"</span><span class="p">,</span><span class="w"> </span><span class="s2">"text/xml"</span><span class="p">);</span>
+<span class="nx">myHeaders</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"Authorization"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Basic [YOUR_BASE64_ENCODED_AUTH]"</span><span class="p">);</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"&lt;Configuration&gt;&lt;SystemUnit&gt;&lt;Name&gt;My New System Name&lt;/Name&gt;&lt;/SystemUnit&gt;&lt;/Configuration&gt;"</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">requestOptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s2">"POST"</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="nx">myHeaders</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="nx">raw</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">redirect</span><span class="o">:</span><span class="w"> </span><span class="s2">"follow"</span>
+<span class="p">};</span>
+
+<span class="nx">fetch</span><span class="p">(</span><span class="s2">"https://&lt;w class="</span><span class="nx">ipAddress</span><span class="s2">"&gt;[ROOMOS_HOST_ADDRESS]&lt;/w&gt;/putxml"</span><span class="p">,</span><span class="w"> </span><span class="nx">requestOptions</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">response</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">text</span><span class="p">())</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">))</span>
+<span class="w">  </span><span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">));</span>
+
+<span class="cm">/* Below is the Response Body after making a Successful Request</span>
+
+<span class="cm">&lt;?xml version="1.0"?&gt;</span>
+<span class="cm">&lt;Configuration&gt;</span>
+<span class="cm">    &lt;Success/&gt;</span>
+<span class="cm">&lt;/Configuration&gt;</span>
+<span class="cm">*/</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<details class="success">
+<summary>Click to view a Full Example of each written using the Macro Editor [ES6 JS] and your codec's HTTPClient xAPIs <sub>(rxp-3.1.5.b)</sub></summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio"><input id="__tabbed_7_2" name="__tabbed_7" type="radio"><div class="tabbed-labels"><label for="__tabbed_7_1">Get</label><label for="__tabbed_7_2">Post</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">xapi</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'xapi'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">destinationIp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'&lt;w class="ipAddress"&gt;[ROOMOS_HOST_ADDRESS]&lt;/w&gt;'</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s1">'Content-Type: text/xml'</span><span class="p">,</span><span class="w"> </span><span class="sb">`Authorization: Basic </span><span class="si">${</span><span class="nx">btoa</span><span class="p">(</span><span class="s1">'[YOUR_AUTH]'</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">];</span>
+
+
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">getPath</span><span class="p">(</span><span class="nx">path</span><span class="p">){</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">destinationUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`https://</span><span class="si">${</span><span class="nx">destinationIp</span><span class="si">}</span><span class="sb">/getxml?location=</span><span class="si">${</span><span class="nx">path</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">xapi</span><span class="p">.</span><span class="nx">Command</span><span class="p">.</span><span class="nx">HttpClient</span><span class="p">.</span><span class="nx">Get</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">Url</span><span class="o">:</span><span class="w"> </span><span class="nx">destinationUrl</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">Header</span><span class="o">:</span><span class="w"> </span><span class="nx">headers</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">AllowInsecureHTTPS</span><span class="o">:</span><span class="w"> </span><span class="s1">'True'</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="nx">request</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">request</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">Context</span><span class="o">:</span><span class="w"> </span><span class="sb">`Failed Get Request to [</span><span class="si">${</span><span class="nx">destinationUrl</span><span class="si">}</span><span class="sb">]`</span><span class="p">,</span>
+<span class="w">      </span><span class="p">...</span><span class="nx">e</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">getPath</span><span class="p">(</span><span class="s1">'Configuration/SystemUnit/Name'</span><span class="p">);</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">xapi</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'xapi'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">destinationIp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'&lt;w class="ipAddress"&gt;[ROOMOS_HOST_ADDRESS]&lt;/w&gt;'</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s1">'Content-Type: text/xml'</span><span class="p">,</span><span class="w"> </span><span class="sb">`Authorization: Basic </span><span class="si">${</span><span class="nx">btoa</span><span class="p">(</span><span class="s1">'[YOUR_AUTH]'</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">];</span>
+
+
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">setPath</span><span class="p">(</span><span class="nx">body</span><span class="p">){</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">destinationUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`https://</span><span class="si">${</span><span class="nx">destinationIp</span><span class="si">}</span><span class="sb">/putxml`</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">xapi</span><span class="p">.</span><span class="nx">Command</span><span class="p">.</span><span class="nx">HttpClient</span><span class="p">.</span><span class="nx">Post</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">Url</span><span class="o">:</span><span class="w"> </span><span class="nx">destinationUrl</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">Header</span><span class="o">:</span><span class="w"> </span><span class="nx">headers</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">AllowInsecureHTTPS</span><span class="o">:</span><span class="w"> </span><span class="s1">'True'</span>
+<span class="w">    </span><span class="p">},</span><span class="w"> </span><span class="nx">body</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="nx">request</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">request</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">Context</span><span class="o">:</span><span class="w"> </span><span class="sb">`Failed Post Request to [</span><span class="si">${</span><span class="nx">destinationUrl</span><span class="si">}</span><span class="sb">]`</span><span class="p">,</span>
+<span class="w">      </span><span class="p">...</span><span class="nx">e</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">setPath</span><span class="p">(</span><span class="s1">'&lt;Configuration&gt;&lt;SystemUnit&gt;&lt;Name&gt;My New System Name&lt;/Name&gt;&lt;/SystemUnit&gt;&lt;/Configuration&gt;'</span><span class="p">);</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p><a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpClient.Get/?search=HTTPClient" target="_blank">
+      Learn more about <strong>Device HTTPClient xAPIs</strong> <i class="fa-solid fa-square-up-right"></i>
+</a></p>
+<details class="curious">
+<summary><img alt="🤔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f914.svg" title=":thinking:"> Hey, what's up with that <code>...e</code> in your caught error?</summary>
+<p>Again, knowing you language has it's benefits</p>
+<p><code>...</code> is called a <mark>Spread Operator</mark> and it's very useful when playing with data in ES6 JS</p>
+<p>We're using it here to pass the original error the xAPI produced into an <mark>err</mark> object as well as some context to help us troubleshoot our macro in the future.</p>
+<p><a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax" target="_blank">
+      Learn more about <strong>Spread Operators</strong> <i class="fa-solid fa-square-up-right"></i>
+</a></p>
+</details>
+</details>
+<details class="success">
+<summary>Click to view a Full Example of each written using the Python Requests API <sub>(rxp-3.1.5.c)</sub></summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio"><input id="__tabbed_8_2" name="__tabbed_8" type="radio"><div class="tabbed-labels"><label for="__tabbed_8_1">Get</label><label for="__tabbed_8_2">Post</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">"https://&lt;w class="</span><span class="n">ipAddress</span><span class="s2">"&gt;[ROOMOS_HOST_ADDRESS]&lt;/w&gt;/getxml?location=Configuration/SystemUnit/Name"</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="s2">""</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">'Content-Type'</span><span class="p">:</span> <span class="s1">'text/xml'</span><span class="p">,</span>
+  <span class="s1">'Authorization'</span><span class="p">:</span> <span class="s1">'Basic [YOUR_BASE64_ENCODED_AUTH]'</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s2">"GET"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+<span class="c1"># Below is the Response Body after making a Successful Request</span>
+
+<span class="c1"># &lt;?xml version="1.0"?&gt;</span>
+<span class="c1"># &lt;Configuration&gt;</span>
+<span class="c1">#     &lt;Success/&gt;</span>
+<span class="c1"># &lt;/Configuration&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">"https://&lt;w class="</span><span class="n">ipAddress</span><span class="s2">"&gt;[ROOMOS_HOST_ADDRESS]&lt;/w&gt;/putxml"</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="s2">"&lt;Configuration&gt;&lt;SystemUnit&gt;&lt;Name&gt;My New System Name&lt;/Name&gt;&lt;/SystemUnit&gt;&lt;/Configuration&gt;"</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">'Content-Type'</span><span class="p">:</span> <span class="s1">'text/xml'</span><span class="p">,</span>
+  <span class="s1">'Authorization'</span><span class="p">:</span> <span class="s1">'Basic [YOUR_BASE64_ENCODED_AUTH]'</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s2">"POST"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+<span class="c1"># Below is the Response Body after making a Successful Request</span>
+
+<span class="c1"># &lt;?xml version="1.0"?&gt;</span>
+<span class="c1"># &lt;Configuration product="Cisco Codec" version="ce11.20.1.7.913a6c7c769" apiVersion="4"&gt;</span>
+<span class="c1">#     &lt;SystemUnit&gt;</span>
+<span class="c1">#         &lt;Name valueSpaceRef="/Valuespace/STR_0_50_NoFilt"&gt; My Room Bar Pro&lt;/Name&gt;</span>
+<span class="c1">#     &lt;/SystemUnit&gt;</span>
+<span class="c1"># &lt;/Configuration&gt;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+</div>
+<h2 id="import-and-configure-the-section-rxp-31-postman-collection-rxp-32"><strong>Import and Configure the section rxp-3.1 Postman Collection</strong> <sub>(rxp-3.2)</sub></h2>
+<p>Whereas we'll be using Postman, this tool will automatically take our basic auth and structure as an with Header for us and convert that string into base64</p>
+<p>This collection has most pieces structured as we'd need it to and will be used through sections rxp-3.3 through rxp-3.5</p>
+<hr>
+<h4>Import Collection</h4>
+
+<ul>
+<li>With Postman open, in a new or existing workspace select <mark>import</mark></li>
+<li>Select File</li>
+<li>Locate the <mark>WX1-Lab:1451-<abbr title="Hypertext Transfer Protocol">HTTP</abbr>-Postman-Collection.Postman_collection.json</mark> and Open it</li>
+<li>You should now have the Postman Collection installed for this lab</li>
+</ul>
+<details class="gif">
+<summary>View Import Postman Collection</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-2_Import-PostmanCollection.gif" data-title="Import Lab Postman Collection" data-desc-position="top"><img alt="Import Lab Postman Collection" src="../images/2-3-2_Import-PostmanCollection.gif" width="600"></a>
+</figure><p></p>
+</details>
+<hr>
+<h4>Configure Postman Collection for sections rxp-3.3 through rxp-3.5</h4>
+
+<ul>
+<li>Click on the <mark>WX1-Lab:1451-<abbr title="Hypertext Transfer Protocol">HTTP</abbr>-Postman-Collection</mark> root folder</li>
+<li>Select Variables</li>
+<li>Add the following information for your codec in both the <code>Initial Value</code> and <code>Current Value</code> fields</li>
+<li>device_username</li>
+<li>device_password</li>
+<li>device_ipAddress</li>
+<li>Select Save (or one of the keyboard shortcuts for your computer)</li>
+<li><span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-s">S</kbd></span> for Windows</li>
+<li><span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-s">S</kbd></span> for Mac</li>
+</ul>
+<details class="gif">
+<summary>View Configure Postman Collection for sections rxp-3.3 through rxp-3.5</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-2_Configure-PostmanCollection.gif" data-title="Import Lab Postman Collection" data-desc-position="top"><img alt="Import Lab Postman Collection" src="../images/2-3-2_Configure-PostmanCollection.gif" width="600"></a>
+</figure><p></p>
+</details>
+<h2 id="executing-xcommands-rxp-33"><strong>Executing xCommands</strong> <sub>(rxp-3.3)</sub></h2>
+<div class="admonition abstract">
+<p class="admonition-title">Abstract</p>
+</div>
+<p>Throughout section rxp-3.3, you'll learn how to format and execute xCommands via <abbr title="Hypertext Transfer Protocol">HTTP</abbr> using Postman.</p>
+<p>The techniques outlined here will correspond to the methods needed for setting new xConfiguration Values in section rxp-3.4</p>
+<details class="lesson" open="open">
+<summary>Lesson: Execute an xCommand <sub>(rxp-3.3.1)</sub></summary>
+<div class="admonition info inline end">
+<p class="admonition-title"><abbr title="Extensible Markup Language">XML</abbr> Body Location</p>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-3_Execute-xCommand-BodyLocation.png" data-title="XML Body Location" data-desc-position="top"><img alt="XML Body Location" src="../images/2-3-3_Execute-xCommand-BodyLocation.png" width="400"></a>
+</figure><p></p>
+</div>
+<ul>
+<li>
+<p><strong>xAPI:</strong> xCommand Video Selfview Set</p>
+</li>
+<li>
+<p><strong>Task:</strong> Structure the xAPI command above into an <abbr title="Extensible Markup Language">XML</abbr> format then place this into the Body of the <mark>Execute an xCommand</mark> request in your Postman collection. Include the following Parameters and Values</p>
+<ul>
+<li>Mode: On</li>
+<li>FullScreenMode: On</li>
+<li>OnMonitorRole: First</li>
+</ul>
+</li>
+</ul>
+<p>Once the Postman Request has been updated, <mark>Save</mark> the request, select <mark>Send</mark> and review the Postman Terminal's response and observe any changes to your device</p>
+<hr>
+<details class="success">
+<summary>View properly formatted <abbr title="Extensible Markup Language">XML</abbr> and Successful Response</summary>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-3_Execute-xCommand-Success.png" data-title="Successful HTTP Response" data-desc-position="top"><img _="," align="right" alt="Successful HTTP Response" src="../images/2-3-3_Execute-xCommand-Success.png" width="600"></a></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Command&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Video&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Selfview&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Set&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Mode&gt;</span>On<span class="nt">&lt;/Mode&gt;</span>
+<span class="w">        </span><span class="nt">&lt;FullScreenMode&gt;</span>On<span class="nt">&lt;/FullScreenMode&gt;</span>
+<span class="w">        </span><span class="nt">&lt;OnMonitorRole&gt;</span>First<span class="nt">&lt;/OnMonitorRole&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Set&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Selfview&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Video&gt;</span>
+<span class="nt">&lt;/Command&gt;</span>
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Execute multiple xCommands in a single request <sub>(rxp-3.3.2)</sub></summary>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>You can structure your <abbr title="Extensible Markup Language">XML</abbr> to allow for multiple xAPI calls under a single Parent Path, in this case the Parent Path is xCommand</p>
+<p>So long as the paths you're running are under their appropriate Common Path Nodes, then they will be considered. Should those Common Path Nodes deviate, then you must structure the <abbr title="Extensible Markup Language">XML</abbr> to match</p>
+</div>
+<ul>
+<li>
+<p><strong>xAPI(s):</strong></p>
+<ul>
+<li><mark>xCommand</mark> Video Selfview Set</li>
+<li><mark>xCommand UserInterface</mark> WebView Display</li>
+<li><mark>xCommand UserInterface</mark> Message Rating Display</li>
+</ul>
+</li>
+<li>
+<p><strong>Task:</strong> <code>xCommand Video Selfview Set</code> and <code>xCommand UserInterface WebView Display</code> have already be set in your collection under their appropriate Common Node Path. We've highlighted the Common Node Paths above for you to see. Structure the <abbr title="Extensible Markup Language">XML</abbr> for <ins class="critic">xCommand UserInterface Message Rating Display</ins> and place it as the next xCommand in the <abbr title="Extensible Markup Language">XML</abbr> structure given to you. Include the following Parameters and Values</p>
+<ul>
+<li>Title: Rate this Site</li>
+<li>Text: From 0 to 5 stars, rate this Website</li>
+<li>Duration: 45</li>
+</ul>
+</li>
+</ul>
+<p>Once the Postman Request has been updated, <mark>Save</mark> the request, select <mark>Send</mark> and review the Postman Terminal's response and observe any changes to your device</p>
+<details class="success">
+<summary>View Successful <abbr title="On Screen Display">OSD</abbr> Output</summary>
+<p></p><figure markdown="span">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-3_Execute-xCommand-MultipleCommands-OSD.png" data-title="OSD Output" data-desc-position="top"><img alt="OSD Output" src="../images/2-3-3_Execute-xCommand-MultipleCommands-OSD.png" width="500"></a>
+  <figcaption>What to expect on your <abbr title="On Screen Display">OSD</abbr> on a successful request</figcaption>
+</figure><p></p>
+</details>
+<details class="success">
+<summary>View properly formatted <abbr title="Extensible Markup Language">XML</abbr> and Successful Response</summary>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-3_Execute-xCommand-MultipleCommands-Success.png" data-title="Successful HTTP Response" data-desc-position="top"><img _="," align="right" alt="Successful HTTP Response" src="../images/2-3-3_Execute-xCommand-MultipleCommands-Success.png" width="500"></a></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio"><input id="__tabbed_9_2" name="__tabbed_9" type="radio"><div class="tabbed-labels"><label for="__tabbed_9_1">Message Rating Display <abbr title="Extensible Markup Language">XML</abbr></label><label for="__tabbed_9_2">Full <abbr title="Extensible Markup Language">XML</abbr> body</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Command&gt;</span>
+<span class="w">  </span><span class="nt">&lt;UserInterface&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Message&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Rating&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Display&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Title&gt;</span>Rate<span class="w"> </span>this<span class="w"> </span>Site<span class="nt">&lt;/Title&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Text&gt;</span>From<span class="w"> </span>0<span class="w"> </span>to<span class="w"> </span>5<span class="w"> </span>stars,<span class="w"> </span>rate<span class="w"> </span>this<span class="w"> </span>Website<span class="nt">&lt;/Text&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Duration&gt;</span>45<span class="nt">&lt;/Duration&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/Display&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Rating&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Message&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/UserInterface&gt;</span>
+<span class="nt">&lt;/Command&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Command&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Video&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Selfview&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Set&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Mode&gt;</span>Off<span class="nt">&lt;/Mode&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Set&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Selfview&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Video&gt;</span>
+<span class="w">  </span><span class="nt">&lt;UserInterface&gt;</span>
+<span class="w">    </span><span class="nt">&lt;WebView&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Display&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Mode&gt;</span>Modal<span class="nt">&lt;/Mode&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Url&gt;</span>https://roomos.cisco.com<span class="nt">&lt;/Url&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Display&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/WebView&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- Message Rating Display Should Start Here --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Message&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Rating&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Display&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Title&gt;</span>Rate<span class="w"> </span>this<span class="w"> </span>Site<span class="nt">&lt;/Title&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Text&gt;</span>From<span class="w"> </span>0<span class="w"> </span>to<span class="w"> </span>5<span class="w"> </span>stars,<span class="w"> </span>rate<span class="w"> </span>this<span class="w"> </span>Website<span class="nt">&lt;/Text&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Duration&gt;</span>45<span class="nt">&lt;/Duration&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/Display&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Rating&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Message&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- Message Rating Display Should End Here --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/UserInterface&gt;</span>
+<span class="nt">&lt;/Command&gt;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Execute an xCommand with multiple arguments with the same name <sub>(rxp-3.3.3)</sub></summary>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>We can structure the <abbr title="Extensible Markup Language">XML</abbr> payload for <abbr title="Hypertext Transfer Protocol">HTTP</abbr> to include multiple parameters under the same name</p>
+<p>Simply duplicate the Parameter that's capable of being duplicated and add that into your <abbr title="Extensible Markup Language">XML</abbr> body. Be sure to include the Opening and Closing <abbr title="Extensible Markup Language">XML</abbr> tags for that parameter as well</p>
+</div>
+<ul>
+<li>
+<p><strong>xAPI(s):</strong></p>
+<ul>
+<li>xCommand UserInterface WebView Clear</li>
+<li>xCommand UserInterface Message Rating Clear</li>
+<li>xCommand Video Selfview Set</li>
+<li>xCommand Video Input SetMainVideoSource</li>
+</ul>
+</li>
+<li>
+<p><strong>Task:</strong> We'll be running multiple commands in conjunction to having multiple parameters in this lesson.</p>
+<ul>
+<li>To clean up from the previous lesson, we'll send an xCommand to clear by replacing the Display Tags for both with Clear and deleting any parameters they had<ul>
+<li><code>xCommand UserInterface WebView <del class="critic">Display</del><ins class="critic">Clear</ins></code></li>
+<li><code>xCommand UserInterface Message Rating <del class="critic">Display</del><ins class="critic">Clear</ins></code></li>
+</ul>
+</li>
+<li>Then we'll set selfview back on in Full Screen</li>
+<li>The above tasks will come preloaded in the Postman collection, your task is to structure the <abbr title="Extensible Markup Language">XML</abbr> for <ins class="critic">xCommand Video Input SetMainVideoSource</ins> and place it as the next xCommand in the <abbr title="Extensible Markup Language">XML</abbr> structure given to you and <strong>duplicate</strong> the <code>ConnectorId</code> parameter. Include the following Parameters and Values<ul>
+<li>ConnectorId: 1</li>
+<li>Layout: Prominent</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Once the Postman Request has been updated, <mark>Save</mark> the request, select <mark>Send</mark> and review the Postman Terminal's response and observe any changes to your device</p>
+<details class="success">
+<summary>View Successful <abbr title="On Screen Display">OSD</abbr> Output</summary>
+<p></p><figure markdown="span">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-3_Execute-xCommand-MultipleSameNameParameter-OSD.png" data-title="OSD Output" data-desc-position="top"><img alt="OSD Output" src="../images/2-3-3_Execute-xCommand-MultipleSameNameParameter-OSD.png" width="500"></a>
+  <figcaption>What to expect on your <abbr title="On Screen Display">OSD</abbr> on a successful request</figcaption>
+</figure><p></p>
+</details>
+<details class="success">
+<summary>View properly formatted <abbr title="Extensible Markup Language">XML</abbr> and Successful Response</summary>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-3_Execute-xCommand-MultipleSameNameParameter-Success.png" data-title="Successful HTTP Response" data-desc-position="top"><img _="," align="right" alt="Successful HTTP Response" src="../images/2-3-3_Execute-xCommand-MultipleSameNameParameter-Success.png" width="500"></a></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="10:2"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio"><input id="__tabbed_10_2" name="__tabbed_10" type="radio"><div class="tabbed-labels"><label for="__tabbed_10_1">Video Input SetMainVideoSource <abbr title="Extensible Markup Language">XML</abbr></label><label for="__tabbed_10_2">Full <abbr title="Extensible Markup Language">XML</abbr> body</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Command&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Video&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Input&gt;</span>
+<span class="w">      </span><span class="nt">&lt;SetMainVideoSource&gt;</span>
+<span class="w">        </span><span class="nt">&lt;ConnectorId&gt;</span>1<span class="nt">&lt;/ConnectorId&gt;</span>
+<span class="w">        </span><span class="cm">&lt;!-- Your Duplicate ConnectorId Parameter Should Start Here  --&gt;</span>
+<span class="w">        </span><span class="nt">&lt;ConnectorId&gt;</span>1<span class="nt">&lt;/ConnectorId&gt;</span>
+<span class="w">        </span><span class="cm">&lt;!-- Your Duplicate ConnectorId Parameter Should End Here  --&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Layout&gt;</span>Prominent<span class="nt">&lt;/Layout&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/SetMainVideoSource&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Input&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Video&gt;</span>
+<span class="nt">&lt;/Command&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Command&gt;</span>
+<span class="w">  </span><span class="nt">&lt;UserInterface&gt;</span>
+<span class="w">    </span><span class="nt">&lt;WebView&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Clear&gt;&lt;/Clear&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/WebView&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Message&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Rating&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Clear&gt;&lt;/Clear&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Rating&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Message&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/UserInterface&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Video&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Selfview&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Set&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Mode&gt;</span>On<span class="nt">&lt;/Mode&gt;</span>
+<span class="w">        </span><span class="nt">&lt;FullScreenMode&gt;</span>On<span class="nt">&lt;/FullScreenMode&gt;</span>
+<span class="w">        </span><span class="nt">&lt;OnMonitorRole&gt;</span>First<span class="nt">&lt;/OnMonitorRole&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Set&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Selfview&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Input&gt;</span>
+<span class="w">      </span><span class="nt">&lt;SetMainVideoSource&gt;</span>
+<span class="w">        </span><span class="nt">&lt;ConnectorId&gt;</span>1<span class="nt">&lt;/ConnectorId&gt;</span>
+<span class="w">        </span><span class="cm">&lt;!-- Your Duplicate ConnectorId Parameter Should Start Here  --&gt;</span>
+<span class="w">        </span><span class="nt">&lt;ConnectorId&gt;</span>1<span class="nt">&lt;/ConnectorId&gt;</span>
+<span class="w">        </span><span class="cm">&lt;!-- Your Duplicate ConnectorId Parameter Should End Here  --&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Layout&gt;</span>Prominent<span class="nt">&lt;/Layout&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/SetMainVideoSource&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Input&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Video&gt;</span>
+<span class="nt">&lt;/Command&gt;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Execute an xCommand with a multiline argument <sub>(rxp-3.3.4)</sub></summary>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Multiline Arguments can be placed into the body of the <abbr title="Extensible Markup Language">XML</abbr> as well. This specifically uses a <code>&lt;body&gt;</code> which isn't explicitly highlighted in the path of the API.</p>
+<p>The structure of a Multiline argument should look similar to the following</p>
+<div class="highlight"><span class="filename">Example XML Structure with Multiline Argument</span><pre><span></span><code><span class="nt">&lt;Parent&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Child&gt;</span>
+<span class="w">    </span><span class="nt">&lt;ChildParameter&gt;</span>Value<span class="nt">&lt;ChildParameter&gt;</span>
+<span class="w">    </span><span class="nt">&lt;body&gt;</span>[MY_MULTILINE_ARGUMENT]<span class="nt">&lt;/body&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Child&gt;</span>
+<span class="nt">&lt;Parent&gt;</span>
+</code></pre></div>
+</div>
+<ul>
+<li>
+<p><strong>xAPI(s):</strong></p>
+<ul>
+<li>xCommand Video Selfview Set</li>
+<li>xCommand Video Input SetMainVideoSource</li>
+<li>xCommand UserInterface Extensions Panel Save</li>
+</ul>
+</li>
+<li>
+<p><strong>Task:</strong> We'll be running multiple commands in conjunction to having a multiline argument.</p>
+<ul>
+<li>We'll start by correcting our Camera View from the previous lesson, which will come pre-loaded in the Postman Collection</li>
+<li>Your task is to structure the <abbr title="Extensible Markup Language">XML</abbr> for <ins class="critic">xCommand UserInterface Extensions Panel Save</ins> and place it as the next xCommand in the <abbr title="Extensible Markup Language">XML</abbr> structure given. Include the following Parameters and Values<ul>
+<li>PanelId: wx1_lab_multilineCommand</li>
+<li>body:
+    <div class="highlight"><span class="filename">Your &amp;lt;body&amp;gt; Value</span><pre><span></span><code><span class="nt">&lt;Extensions&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Panel&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Order&gt;</span>1<span class="nt">&lt;/Order&gt;</span>
+<span class="w">    </span><span class="nt">&lt;PanelId&gt;</span>wx1_lab_multilineCommand<span class="nt">&lt;/PanelId&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Location&gt;</span>HomeScreen<span class="nt">&lt;/Location&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Icon&gt;</span>Info<span class="nt">&lt;/Icon&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Color&gt;</span>#FF70CF<span class="nt">&lt;/Color&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Name&gt;</span>MultiLine<span class="w"> </span>Command<span class="w"> </span>[Section<span class="w"> </span>rxp-3.3]<span class="nt">&lt;/Name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;ActivityType&gt;</span>Custom<span class="nt">&lt;/ActivityType&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Panel&gt;</span>
+<span class="nt">&lt;/Extensions&gt;</span>
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Once the Postman Request has been updated, <mark>Save</mark> the request, select <mark>Send</mark> and review the Postman Terminal's response and observe any changes to your device</p>
+<details class="warning" open="open">
+<summary>You're Wrapping <abbr title="Extensible Markup Language">XML</abbr> around <abbr title="Extensible Markup Language">XML</abbr>!</summary>
+<p><strong>Note:</strong> Not all multiline arguments are in <abbr title="Extensible Markup Language">XML</abbr> format; for example, <ins class="critic">xCommand UserInterface Extensions Panel Save</ins> is. It’s important to remember that any data placed within a <code>&lt;body&gt;</code> tag should always be written as a <code>String</code>. If your integration automatically injects this information, additional processing may be necessary.</p>
+<p>The xAPI will have a hard time deciphering your Body's <abbr title="Extensible Markup Language">XML</abbr> value vs the xAPI <abbr title="Extensible Markup Language">XML</abbr> Payload</p>
+<p>You'll want to "Stringify" the <abbr title="Extensible Markup Language">XML</abbr> body by replacing all instances of <code>&lt;</code> characters with <ins class="critic">&amp;lt;</ins> and all instances of <code>&gt;</code> characters with <ins class="critic">&amp;gt;</ins> &gt;</p>
+<ul>
+<li>These aren't the only characters that are impacted, and that will largely depend on your <abbr title="Extensible Markup Language">XML</abbr> body value</li>
+</ul>
+<p>Luckily, you can use the <strong>Stringify <abbr title="Extensible Markup Language">XML</abbr> Body</strong> on the Tools Page to do this for you</p>
+<p><a class="md-button md-button--primary" href="../../../Resources/res_tools/" target="_blank">
+  Open <strong>Tools</strong> <i class="fa-solid fa-gear"></i> Page <i class="fa-solid fa-square-up-right"></i>
+</a></p>
+</details>
+<details class="success">
+<summary>View Successful <abbr title="On Screen Display">OSD</abbr> Output</summary>
+<p></p><figure markdown="span">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-3_Execute-xCommand-MultiLine-OSD.png" data-title="OSD Output" data-desc-position="top"><img alt="OSD Output" src="../images/2-3-3_Execute-xCommand-MultiLine-OSD.png" width="500"></a>
+  <figcaption>What to expect on your <abbr title="On Screen Display">OSD</abbr> on a successful request</figcaption>
+</figure><p></p>
+</details>
+<details class="success">
+<summary>View properly formatted <abbr title="Extensible Markup Language">XML</abbr> and Successful Response</summary>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-3_Execute-xCommand-MultiLine-Success.png" data-title="Successful HTTP Response" data-desc-position="top"><img _="," align="right" alt="Successful HTTP Response" src="../images/2-3-3_Execute-xCommand-MultiLine-Success.png" width="500"></a></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="11:2"><input checked="checked" id="__tabbed_11_1" name="__tabbed_11" type="radio"><input id="__tabbed_11_2" name="__tabbed_11" type="radio"><div class="tabbed-labels"><label for="__tabbed_11_1">UserInterface Extensions Panel Save <abbr title="Extensible Markup Language">XML</abbr></label><label for="__tabbed_11_2">Full <abbr title="Extensible Markup Language">XML</abbr> body</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Command&gt;</span>
+<span class="w">  </span><span class="nt">&lt;UserInterface&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Extensions&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Panel&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Save&gt;</span>
+<span class="w">          </span><span class="nt">&lt;PanelId&gt;</span>wx1_lab_multilineCommand<span class="nt">&lt;/PanelId&gt;</span>
+<span class="w">          </span><span class="nt">&lt;body&gt;</span><span class="ni">&amp;lt;</span>Extensions<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>Panel<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>Order<span class="ni">&amp;gt;</span>1<span class="ni">&amp;lt;</span>/Order<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>PanelId<span class="ni">&amp;gt;</span>wx1_lab_multilineCommand<span class="ni">&amp;lt;</span>/PanelId<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>Location<span class="ni">&amp;gt;</span>HomeScreen<span class="ni">&amp;lt;</span>/Location<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>Icon<span class="ni">&amp;gt;</span>Info<span class="ni">&amp;lt;</span>/Icon<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>Color<span class="ni">&amp;gt;</span>#FF70CF<span class="ni">&amp;lt;</span>/Color<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>Name<span class="ni">&amp;gt;</span>MultiLine<span class="w"> </span>Command<span class="w"> </span>[Section<span class="w"> </span>rxp-3.3]<span class="ni">&amp;lt;</span>/Name<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>ActivityType<span class="ni">&amp;gt;</span>Custom<span class="ni">&amp;lt;</span>/ActivityType<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>/Panel<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>/Extensions<span class="ni">&amp;gt;</span>
+<span class="w">          </span><span class="nt">&lt;/body&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/Save&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Panel&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Extensions&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/UserInterface&gt;</span>
+<span class="nt">&lt;/Command&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Command&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Video&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Selfview&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Set&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Mode&gt;</span>Off<span class="nt">&lt;/Mode&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Set&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Selfview&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Input&gt;</span>
+<span class="w">      </span><span class="nt">&lt;SetMainVideoSource&gt;</span>
+<span class="w">        </span><span class="nt">&lt;ConnectorId&gt;</span>1<span class="nt">&lt;/ConnectorId&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Layout&gt;</span>Equal<span class="nt">&lt;/Layout&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/SetMainVideoSource&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Input&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Video&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!-- Your UserInterface Extensions Panel Save XML Should Start Here  --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;UserInterface&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Extensions&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Panel&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Save&gt;</span>
+<span class="w">          </span><span class="nt">&lt;PanelId&gt;</span>wx1_lab_multilineCommand<span class="nt">&lt;/PanelId&gt;</span>
+<span class="w">          </span><span class="nt">&lt;body&gt;</span><span class="ni">&amp;lt;</span>Extensions<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>Panel<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>Order<span class="ni">&amp;gt;</span>1<span class="ni">&amp;lt;</span>/Order<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>PanelId<span class="ni">&amp;gt;</span>wx1_lab_multilineCommand<span class="ni">&amp;lt;</span>/PanelId<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>Location<span class="ni">&amp;gt;</span>HomeScreen<span class="ni">&amp;lt;</span>/Location<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>Icon<span class="ni">&amp;gt;</span>Info<span class="ni">&amp;lt;</span>/Icon<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>Color<span class="ni">&amp;gt;</span>#FF70CF<span class="ni">&amp;lt;</span>/Color<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>Name<span class="ni">&amp;gt;</span>MultiLine<span class="w"> </span>Command<span class="w"> </span>[Section<span class="w"> </span>rxp-3.3]<span class="ni">&amp;lt;</span>/Name<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>ActivityType<span class="ni">&amp;gt;</span>Custom<span class="ni">&amp;lt;</span>/ActivityType<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>/Panel<span class="ni">&amp;gt;</span><span class="w"> </span><span class="ni">&amp;lt;</span>/Extensions<span class="ni">&amp;gt;</span>
+<span class="w">          </span><span class="nt">&lt;/body&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/Save&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Panel&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Extensions&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/UserInterface&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!-- Your UserInterface Extensions Panel Save XML Should Start Here  --&gt;</span>
+<span class="nt">&lt;/Command&gt;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Execute an xCommand which generates data and responds <sub>(rxp-3.3.5)</sub></summary>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Some commands will generate data and output a response of that data. All commands will respond with an "OK" or "Error" but other can provide data.</p>
+<p>Whereas we just made a <abbr title="User Interface">UI</abbr> extension with the API, we can now pull a list of our custom extensions using the API</p>
+</div>
+<ul>
+<li>
+<p><strong>xAPI:</strong> xCommand UserInterface Extensions List</p>
+</li>
+<li>
+<p><strong>Task:</strong> Structure the xAPI command above into an <abbr title="Extensible Markup Language">XML</abbr> format then place this into the Body of the <mark>Execute an xCommand which generates data and responds</mark> request in your Postman collection. Include the following Parameters and Values</p>
+<ul>
+<li>ActivityType: Custom</li>
+</ul>
+</li>
+</ul>
+<p>Once the Postman Request has been updated, <mark>Save</mark> the request, select <mark>Send</mark> and review the Postman Terminal's response and observe any changes to your device</p>
+<details class="success">
+<summary>View properly formatted <abbr title="Extensible Markup Language">XML</abbr> and Successful Response</summary>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-3_Execute-xCommandWithResponse-Success.png" data-title="Successful HTTP Response" data-desc-position="top"><img _="," align="right" alt="Successful HTTP Response" src="../images/2-3-3_Execute-xCommandWithResponse-Success.png" width="700"></a></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Command&gt;</span>
+<span class="w">  </span><span class="nt">&lt;UserInterface&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Extensions&gt;</span>
+<span class="w">      </span><span class="nt">&lt;List&gt;</span>
+<span class="w">        </span><span class="nt">&lt;ActivityType&gt;</span>Custom<span class="nt">&lt;/ActivityType&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/List&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Extensions&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/UserInterface&gt;</span>
+<span class="nt">&lt;/Command&gt;</span>
+</code></pre></div>
+</details>
+</details>
+<!-- ??? challenge "Challenge: Open a Text Input Prompt!"
+
+    - Duplicate the ==Execute an xCommand== request in Postman
+    - Replace the body of this request with a new body that implements <a href="https://roomos.cisco.com/xapi/Command.UserInterface.Message.TextInput.Display/" target="_blank">xCommand UserInterface Message TextInput Display</a>
+    - Set the Following Parameters [Keep them Safe for Work :pray:]
+        - Title
+        - Text
+        - Duration: [Set any value between 15 and 45]
+    - Save and Execute
+    - Look at your Touch Controller, it should have a Text Input field :smiley:
+
+    ??? success "View a Successful Touch Controller ScreenShot"
+
+        <figure markdown>
+          ![Successful Text Input Pop Up](./images/2-3-3_Challenge-TextInput.png){ width="800" }
+        </figure>
+
+        <a class="md-button md-button--primary" href="../challengeAnswers/" target="_blank" >
+          Giving Up? Check out the Challenge Answers Page <i class="fa-solid fa-square-up-right"></i>
+        </a> -->
+
+<h2 id="setting-and-getting-xconfigurations-rxp-34"><strong>Setting and Getting xConfigurations</strong> <sub>(rxp-3.4)</sub></h2>
+<div class="admonition abstract">
+<p class="admonition-title">Abstract</p>
+</div>
+<p>Throughout section rxp-3.4, you'll continue to learn how to format <abbr title="Extensible Markup Language">XML</abbr> payloads as you work to set new xConfigurations against the codec</p>
+<p>Unlike xCommands, you can then pull back the value of xConfigurations using a Get Request.</p>
+<p>The techniques outlined here will correspond to the methods needed for Getting xStatus Values in section rxp-3.5</p>
+<details class="lesson" open="open">
+<summary>Lesson: Set a new xConfiguration Value <sub>(rxp-3.4.1)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI:</strong> xConfiguration Audio DefaultVolume</p>
+</li>
+<li>
+<p><strong>Task:</strong> Structure the xAPI command above into an <abbr title="Extensible Markup Language">XML</abbr> format then place this into the Body of the <mark>Set a new xConfiguration Value</mark> request in your Postman collection. Set DefaultVolume to <code>75</code></p>
+</li>
+</ul>
+<details class="success">
+<summary>View properly formatted <abbr title="Extensible Markup Language">XML</abbr> and Successful Response</summary>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-4_Set-xConfig_Single-Success.png" data-title="Successful HTTP Response" data-desc-position="top"><img _="," align="right" alt="Successful HTTP Response" src="../images/2-3-4_Set-xConfig_Single-Success.png" width="700"></a></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Configuration&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Audio&gt;</span>
+<span class="w">    </span><span class="nt">&lt;DefaultVolume&gt;</span>75<span class="nt">&lt;/DefaultVolume&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Audio&gt;</span>
+<span class="nt">&lt;/Configuration&gt;</span>
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Set multiple xConfiguration Values in a single Request <sub>(rxp-3.4.2)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI(s):</strong></p>
+<ul>
+<li>xConfiguration Audio DefaultVolume</li>
+<li>xConfiguration SystemUnit Name</li>
+</ul>
+</li>
+<li>
+<p><strong>Task:</strong></p>
+<ul>
+<li>We'll set the DefaultVolume back to 50, which will be preloaded into the Postman collection</li>
+<li>Your task is to structure the <abbr title="Extensible Markup Language">XML</abbr> for <ins class="critic">xConfiguration SystemUnit Name</ins> and place it as the next xCommand in the <abbr title="Extensible Markup Language">XML</abbr> structure given. Set the Name to <code>Codec_X</code> where X is the # of your workstation pod or your name</li>
+</ul>
+</li>
+</ul>
+<details class="success">
+<summary>View properly formatted <abbr title="Extensible Markup Language">XML</abbr> and Successful Response</summary>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="./images/2-3-4_Set-xConfig_Multi-Success.png" data-title="Successful HTTP Response" data-desc-position="top"><img _="," align="right" alt="Successful HTTP Response" src="./images/2-3-4_Set-xConfig_Multi-Success.png" width="500"></a></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="12:2"><input checked="checked" id="__tabbed_12_1" name="__tabbed_12" type="radio"><input id="__tabbed_12_2" name="__tabbed_12" type="radio"><div class="tabbed-labels"><label for="__tabbed_12_1">SystemUnit Name <abbr title="Extensible Markup Language">XML</abbr></label><label for="__tabbed_12_2">Full <abbr title="Extensible Markup Language">XML</abbr> Body</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Configuration&gt;</span>
+<span class="w">  </span><span class="nt">&lt;SystemUnit&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Name&gt;</span>Pod_X<span class="nt">&lt;/Name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/SystemUnit&gt;</span>
+<span class="nt">&lt;/Configuration&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Configuration&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Audio&gt;</span>
+<span class="w">    </span><span class="nt">&lt;DefaultVolume&gt;</span>50<span class="nt">&lt;/DefaultVolume&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Audio&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!-- SystemUnit Name Should Start Here --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;SystemUnit&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Name&gt;</span>Pod_X<span class="nt">&lt;/Name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/SystemUnit&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!-- SystemUnit Name Should End Here --&gt;</span>
+<span class="nt">&lt;/Configuration&gt;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Getting an xConfiguration Value <sub>(rxp-3.4.3)</sub></summary>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Up until this point, you've been making Post requests with an xAPI path provided as a part of the Post body written in <abbr title="Extensible Markup Language">XML</abbr> format</p>
+<p>Whereas, we're pivoting to a Get rest, the format of the request changes. We no longer need a body, but we need to define the xAPI path as apart of the <abbr title="Uniform Resource Locator">URL</abbr> under it's location tag</p>
+<p>Refer to section rxp-3.2 for a refresher on this syntax</p>
+</div>
+<ul>
+<li>
+<p><strong>xAPI:</strong> xConfiguration Audio DefaultVolume</p>
+</li>
+<li>
+<p>Structure the xAPI command above into the <abbr title="Uniform Resource Locator">URL</abbr> under the <mark>Getting an xConfiguration Value</mark> request in your Postman collection. This path should rest behind the <mark>?location</mark> and separated by a <code>/</code></p>
+</li>
+</ul>
+<details class="success">
+<summary>View properly formatted <abbr title="Uniform Resource Locator">URL</abbr> and Successful Response</summary>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-4_Get-xConfig_Single-Success.png" data-title="Successful HTTP Response" data-desc-position="top"><img _="," align="right" alt="Successful HTTP Response" src="../images/2-3-4_Get-xConfig_Single-Success.png" width="500"></a></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="13:1"><input checked="checked" id="__tabbed_13_1" name="__tabbed_13" type="radio"><div class="tabbed-labels"><label for="__tabbed_13_1">Audio DefaultVolume <abbr title="Uniform Resource Locator">URL</abbr></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>https://{{ device_ipAddress }}/getxml?location=<mark>Configuration/Audio/DefaultVolume</mark></p>
+</div>
+</div>
+</div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Get multiple xConfiguration Values under a Common Node <sub>(rxp-3.4.4)</sub></summary>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>You can pull more information if you move up to a Common Node</p>
+<p>By dropping <code>DefaultVolume</code> from xConfiguration Audio <del class="critic">DefaultVolume</del> we can grab all the Configuration Setting under the Audio Branch from the codec</p>
+</div>
+<ul>
+<li>
+<p><strong>xAPI:</strong> xConfiguration Audio</p>
+</li>
+<li>
+<p>Structure the xAPI command above into the <abbr title="Uniform Resource Locator">URL</abbr> under the <mark>Getting multiple xConfiguration Values under a Common Node</mark> request in your Postman collection.</p>
+</li>
+</ul>
+<details class="success">
+<summary>View properly formatted <abbr title="Uniform Resource Locator">URL</abbr> and Successful Response</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="14:1"><input checked="checked" id="__tabbed_14_1" name="__tabbed_14" type="radio"><div class="tabbed-labels"><label for="__tabbed_14_1">Audio DefaultVolume <abbr title="Uniform Resource Locator">URL</abbr></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>https://{{ device_ipAddress }}/getxml?location=<mark>Configuration/Audio</mark></p>
+</div>
+</div>
+</div>
+<details class="info">
+<summary>View Successful <abbr title="Hypertext Transfer Protocol">HTTP</abbr> Response</summary>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<span class="nt">&lt;Configuration</span><span class="w"> </span><span class="na">product=</span><span class="s">"Cisco Codec"</span><span class="w"> </span><span class="na">version=</span><span class="s">"ce11.20.1.7.913a6c7c769"</span><span class="w"> </span><span class="na">apiVersion=</span><span class="s">"4"</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Audio&gt;</span>
+<span class="w">    </span><span class="nt">&lt;DefaultVolume</span><span class="w"> </span><span class="na">valueSpaceRef=</span><span class="s">"/Valuespace/INT_0_100"</span><span class="nt">&gt;</span>75<span class="nt">&lt;/DefaultVolume&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Ethernet&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Encryption</span><span class="w"> </span><span class="na">valueSpaceRef=</span><span class="s">"/Valuespace/TTPAR_RequiredOptional"</span><span class="nt">&gt;</span>Required<span class="nt">&lt;/Encryption&gt;</span>
+<span class="w">      </span><span class="nt">&lt;SAPDiscovery&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Address</span><span class="w"> </span><span class="na">valueSpaceRef=</span><span class="s">"/Valuespace/STR_0_64_IPv4AdminMcast"</span><span class="nt">&gt;</span>239.255.255.255<span class="nt">&lt;/Address&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Mode</span><span class="w"> </span><span class="na">valueSpaceRef=</span><span class="s">"/Valuespace/TTPAR_OnOff"</span><span class="nt">&gt;</span>Off<span class="nt">&lt;/Mode&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/SAPDiscovery&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Ethernet&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- And the List Goes On... --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Audio&gt;</span>
+<span class="nt">&lt;/Configuration&gt;</span>
+</code></pre></div>
+</details>
+</details>
+</details>
+<details class="curious">
+<summary><img alt="🤔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f914.svg" title=":thinking:"> What about Subscribing to an xConfiguration?</summary>
+<p>Subscriptions via <abbr title="Hypertext Transfer Protocol">HTTP</abbr> are possible, but require a process outside of using <abbr title="Hypertext Transfer Protocol">HTTP</abbr> Post/Get commands. We'll need to leverage the HTTPFeedback feature of the codec and a tool that can receive a WebHook</p>
+<p>So we'll save HTTPFeedback for the end of section rxp-3 and handle all <abbr title="Hypertext Transfer Protocol">HTTP</abbr> based subscriptions there</p>
+</details>
+<h2 id="getting-xstatuses-rxp-35"><strong>Getting xStatuses</strong> <sub>(rxp-3.5)</sub></h2>
+<details class="lesson" open="open">
+<summary>Lesson: Getting an xStatus Value <sub>(rxp-3.5.1)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI:</strong> xStatus Audio Volume</p>
+</li>
+<li>
+<p>Structure the xAPI command above into the <abbr title="Uniform Resource Locator">URL</abbr> under the <mark>Getting an xStatus</mark> request in your Postman collection.</p>
+</li>
+</ul>
+<details class="success">
+<summary>View properly formatted <abbr title="Uniform Resource Locator">URL</abbr> and Successful Response</summary>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-5_Get-xStatus_Single-Success.png" data-title="Successful HTTP Response" data-desc-position="top"><img _="," align="right" alt="Successful HTTP Response" src="../images/2-3-5_Get-xStatus_Single-Success.png" width="500"></a></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="15:1"><input checked="checked" id="__tabbed_15_1" name="__tabbed_15" type="radio"><div class="tabbed-labels"><label for="__tabbed_15_1">Audio DefaultVolume <abbr title="Uniform Resource Locator">URL</abbr></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>https://{{ device_ipAddress }}/getxml?location=<mark>Status/Audio/Volume</mark></p>
+</div>
+</div>
+</div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Get multiple xStatus Values under a Common Node <sub>(rxp-3.5.2)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI:</strong> xStatus Audio</p>
+</li>
+<li>
+<p>Structure the xAPI command above into the <abbr title="Uniform Resource Locator">URL</abbr> under the <mark>Getting multiple xStatus Values under a Common Node</mark> request in your Postman collection.</p>
+</li>
+</ul>
+<details class="success">
+<summary>View properly formatted <abbr title="Uniform Resource Locator">URL</abbr> and Successful Response</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="16:1"><input checked="checked" id="__tabbed_16_1" name="__tabbed_16" type="radio"><div class="tabbed-labels"><label for="__tabbed_16_1">Audio DefaultVolume <abbr title="Uniform Resource Locator">URL</abbr></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>https://{{ device_ipAddress }}/getxml?location=<mark>Status/Audio</mark></p>
+</div>
+</div>
+</div>
+<details class="info">
+<summary>View Successful <abbr title="Hypertext Transfer Protocol">HTTP</abbr> Response</summary>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<span class="nt">&lt;Status</span><span class="w"> </span><span class="na">product=</span><span class="s">"Cisco Codec"</span><span class="w"> </span><span class="na">version=</span><span class="s">"ce11.20.1.7.913a6c7c769"</span><span class="w"> </span><span class="na">apiVersion=</span><span class="s">"4"</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Audio&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Devices&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Bluetooth&gt;</span>
+<span class="w">        </span><span class="nt">&lt;ActiveProfile&gt;</span>None<span class="nt">&lt;/ActiveProfile&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Bluetooth&gt;</span>
+<span class="w">      </span><span class="nt">&lt;HandsetUSB&gt;</span>
+<span class="w">        </span><span class="nt">&lt;ConnectionStatus&gt;</span>NotConnected<span class="nt">&lt;/ConnectionStatus&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Cradle&gt;</span>OnHook<span class="nt">&lt;/Cradle&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/HandsetUSB&gt;</span>
+<span class="w">      </span><span class="nt">&lt;HeadsetUSB&gt;</span>
+<span class="w">        </span><span class="nt">&lt;ConnectionStatus&gt;</span>NotConnected<span class="nt">&lt;/ConnectionStatus&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Description&gt;&lt;/Description&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Manufacturer&gt;&lt;/Manufacturer&gt;</span>
+<span class="w">      </span><span class="cm">&lt;!-- And the List Goes On... --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Audio&gt;</span>
+<span class="nt">&lt;/Status&gt;</span>
+</code></pre></div>
+</details>
+</details>
+</details>
+<h2 id="using-webhooks-to-subscribe-to-xconfigurations-xstatuses-and-xevents-rxp-36"><strong>Using WebHooks to subscribe to xConfigurations, xStatuses and xEvents</strong> <sub>(rxp-3.6)</sub></h2>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Your codec has a limit of 4 HTTPFeedback Slots with up to 15 xAPI paths expressions in the same command</p>
+<details class="tip">
+<summary>xCommand References for Section: rxp-3.6</summary>
+<div class="grid cards" markdown="">
+<ul>
+<li>
+<p><i class="fa-solid fa-terminal"> </i> <strong>xCommand HttpFeedback Register</strong></p>
+<hr>
+<p>Register the device to an <abbr title="Hypertext Transfer Protocol">HTTP</abbr>(S) server to return <abbr title="Extensible Markup Language">XML</abbr> feedback over <abbr title="Hypertext Transfer Protocol">HTTP</abbr>(S) to specific URLs.</p>
+<hr>
+<p>Parameters:</p>
+<p></p><table>
+    <tbody><tr>
+        <td>ServerUrl <mark>[Required]</mark> </td>
+        <td>FeedbackSlot <mark>[Required]</mark> </td>
+    </tr>
+    <tr>
+        <td>Expression</td>
+        <td>Format</td>
+    </tr>
+  </tbody></table><p></p>
+<p><a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpFeedback.Register" target="_blank">
+  Reference for <strong>xCommand HttpFeedback Register</strong> <i class="fa-solid fa-square-up-right"></i>
+</a></p>
+</li>
+<li>
+<p><i class="fa-solid fa-terminal"></i> <strong>xCommand HttpFeedback Deregister</strong></p>
+<hr>
+<p>Deregister the <abbr title="Hypertext Transfer Protocol">HTTP</abbr> feedback over <abbr title="Hypertext Transfer Protocol">HTTP</abbr>(S).</p>
+<hr>
+<p>Parameters:</p>
+<p></p><table>
+    <tbody><tr>
+        <td>FeedbackSlot <mark>[Required]</mark> </td>
+    </tr>
+  </tbody></table><p></p>
+<p><a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpFeedback.Deregister" target="_blank">
+  Reference for <strong>xCommand HttpFeedback Deregister</strong> <i class="fa-solid fa-square-up-right"></i>
+</a></p>
+</li>
+<li>
+<p><i class="fa-solid fa-terminal"></i> <strong>xCommand HttpFeedback Enable</strong></p>
+<hr>
+<p>Re-enables a previously registered feedback slot after it has failed and become deactivated.</p>
+<hr>
+<p>Parameters:</p>
+<p></p><table>
+    <tbody><tr>
+        <td>FeedbackSlot <mark>[Required]</mark> </td>
+    </tr>
+  </tbody></table><p></p>
+<p><a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpFeedback.Enable" target="_blank">
+  Reference for <strong>xCommand HttpFeedback Enable</strong> <i class="fa-solid fa-square-up-right"></i>
+</a></p>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<details class="gif" open="open">
+<summary>Locate and Configure your Unique <abbr title="Uniform Resource Locator">URL</abbr> from Webhook.Site</summary>
+<ul>
+<li>Go to <a href="https://webhook.site" target="_blank">https://webhook.site</a></li>
+<li>Copy your Unique <abbr title="Uniform Resource Locator">URL</abbr></li>
+<li>Open Postman<ul>
+<li>Click on the <mark>WX1-Lab:1451-<abbr title="Hypertext Transfer Protocol">HTTP</abbr>-Postman-Collection</mark> root folder</li>
+<li>Select Variables</li>
+<li>Pase your unique <abbr title="Uniform Resource Locator">URL</abbr> into <code>Initial Value</code> and <code>Current Value</code> fields for <mark>WebhookSite_Unique_Url</mark></li>
+<li>Select Save (or one of the keyboard shortcuts for your computer)<ul>
+<li><span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-s">S</kbd></span> for Windows</li>
+<li><span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-s">S</kbd></span> for Mac</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-6_ConfigureWebHookPostman.gif" data-title="Locate and Configure your Unique URL from Webhook.Site" data-desc-position="top"><img alt="Locate and Configure your Unique URL from Webhook.Site" src="../images/2-3-6_ConfigureWebHookPostman.gif" width="600"></a>
+</figure><p></p>
+</details>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>For all Webhook Examples below, we'll need to register HTTPFeedback slot by first running</p>
+<p><code>xCommand HTTPFeedback Register</code></p>
+<p>These have been preformatted for you in the Postman collection</p>
+<details class="question">
+<summary>View Example WebHook.site output</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-3-6_WebHookSite_Output.png" data-title="Webhook.Site Output Example" data-desc-position="top"><img alt="Webhook.Site Output Example" src="../images/2-3-6_WebHookSite_Output.png" width="600"></a>
+</figure><p></p>
+</details>
+</div>
+<details class="lesson">
+<summary>Lesson: Subscribe to the full xConfiguration Branch <sub>(rxp-3.6.1)</sub></summary>
+<ul>
+<li><strong>Task:</strong><ul>
+<li>In your Postman Collection under <abbr title="Hypertext Transfer Protocol">HTTP</abbr> &gt; Section: (rxp-3.6)</li>
+<li>Select the <mark>Subscribe to the full xConfiguration Branch</mark> request</li>
+<li>View how the body is Structured in the <abbr title="Extensible Markup Language">XML</abbr> body</li>
+<li>Select Send</li>
+<li>Press the <code>Subscription Assistant Button</code> on your Touch Interface<ul>
+<li>Under the xConfigurations Page, press any of the buttons on this page</li>
+<li>Observe your <ins class="critic">Webhook.Site Terminal</ins> output, those responses you saw in the previous lesson should have stopped outputting in your <ins class="critic">Webhook.Site Terminal</ins><ul>
+<li><mark>Optional</mark>: Press those buttons and switches a few times to see more changes come in</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<details class="lesson">
+<summary>Lesson: Subscribe to the full xStatus Branch <sub>(rxp-3.6.2)</sub></summary>
+<ul>
+<li><strong>Task:</strong><ul>
+<li>In your Postman Collection under <abbr title="Hypertext Transfer Protocol">HTTP</abbr> &gt; Section: rxp-3.6</li>
+<li>Select the <mark>Subscribe to the full xStatus Branch</mark> request</li>
+<li>View how the body is Structured in the <abbr title="Extensible Markup Language">XML</abbr> body</li>
+<li>Then select Send and Monitor the output on the Webhook.Site terminal<ul>
+<li>Your device will forward an event in the status branch soon</li>
+</ul>
+</li>
+<li>Press the <code>Subscription Assistant Button</code> on your Touch Interface<ul>
+<li>Under the xStatuses Page, press any of the buttons on this page</li>
+<li>Observe your <ins class="critic">Webhook.Site Terminal</ins> output, those responses you saw in the previous lesson should have stopped outputting in your <ins class="critic">Webhook.Site Terminal</ins></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<details class="lesson">
+<summary>Lesson: Subscribe to the full xEvent Branch <sub>(rxp-3.6.3)</sub></summary>
+<ul>
+<li><strong>Task:</strong><ul>
+<li>In your Postman Collection under <abbr title="Hypertext Transfer Protocol">HTTP</abbr> &gt; Section: (rxp-3.6)</li>
+<li>Select the <mark>Subscribe to the full xEvent Branch</mark> request</li>
+<li>View how the body is Structured in the <abbr title="Extensible Markup Language">XML</abbr> body</li>
+<li>Then select Send and Monitor the output on the Webhook.Site terminal<ul>
+<li>Your device will forward an event in the event branch soon</li>
+</ul>
+</li>
+<li>Press the <code>Subscription Assistant Button</code> on your Touch Interface<ul>
+<li>Under the xEvents Page, press any of the buttons on this page</li>
+<li>Observe your <ins class="critic">Webhook.Site Terminal</ins> output, those responses you saw in the previous lesson should have stopped outputting in your <ins class="critic">Webhook.Site Terminal</ins></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<details class="lesson">
+<summary>Lesson: Subscribe to Specific Expressions on any Branch <sub>(rxp-3.6.4)</sub></summary>
+<ul>
+<li><strong>Task:</strong><ul>
+<li>In your Postman Collection under <abbr title="Hypertext Transfer Protocol">HTTP</abbr> &gt; Section: (rxp-3.6)</li>
+<li>Select the <mark>Subscribe to Specific Expressions on any Branch</mark> request</li>
+<li>View how the body is Structured in the <abbr title="Extensible Markup Language">XML</abbr> body<ul>
+<li>Take Note, we've changed our Expression Parameter</li>
+<li>Rather than subscribing to All States, we instead narrow down what we're interested in</li>
+<li>For each expression we want to listen too, we will declare a new Expression Parameter</li>
+<li>We can have up to 15 Expressions defined in a single feedback slot</li>
+</ul>
+</li>
+<li>Then select Send and Monitor the output on the Webhook.Site terminal<ul>
+<li>You will need to interact with the system Volume and press the MultiLine Command [Section rxp-3.3] Panel to see events pour into the WebHook.site terminal</li>
+</ul>
+</li>
+<li>Press the <code>Subscription Assistant Button</code> on your Touch Interface<ul>
+<li>Clicking on the <code>Subscription Assistant Button</code> will fire a Panel Event</li>
+<li>Under the xStatuses, move the <mark>Adjust Volume</mark> slider to generate events<ul>
+<li>Other buttons under xStatus won't take any effect</li>
+</ul>
+</li>
+<li>Under the xEvents Page, press any of the buttons on this page</li>
+<li>Observe your <ins class="critic">Webhook.Site Terminal</ins> output, those responses you saw in the previous lesson should have stopped outputting in your <ins class="critic">Webhook.Site Terminal</ins></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<h2 id="section-rxp-3-cleanup-rxp-37"><strong>Section rxp-3 Cleanup</strong> <sub>(rxp-3).7</sub></h2>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface</li>
+<li>Under the <hl_3>Section Cleanup</hl_3> Page, select the <hl_0>Run Section Cleanup?</hl_0> button</li>
+<li>Select <hl_7>Yes, Run the Cleanup Script</hl_7></li>
+</ul>
+<p></p><figure markdown="span">
+    <!-- docs/Main-Lab/RoomOS/rxp_xapi/ -->
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/SubscriptionAssitantMacro-ConfirmCleanup.png" data-title="Section cleanup" data-desc-position="top"><img alt="Section cleanup" src="../images/SubscriptionAssitantMacro-ConfirmCleanup.png" width="400"></a>
+  <figcaption>Section Cleanup Confirmation</figcaption>
+</figure><p></p>
+<p>This will reverse the changes we've made to the endpoint, and leave us ready for the next section</p>
+<details class="question">
+<summary>You can run the cleanup via the terminal as well</summary>
+<p>Copy the contents below into your terminal window and run them all at once</p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback<span class="w"> </span>DeregisterAll
+xCommand<span class="w"> </span>HttpFeedback<span class="w"> </span>Deregister<span class="w"> </span>FeedbackSlot:<span class="w"> </span><span class="m">1</span>
+xCommand<span class="w"> </span>HttpFeedback<span class="w"> </span>Deregister<span class="w"> </span>FeedbackSlot:<span class="w"> </span><span class="m">2</span>
+xCommand<span class="w"> </span>HttpFeedback<span class="w"> </span>Deregister<span class="w"> </span>FeedbackSlot:<span class="w"> </span><span class="m">3</span>
+xCommand<span class="w"> </span>HttpFeedback<span class="w"> </span>Deregister<span class="w"> </span>FeedbackSlot:<span class="w"> </span><span class="m">4</span>
+xConfiguration<span class="w"> </span>Audio<span class="w"> </span>DefaultVolume:<span class="w"> </span><span class="m">50</span>
+xCommand<span class="w"> </span>UserInterface<span class="w"> </span>Extensions<span class="w"> </span>Panel<span class="w"> </span>Remove<span class="w"> </span>PanelId:<span class="w"> </span>wx1_lab_multilineCommand
+xCommand<span class="w"> </span>Video<span class="w"> </span>SelfView<span class="w"> </span>Set<span class="w"> </span>Mode:<span class="w"> </span>Off<span class="w"> </span>FullscreenMode:<span class="w"> </span>Off
+xCommand<span class="w"> </span>Video<span class="w"> </span>Input<span class="w"> </span>SetMainVideoSource<span class="w"> </span>ConnectorId:<span class="w"> </span><span class="m">1</span>
+xCommand<span class="w"> </span>Audio<span class="w"> </span>Volume<span class="w"> </span>SetToDefault<span class="w"> </span>Device:<span class="w"> </span>Internal
+</code></pre></div>
+</details>
+<p>Feel free to close your Terminal Window</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../rxp_xapi_ssh/" class="md-footer__link md-footer__link--prev" aria-label="Previous: SSH &lt;sup&gt;&lt;sup&gt;rxp-1&lt;/sup&gt;&lt;/sup&gt;">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                SSH <sup><sup>rxp-1</sup></sup>
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../rxp_xapi_macros/" class="md-footer__link md-footer__link--next" aria-label="Next: Macros &lt;sup&gt;&lt;sup&gt;rxp-6&lt;/sup&gt;&lt;/sup&gt;">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Macros <sup><sup>rxp-6</sup></sup>
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Cisco
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.indexes", "navigation.instant", "navigation.top", "navigation.footer", "search.suggest", "content.code.copy", "toc.integrate", "content.tooltips", "content.footnote.tooltips"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../../template_assets/js/newLoad.js"></script>
+      
+        <script src="../../../../template_assets/js/setInfo.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": false, "openEffect": "fade", "closeEffect": "fade", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

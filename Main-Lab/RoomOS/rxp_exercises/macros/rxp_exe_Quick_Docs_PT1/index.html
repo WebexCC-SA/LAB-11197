@@ -1,0 +1,3470 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="LAB-11197: Deep-dive into Cisco RoomOS xAPIs">
+      
+      
+        <meta name="author" content="Bobby McGonigle, Christopher Norman">
+      
+      
+      
+        <link rel="prev" href="../../rxp_exe_intro/">
+      
+      
+        <link rel="next" href="../rxp_exe_Quick_Docs_PT2/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../template_assets/webex75.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Part 1 - Start Simple rxe-m1 - LAB-11197: Deep-dive into Cisco RoomOS xAPIs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../../../../stylesheets/customTextHighlight.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#quick-docs-macro-exercise-part-1-start-simple-section-rxe-m1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" class="md-header__button md-logo" aria-label="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" data-md-component="logo">
+      
+  <img src="../../../../../template_assets/webexLogo91.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LAB-11197: Deep-dive into Cisco RoomOS xAPIs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part 1 - Start Simple <sup><sup>rxe-m1</sup></sup>
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="indigo" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home&nbsp;<i class="fa-solid fa-house" style="color:#B197FC;"></i>
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../Setup/stp_intro/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Lab Setup&nbsp;<i class="fa-solid fa-gear"></i>
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../rxp_intro/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  RoomOS xAPI &amp; UserInterfaces&nbsp;<i class="fa-solid fa-video" style="color: #428bff;"></i>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../Deployment/dep_intro/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Deployment&nbsp;<i class="fa-solid fa-cloud-arrow-up" style="color: #ff0000;"></i>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../Resources/res_tools/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tools&nbsp;<i class="fa-solid fa-gear"></i>
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../Resources/res_guides/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Resources&nbsp;<i class="fa-solid fa-globe" style="color:#ffd903;"></i>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" class="md-nav__button md-logo" aria-label="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" data-md-component="logo">
+      
+  <img src="../../../../../template_assets/webexLogo91.png" alt="logo">
+
+    </a>
+    LAB-11197: Deep-dive into Cisco RoomOS xAPIs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home&nbsp;<i class="fa-solid fa-house" style="color:#B197FC;"></i>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Setup/stp_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Setup&nbsp;<i class="fa-solid fa-gear"></i>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked="">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS xAPI &amp; UserInterfaces&nbsp;<i class="fa-solid fa-video" style="color: #428bff;"></i>
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RoomOS xAPI &amp; UserInterfaces&nbsp;<i class="fa-solid fa-video" style="color: #428bff;"></i>
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rxp_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2">
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS xAPI
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RoomOS xAPI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rxp_xapi/rxp_xapi_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What are RoomOS xAPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rxp_xapi/rxp_xapi_ssh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH <sup><sup>rxp-1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rxp_xapi/rxp_xapi_http/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP <sup><sup>rxp-3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rxp_xapi/rxp_xapi_macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macros <sup><sup>rxp-6</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS UserInterfaces
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RoomOS UserInterfaces
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rxp_userInterface/rxp_ui_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What are RoomOS UserInterfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rxp_userInterface/rxp_ui_features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features <sup><sup>rxu-1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rxp_userInterface/rxp_ui_extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extensions <sup><sup>rxu-2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rxp_userInterface/rxp_ui_messages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Messages <sup><sup>rxu-3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rxp_userInterface/rxp_ui_webContent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Content <sup><sup>rxu-4</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked="">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solution Exercises
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Solution Exercises
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_exe_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Abstract &amp; Best Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_2" checked="">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4_2" id="__nav_3_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macro Based Exercises
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Macro Based Exercises
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_2_1" checked="">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4_2_1" id="__nav_3_4_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_4_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_4_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 1 - Start Simple <sup><sup>rxe-m1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 1 - Start Simple <sup><sup>rxe-m1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#section-rxe-m1-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section rxe-m1 Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-solution-outline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1 Solution Outline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-with-the-userinterface-rxe-m11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start with the UserInterface (rxe-m1.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-new-macro-and-subscribe-rxe-m12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create a New Macro and Subscribe (rxe-m1.2)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#define-and-finalize-solution-rxe-m13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Define and finalize solution (rxe-m1.3)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rxp_exe_Quick_Docs_PT2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 2 - Optimize <sup><sup>rxe-m2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4">
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment&nbsp;<i class="fa-solid fa-cloud-arrow-up" style="color: #ff0000;"></i>
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment&nbsp;<i class="fa-solid fa-cloud-arrow-up" style="color: #ff0000;"></i>
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Deployment/dep_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Deployment/dep_prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment Lab Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3">
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Hub
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Control Hub
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Deployment/dep_controlHub/dep_controlHub_prepDevices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tag Your Pod Device <sup><sup>dep-1.1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Deployment/dep_controlHub/dep_controlHub_configTemplates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration Templates <sup><sup>dep-1.2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Deployment/dep_controlHub/dep_controlHub_runCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Run Commands <sup><sup>dep-1.3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4">
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CE-Deploy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CE-Deploy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_localVsCloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connect Your Organization <sup><sup>dep-2.1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_runCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bulk xAPI Commands <sup><sup>dep-2.2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployBranding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Personalization <sup><sup>dep-2.3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployMacros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macros &amp; UI Extensions <sup><sup>dep-2.4</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployLocalUsers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Device Users &amp; On-Premise Access <sup><sup>dep-2.5</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_backupsAndLogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    On-Prem Toolkit <sup><sup>dep-2.6</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fleet Intelligence <sup><sup>dep-2.7</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Deployment/dep_conclusion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment Conclusion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Resources/res_tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools&nbsp;<i class="fa-solid fa-gear"></i>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources&nbsp;<i class="fa-solid fa-globe" style="color:#ffd903;"></i>
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Resources&nbsp;<i class="fa-solid fa-globe" style="color:#ffd903;"></i>
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Resources/res_guides/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Resources/res_communities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Communities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="quick-docs-macro-exercise-part-1-start-simple-section-rxe-m1">Quick Docs Macro Exercise - Part 1 - Start Simple <sub>(section rxe-m1)</sub></h1>
+<h2 id="section-rxe-m1-requirements">Section rxe-m1 Requirements</h2>
+<div class="admonition important">
+<div class="admonition note inline end">
+<p class="admonition-title">Note</p>
+<p>This lab assumes you have access to a Cisco RoomOS Device that is already setup and ready for use. If your device is not registered and online, please do so before beginning</p>
+</div>
+<p><strong>Additional Lessons</strong></p>
+<ul>
+<li>It's recommended you have run through Accessing RoomOS xAPI via Macros in Macros rxp-6 at a minimum before proceeding with this Exercise</li>
+</ul>
+<p><strong>Hardware</strong></p>
+<ul>
+<li>A Laptop</li>
+<li>A Cisco Desk, Board or Room Series Device running the most recent On Premise or Cloud Stable software<ul>
+<li>A Touch Controller is required when working on a Room Series Device. Either Room navigator or 3rd part touch display</li>
+<li>Preferred Device: Cisco Desk Pro</li>
+</ul>
+</li>
+<li>A minimum of 1 camera (Either Integrated or External)</li>
+</ul>
+<p><strong>Software</strong></p>
+<ul>
+<li>Laptop<ul>
+<li>Recommended Browser: Chrome or Firefox</li>
+<li>Recommended Terminal Software:<ul>
+<li>Command Prompt (Windows)</li>
+<li>Terminal (MAC)</li>
+<li><a href="https://apps.microsoft.com/detail/xpfnzksklbp7rj?hl=en-US&amp;gl=US">Putty</a> (Windows)</li>
+<li><a href="https://termius.com/">Termius</a> (Windows, MAC, Linux)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>RoomOS Device<ul>
+<li>Either the current On Premise or Cloud Stable release</li>
+</ul>
+</li>
+</ul>
+<p><strong>Network</strong></p>
+<ul>
+<li>Local Access to the RoomOS Device over port 80/443</li>
+<li>General access to the Internet</li>
+</ul>
+</div>
+<h2 id="part-1-solution-outline">Part 1 Solution Outline</h2>
+<div class="admonition abstract">
+<p>In section rxe-m1 of this lab, we'll build a Macro that will allow folks to either View a Document or Scan a QR code to take the document with them on your device.</p>
+<p>We'll review how to:</p>
+<ul>
+<li>Build a UserInterface</li>
+<li>Map those UserInterface elements to actions driven by an accompanying macro</li>
+<li>Integrate a 3rd party QR code service, leveraging APIs external to the Codec</li>
+</ul>
+</div>
+<h2 id="start-with-the-userinterface-rxe-m11"><strong>Start with the UserInterface</strong> <sub>(rxe-m1.1)</sub></h2>
+<details class="lesson" open="open">
+<summary>Lesson: Create a New Panel Button <sub>(rxe-m1.1.1</sub>)</summary>
+<div class="admonition tip">
+<p>Starting with the UserInterface elements helps use visualize our solution and determine how to then structure our Macro</p>
+</div>
+<div class="admonition tool inline end">
+<p class="admonition-title">Save Extension Button</p>
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-2_UI-SaveButton.png" data-title="UI Save Button" data-desc-position="top"><img alt="UI Save Button" src="../../images/3-2_UI-SaveButton.png"></a>
+    <!-- <figcaption>Adding a new Panel</figcaption> -->
+</figure><p></p>
+</div>
+<ul>
+<li>
+<p><strong>Task</strong>: </p>
+<ul>
+<li>Create a new Panel</li>
+<li>Assign this panel's <mark>id</mark> as: <pre><code>wx1_QrDocs</code></pre></li>
+<li>Assign this panel's <mark>name</mark> as: <pre><code>Room Docs</code></pre></li>
+<li>Assign this panel's <mark>location</mark> as: <code>HomeScreenAndCallControls</code></li>
+<li>Pick any icon you wish</li>
+<li>Pick any Panel Color you wish</li>
+<li>Save your Extension<ul>
+<li>You should be able to see your Panel on the Codec's Touch Interface</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="success">
+<summary>View Successful <abbr title="User Interface">UI</abbr> Execution</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1"><abbr title="On Screen Display">OSD</abbr></label><label for="__tabbed_1_2">Opened Panel</label><label for="__tabbed_1_3"><abbr title="User Interface">UI</abbr> Properties</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-2-2_UI-OSD.png" data-title="Room Docs OSD 3.2.2" data-desc-position="top"><img alt="Room Docs OSD 3.2.2" src="../../images/3-2-2_UI-OSD.png" width="600"></a>
+    <!-- <figcaption>Adding a new Panel</figcaption> -->
+</figure><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-2-2_UI-Open.png" data-title="Room Docs Open 3.2.2" data-desc-position="top"><img alt="Room Docs Open 3.2.2" src="../../images/3-2-2_UI-Open.png" width="600"></a>
+    <!-- <figcaption>Adding a new Panel</figcaption> -->
+</figure><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-2-2_UI-Properties.png" data-title="UI Properties 3.2.2" data-desc-position="top"><img alt="UI Properties 3.2.2" src="../../images/3-2-2_UI-Properties.png" width="150"></a>
+    <!-- <figcaption>Adding a new Panel</figcaption> -->
+</figure><p></p>
+</div>
+</div>
+</div>
+</details>
+<details class="challenge">
+<summary>Challenge: Rename the Page to Room Docs</summary>
+<ul>
+<li>Rename the Page Name from <code>Page</code> to: <pre><code>Room Docs</code></pre></li>
+<li>Assign the PageId as: <pre><code>wx1_QrDocs~RoomDocs</code></pre></li>
+</ul>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Add Solution Widgets  <sub>(rxe-m1.1.2)</sub></summary>
+<div class="admonition tool inline end">
+<p class="admonition-title">Save Extension Button</p>
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-2_UI-SaveButton.png" data-title="UI Save Button" data-desc-position="top"><img alt="UI Save Button" src="../../images/3-2_UI-SaveButton.png"></a>
+    <!-- <figcaption>Adding a new Panel</figcaption> -->
+</figure><p></p>
+</div>
+<ul>
+<li>
+<p><strong>Task</strong>: </p>
+<ul>
+<li>Rename Row 1 to: <pre><code>Lab 1451</code></pre><ul>
+<li>Add 2 Buttons to this row<ul>
+<li>Set the following properties for the left button<ul>
+<li>Rename Button Text <code>Button</code> to: <pre><code>Open Site</code></pre></li>
+<li>Assign WidgetId: <pre><code>wx1_QrDocs~OpenSite~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/</code></pre></li>
+<li>Set the Widget Width to 2</li>
+</ul>
+</li>
+<li>Set the following properties for the Right button<ul>
+<li>Rename Button Text <code>Button</code> to: <pre><code>Open QrCode 🔳</code></pre></li>
+<li>Assign WidgetId: <pre><code>wx1_QrDocs~OpenQrCode~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/</code></pre></li>
+<li>Set the Widget Width to 2</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Add a second row, with the name: <pre><code>Reimagine Workspaces</code></pre><ul>
+<li>Add 2 Buttons to this row<ul>
+<li>Set the following properties for the left button<ul>
+<li>Rename Button Text <code>Button</code> to: <pre><code>Open Site</code></pre></li>
+<li>Assign WidgetId: <pre><code>wx1_QrDocs~OpenSite~https://www.webex.com/us/en/workspaces.html</code></pre></li>
+<li>Set the Widget Width to 2</li>
+</ul>
+</li>
+<li>Set the following properties for the Right button<ul>
+<li>Rename Button Text <code>Button</code> to: <pre><code>Open QrCode 🔳</code></pre></li>
+<li>Assign WidgetId: <pre><code>wx1_QrDocs~OpenQrCode~https://www.webex.com/us/en/workspaces.html</code></pre></li>
+<li>Set the Widget Width to 2</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Save your Extension<ul>
+<li>You should be able to see your Panel on the Codec's Touch Interface</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="success">
+<summary>View Successful <abbr title="User Interface">UI</abbr> Execution</summary>
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-2-2_UI-Open_AddWidgets.png" data-title="Room Docs Open 3.2.2" data-desc-position="top"><img alt="Room Docs Open 3.2.2" src="../../images/3-2-2_UI-Open_AddWidgets.png" width="600"></a>
+    <!-- <figcaption>Adding a new Panel</figcaption> -->
+</figure><p></p>
+</details>
+<details class="challenge">
+<summary>Add your Organization's HomePage <img alt="😃" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f603.svg" title=":smiley:"></summary>
+<p>You may have noticed the WidgetIds have a <abbr title="Uniform Resource Locator">URL</abbr> as apart of the ID</p>
+<p>We'll be using this in the Macro we write later, to open this page</p>
+<p>Here is how we're structuring WidgetIds for this lab</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<ul>
+<li>
+<p>WidgetId Structure: appName~Action~<abbr title="Uniform Resource Locator">URL</abbr></p>
+<ul>
+<li>appName: <code>wx1_QrDocs</code> -&gt; Let's us associate this interface with our Macro Script and helps make the WidgetId more unique</li>
+<li>action: <code>OpenSite</code> or <code>OpenQrCode</code> -&gt; This will tell use how we want to open our <abbr title="Uniform Resource Locator">URL</abbr></li>
+<li><abbr title="Uniform Resource Locator">URL</abbr>: This is the <abbr title="Uniform Resource Locator">URL</abbr> we want to open, or build a QR Code for</li>
+<li>String Separator: <code>~</code> -&gt; Using a unique character, such as this tilde, can help use split up and access this information later in the Macro</li>
+</ul>
+</li>
+</ul>
+<details class="curious">
+<summary>Is this WidgetId format mandatory?</summary>
+<p>Widget Ids are strings. This is just one of many examples of how you can structure your widgets. It's not required to structure them like this, <ins class="critic">with the exception of this lab</ins>. </p>
+<p>So long as they are unique in your customization, you should be good to go</p>
+</details>
+</div>
+<ul>
+<li>Task: <ul>
+<li>Create a 3rd Row</li>
+<li>Add in an <mark>Open</mark> Site button and an <mark>Open QrCode 🔳</mark> with your Organizations Home Page as the Url</li>
+<li>Be sure to assign <code>wx1_QrDocs</code> as the appName and the correct action to the button they represent</li>
+</ul>
+</li>
+</ul>
+<details class="tip">
+<summary>Hint</summary>
+<p>OpenSite: </p><pre><code>wx1_QrDocs~OpenSite~<mark>YOUR_ORG_HOMEPAGE</mark></code></pre>
+OpenQrCode: <pre><code>wx1_QrDocs~OpenQrCode~<mark>YOUR_ORG_HOMEPAGE</mark></code></pre><p></p>
+</details>
+</details>
+</details>
+<hr>
+<hr>
+<h2 id="create-a-new-macro-and-subscribe-rxe-m12"><strong>Create a New Macro and Subscribe</strong> <sub>(rxe-m1.2)</sub></h2>
+<div class="admonition abstract">
+<p class="admonition-title">Abstract</p>
+<p>Now that we have our UserInterface in place, we can start to build our solution</p>
+<p>We'll be using the Macro Editor for this solution, but know that you can do these very same tasks from any other avenue we explored in Part 2 of this lab</p>
+<p>The benefit of Macros, is that they come with every Cisco Codec running Ce9.2 or newer (with the exception of the Sx10). So no need to procure hardware or spin up a service to start building a solution <img alt="😃" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f603.svg" title=":smiley:"></p>
+</div>
+<details class="lesson" open="open">
+<summary>Lesson: Create a new Macro <sub>(rxe-m1.2.1)</sub></summary>
+<p>If you missed Section 2.6 in part 2 of this lab, please watch this Vidcast</p>
+<details class="vidcast">
+<summary>Vidcast: Macro Editor IDE Review</summary>
+<p></p><div style="padding-bottom:56.25%; position:relative; display:block; width: 100%">
+  <iframe src="https://app.vidcast.io/share/embed/d6dacbb3-9792-4d27-b1fa-434f2ff37f03" width="100%" height="100%" title="Macro Editor IDE Review" frameborder="0" loading="lazy" allowfullscreen="" style="position:absolute; top:0; left: 0;border: solid; border-radius:12px;"></iframe>
+</div><p></p>
+</details>
+<ul>
+<li>
+<p><strong>Task</strong>:</p>
+<ul>
+<li>Select <mark>Create new macro</mark> in the Macro Editor</li>
+<li>Name this macro <mark>Room Docs</mark></li>
+<li><ins class="critic">Save</ins> and <ins class="critic">Activate+</ins> the <mark>Room Docs</mark> Macro</li>
+</ul>
+<details class="success">
+<summary>Review how To</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><input id="__tabbed_2_3" name="__tabbed_2" type="radio"><input id="__tabbed_2_4" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">Device Login</label><label for="__tabbed_2_2">Device Home</label><label for="__tabbed_2_3">Macro Editor</label><label for="__tabbed_2_4">Create, Save and Activate a Macro</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="admonition failure">
+<p>if NOT already logged into the endpoint, follow these steps</p>
+<ul>
+<li>Open a Browser and enter your Codec's IP as a <abbr title="Uniform Resource Locator">URL</abbr> and hit enter</li>
+<li>Login with your Username and Password</li>
+</ul>
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-2_DeviceLogin.png" data-title="Device Login" data-desc-position="top"><img alt="Device Login" src="../../images/3-2_DeviceLogin.png" width="400"></a>
+    <figcaption>Device Login Page</figcaption>
+</figure><p></p>
+</div>
+<div class="admonition warning">
+<p>If in the <abbr title="User Interface">UI</abbr> Extensions Editor</p>
+<ul>
+<li>Click on the Device Name in the Top Left hand corner of the <abbr title="User Interface">UI</abbr> Extensions Editor to get back to the Device Home Page</li>
+</ul>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-3_DeviceHome.png" data-title="Device Home" data-desc-position="top"><img alt="Device Home" src="../../images/3-3_DeviceHome.png" width="600"></a>
+    <figcaption>Device Home Page</figcaption>
+</figure><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-3_Macro_Editor.png" data-title="Macro Editor" data-desc-position="top"><img alt="Macro Editor" src="../../images/3-3_Macro_Editor.png" width="700"></a>
+    <figcaption>The Macro Editor</figcaption>
+</figure><p></p>
+</div>
+<div class="tabbed-block">
+<div class="admonition gif">
+<p class="admonition-title">Create, Save and Activate a Macro</p>
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-3_CreateMacro.gif" data-title="Create, Save and Activate a Macro" data-desc-position="top"><img alt="Create, Save and Activate a Macro" src="../../images/3-3_CreateMacro.gif" width="600"></a>
+    <figcaption>Create, Save and Activate a Macro</figcaption>
+</figure><p></p>
+</div>
+</div>
+</div>
+</div>
+</details>
+</li>
+</ul>
+</details>
+<details class="lesson">
+<summary>Lesson: Subscribing to Widget Actions <sub>(rxe-m1.2.2)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xEvent UserInterface Widget Action</p>
+</li>
+<li>
+<p><strong>Task</strong>:</p>
+<ul>
+<li>
+<p>Subscribe the xAPI Path above using Macro Syntax</p>
+</li>
+<li>
+<p>Take the Callback information generated by this event, and log it to the Macro Console using <code>console.log()</code></p>
+</li>
+<li>
+<p>Once complete, <mark>Save</mark> and Activate the macro (if inactive)</p>
+</li>
+<li>
+<p>Start pressing the <mark>Open Site</mark> and <mark>Open QrCode 🔳</mark> buttons contained within your <code>Room Docs</code> panel</p>
+</li>
+<li>Monitor the Macro Console Output</li>
+</ul>
+</li>
+</ul>
+<details class="success">
+<summary>Compare your Macro</summary>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It's ok if your macro's structure doesn't match 1:1 with the examples below</p>
+<p>As long as they information we access is the same, then format is up to the developers preference</p>
+</div>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">xapi</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'xapi'</span><span class="p">;</span>
+
+<span class="nx">xapi</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">UserInterface</span><span class="p">.</span><span class="nx">Extensions</span><span class="p">.</span><span class="nx">Widget</span><span class="p">.</span><span class="nx">Action</span><span class="p">.</span><span class="nx">on</span><span class="p">(({</span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">({</span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="p">})</span>
+<span class="p">})</span>
+</code></pre></div>
+</details>
+<details class="success">
+<summary>Compare your Macro Console</summary>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Macro</th>
+<th>WidgetId</th>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>wx1_QrDocs~OpenQrCode~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/</td>
+<td><ins class="critic">pressed</ins></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>wx1_QrDocs~OpenQrCode~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/</td>
+<td><mark>released</mark></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>wx1_QrDocs~OpenQrCode~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/</td>
+<td><code>clicked</code></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>wx1_QrDocs~OpenQrCode~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/</td>
+<td><ins class="critic">pressed</ins></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>wx1_QrDocs~OpenQrCode~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/</td>
+<td><mark>released</mark></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>wx1_QrDocs~OpenQrCode~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/</td>
+<td><code>clicked</code></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>wx1_QrDocs~OpenSite~https://www.webex.com/us/en/workspaces.html</td>
+<td><ins class="critic">pressed</ins></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>wx1_QrDocs~OpenSite~https://www.webex.com/us/en/workspaces.html</td>
+<td><mark>released</mark></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>wx1_QrDocs~OpenSite~https://www.webex.com/us/en/workspaces.html</td>
+<td><code>clicked</code></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>wx1_QrDocs~OpenQrCode~https://www.webex.com/us/en/workspaces.html</td>
+<td><ins class="critic">pressed</ins></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>wx1_QrDocs~OpenQrCode~https://www.webex.com/us/en/workspaces.html</td>
+<td><mark>released</mark></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>wx1_QrDocs~OpenQrCode~https://www.webex.com/us/en/workspaces.html</td>
+<td><code>clicked</code></td>
+<td><code></code></td>
+</tr>
+</tbody>
+</table>
+</details>
+<details class="curious">
+<summary>Why does each Widget click have 3 events fire?</summary>
+<p>Good Catch <img alt="😃" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f603.svg" title=":smiley:">! Many widgets offer 1-3 events that will fire based on the conditions of the action</p>
+<p>This is important to know, as you may only want an action to happen once, not upwards of 3 times, when building your automation</p>
+<p>We can use techniques in ES6 JS to filter out what we're interested in for these scenarios</p>
+<p>For reference, here's a list of Widgets and their event payloads</p>
+<div class="admonition experiment">
+<p class="admonition-title">Click on each table below to review each Widget</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:9"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><input id="__tabbed_3_3" name="__tabbed_3" type="radio"><input id="__tabbed_3_4" name="__tabbed_3" type="radio"><input id="__tabbed_3_5" name="__tabbed_3" type="radio"><input id="__tabbed_3_6" name="__tabbed_3" type="radio"><input id="__tabbed_3_7" name="__tabbed_3" type="radio"><input id="__tabbed_3_8" name="__tabbed_3" type="radio"><input id="__tabbed_3_9" name="__tabbed_3" type="radio"><div class="tabbed-labels"><label for="__tabbed_3_1">Toggle</label><label for="__tabbed_3_2">Slider</label><label for="__tabbed_3_3">Button</label><label for="__tabbed_3_4">GroupButton</label><label for="__tabbed_3_5">Icon Button</label><label for="__tabbed_3_6">Spinner</label><label for="__tabbed_3_7">TextBox</label><label for="__tabbed_3_8">Directional Pad</label><label for="__tabbed_3_9">Spacer</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="admonition gif inline end">
+<p class="admonition-title">Gif</p>
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/UI_Extension_Gifs/toggle.gif" data-title="Toggle Action" data-desc-position="top"><img alt="Toggle Action" src="../../images/UI_Extension_Gifs/toggle.gif"></a>
+    <figcaption>Toggle Action</figcaption>
+</figure><p></p>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">WidgetId</td>
+<td style="text-align: left;"><code>Assigned by the Developer on Widget Instantiation</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Type</td>
+<td style="text-align: left;"><code>changed</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Value</td>
+<td style="text-align: left;"><code>on</code> or <code>off</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<div class="admonition gif inline end">
+<p class="admonition-title">Gif</p>
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/UI_Extension_Gifs/slider.gif" data-title="Slider Action" data-desc-position="top"><img alt="Slider Action" src="../../images/UI_Extension_Gifs/slider.gif"></a>
+    <figcaption>Slider Action</figcaption>
+</figure><p></p>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">WidgetId</td>
+<td style="text-align: left;"><code>Assigned by the Developer on Widget Instantiation</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Type</td>
+<td style="text-align: left;"><code>pressed</code>, <code>released</code>, or <code>changed</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Value</td>
+<td style="text-align: left;"><code>Integer between 0 and 255</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<div class="admonition gif inline end">
+<p class="admonition-title">Gif</p>
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/UI_Extension_Gifs/button.gif" data-title="Button Action" data-desc-position="top"><img alt="Button Action" src="../../images/UI_Extension_Gifs/button.gif"></a>
+    <figcaption>Button Action</figcaption>
+</figure><p></p>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">WidgetId</td>
+<td style="text-align: left;"><code>Assigned by the Developer on Widget Instantiation</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Type</td>
+<td style="text-align: left;"><code>pressed</code>, <code>released</code>, or <code>clicked</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Value</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<div class="admonition gif inline end">
+<p class="admonition-title">Gif</p>
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/UI_Extension_Gifs/groupButton.gif" data-title="Group Button Action" data-desc-position="top"><img alt="Group Button Action" src="../../images/UI_Extension_Gifs/groupButton.gif"></a>
+    <figcaption>Group Button Action</figcaption>
+</figure><p></p>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">WidgetId</td>
+<td style="text-align: left;"><code>Assigned by the Developer on Widget Instantiation</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Type</td>
+<td style="text-align: left;"><code>pressed</code>, <code>released</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Value</td>
+<td style="text-align: left;"><code>Assigned by the Developer on Widget Instantiation</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<div class="admonition gif inline end">
+<p class="admonition-title">Gif</p>
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/UI_Extension_Gifs/iconButton.gif" data-title="Icon Button Icons" data-desc-position="top"><img alt="Icon Button Icons" src="../../images/UI_Extension_Gifs/iconButton.gif"></a>
+    <figcaption>Icon Button Icons</figcaption>
+</figure><p></p>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">WidgetId</td>
+<td style="text-align: left;"><code>Assigned by the Developer on Widget Instantiation</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Type</td>
+<td style="text-align: left;"><code>pressed</code>, <code>released</code>, or <code>clicked</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Value</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<div class="admonition gif inline end">
+<p class="admonition-title">Gif</p>
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/UI_Extension_Gifs/spinner.gif" data-title="Spinner Icons" data-desc-position="top"><img alt="Spinner Icons" src="../../images/UI_Extension_Gifs/spinner.gif"></a>
+    <figcaption>Spinner Icons</figcaption>
+</figure><p></p>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">WidgetId</td>
+<td style="text-align: left;"><code>Assigned by the Developer on Widget Instantiation</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Type</td>
+<td style="text-align: left;"><code>pressed</code>, <code>released</code>, or <code>clicked</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Value</td>
+<td style="text-align: left;"><code>increment</code> or <code>decrement</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<div class="admonition failure">
+<p class="admonition-title">Does not fire events</p>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="admonition gif inline end">
+<p class="admonition-title">Gif</p>
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/UI_Extension_Gifs/controlWheel.gif" data-title="Directional Pad Action" data-desc-position="top"><img alt="Directional Pad Action" src="../../images/UI_Extension_Gifs/controlWheel.gif"></a>
+    <figcaption>Directional Pad Action</figcaption>
+</figure><p></p>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">WidgetId</td>
+<td style="text-align: left;"><code>Assigned by the Developer on Widget Instantiation</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Type</td>
+<td style="text-align: left;"><code>pressed</code>, <code>released</code>, or <code>clicked</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Value</td>
+<td style="text-align: left;"><code>up</code>, <code>down</code>, <code>left</code>, <code>right</code>, <code>center</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<div class="admonition failure">
+<p class="admonition-title">Does not fire events</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Refine and Filter our Widget information <sub>(rxe-m1.2.3)</sub></summary>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>As you saw in the previous example Widgets can produce 1-3 events to fire whenever you interact with them</p>
+<p>It's best to filter this down to the specific even in question</p>
+<p>In macros, we can use the tools offered to us by ES6 JS to complete this task</p>
+</div>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xEvent UserInterface Widget Action</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<ul>
+<li>Replace your original <mark>console.log</mark> with <ins class="critic">console.debug</ins><ul>
+<li>This will hide this log in the debug group, we can use this later to check our work</li>
+</ul>
+</li>
+<li>Use an <code>if</code> ES6 JS statement to filter our WidgetId Event and confirm the widget belongs to our customization<ul>
+<li>This can be done using ES6 JS's <code>.includes('wx1_QrDocs')</code> prototype</li>
+</ul>
+</li>
+<li>Use an <code>if</code> ES6 JS statement to filter our Type event and check to see if it matches <mark>released</mark><ul>
+<li>This can be done using ES6 JS's <strong>Equality</strong> <code>==</code> or <strong>Strict Equality</strong> <code>===</code> operators</li>
+<li>We won't be using <del class="critic">pressed</del> or <del class="critic">clicked</del></li>
+</ul>
+</li>
+<li>Use the <code>.split('~')</code> ES6 JS prototype to split out our app, action and url and assign them to objects using our tilde as the string separator</li>
+<li>Use a <code>switch</code> ES6 JS statement to handle <code>OpenSite</code> and <code>OpenQrCode</code> actions respectively<ul>
+<li>Place <mark>console.log(action, url)</mark> below the <code>OpenSite</code> case and <mark>console.warn(action, url)</mark> below the <code>OpenQrCode</code> case</li>
+</ul>
+</li>
+</ul>
+<div class="admonition example">
+<p class="admonition-title">Click the Tabs Below to see how each Task above is implemented</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:4"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"><input id="__tabbed_4_2" name="__tabbed_4" type="radio"><input id="__tabbed_4_3" name="__tabbed_4" type="radio"><input id="__tabbed_4_4" name="__tabbed_4" type="radio"><div class="tabbed-labels"><label for="__tabbed_4_1">Verify WidgetID with <code>if</code> and <code>includes</code>&gt;</label><label for="__tabbed_4_2">Compare Type using <code>if</code> and <code>==</code>&gt;</label><label for="__tabbed_4_3">Assign app, action and <abbr title="Uniform Resource Locator">URL</abbr> using <code>split</code> &gt;</label><label for="__tabbed_4_4">Use <code>switch</code> to handle actions</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">xapi</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'xapi'</span><span class="p">;</span>
+
+<span class="nx">xapi</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">UserInterface</span><span class="p">.</span><span class="nx">Extensions</span><span class="p">.</span><span class="nx">Widget</span><span class="p">.</span><span class="nx">Action</span><span class="p">.</span><span class="nx">on</span><span class="p">(({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">debug</span><span class="p">({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">});</span><span class="w"> </span><span class="c1">// &lt;-- Changed to Debug</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">WidgetId</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="sb">`wx1_QrDocs`</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">    </span><span class="c1">// &lt;-- Asks if WidgetIn includes wx1_QrDocs</span>
+
+<span class="w">  </span><span class="p">};</span>
+<span class="p">});</span>
+</code></pre></div>
+<details class="question">
+<summary>Why Use <code>includes()</code>?</summary>
+<p>We structured all of our WidgetIds with the same prefix <mark>wx1_QrDocs</mark></p>
+<p>This helps make our Widget References Unique, but also helps us ignore any widgets that don't include <mark>wx1_QrDocs</mark></p>
+<p>If a solution were to have the same widgetId, then that 1 widget could have solutions fire from 2 different integration sources. In some cases, that's fine or even necessary, but it's best practice to make your widgets as unique to your solution as possible and for your solution to ignore any other chatter on the Codec</p>
+</details>
+<p></p><div style="display: flex; gap: 10px;">
+    <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes" target="_blank">
+      Learn more about the <code>.includes()</code> prototype <i class="fa-solid fa-square-up-right"></i>
+    </a>
+    <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else" target="_blank">
+      Learn more about <code>if</code> statements <i class="fa-solid fa-square-up-right"></i>
+    </a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">xapi</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'xapi'</span><span class="p">;</span>
+
+<span class="nx">xapi</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">UserInterface</span><span class="p">.</span><span class="nx">Extensions</span><span class="p">.</span><span class="nx">Widget</span><span class="p">.</span><span class="nx">Action</span><span class="p">.</span><span class="nx">on</span><span class="p">(({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">debug</span><span class="p">({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">WidgetId</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="sb">`wx1_QrDocs`</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">Type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'released'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// &lt;-- Asked if the Type is equal to released</span>
+
+<span class="w">    </span><span class="p">};</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">});</span>
+</code></pre></div>
+<p></p><div style="display: flex; gap: 10px;">
+    <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else" target="_blank">
+      Learn more about <code>if</code> statements <i class="fa-solid fa-square-up-right"></i>
+    </a>
+    <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators" target="_blank">
+      Learn more about <code>Operators</code> <i class="fa-solid fa-square-up-right"></i>
+    </a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">xapi</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'xapi'</span><span class="p">;</span>
+
+<span class="nx">xapi</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">UserInterface</span><span class="p">.</span><span class="nx">Extensions</span><span class="p">.</span><span class="nx">Widget</span><span class="p">.</span><span class="nx">Action</span><span class="p">.</span><span class="nx">on</span><span class="p">(({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">debug</span><span class="p">({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">WidgetId</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="sb">`wx1_QrDocs`</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">Type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'released'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">app</span><span class="p">,</span><span class="w"> </span><span class="nx">action</span><span class="p">,</span><span class="w"> </span><span class="nx">url</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sb">`~`</span><span class="p">);</span><span class="w"> </span><span class="c1">// &lt;-- Extract our App, Action and Url and assigned them to the object they represent</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">});</span>
+</code></pre></div>
+<details class="question">
+<summary>Why <code>.split()</code> our widget?</summary>
+<p>This gives use new objects to work with. The benefit of how we implemented our WidgetId structure[<mark>app~action~url</mark>] allows us to make our code a bit more flexible</p>
+<p>Now, if you wanted to add more sites, all you would need to do is add more buttons to the <abbr title="User Interface">UI</abbr> Extension following the WidgetId structure we set, and your Macro Code doesn't need to be modified to allow it to work</p>
+</details>
+<p></p><div style="display: flex; gap: 10px;">
+    <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split" target="_blank">
+      Learn more about the <code>.split()</code> prototype <i class="fa-solid fa-square-up-right"></i>
+    </a>
+    <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment" target="_blank">
+      Learn more about the <code>Destructuring</code> assignments <i class="fa-solid fa-square-up-right"></i>
+    </a>
+    <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">
+      Learn more about <code>Arrays</code> <i class="fa-solid fa-square-up-right"></i>
+    </a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">xapi</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'xapi'</span><span class="p">;</span>
+
+<span class="nx">xapi</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">UserInterface</span><span class="p">.</span><span class="nx">Extensions</span><span class="p">.</span><span class="nx">Widget</span><span class="p">.</span><span class="nx">Action</span><span class="p">.</span><span class="nx">on</span><span class="p">(({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">debug</span><span class="p">({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">WidgetId</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="sb">`wx1_QrDocs`</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">Type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'released'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">app</span><span class="p">,</span><span class="w"> </span><span class="nx">action</span><span class="p">,</span><span class="w"> </span><span class="nx">url</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sb">`~`</span><span class="p">);</span>
+
+<span class="w">      </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="nx">action</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">   </span><span class="c1">// &lt;-- Switch what code we run when:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="s1">'OpenSite'</span><span class="o">:</span><span class="w">  </span><span class="c1">// &lt;-- The OpenSite action comes in</span>
+<span class="w">          </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span><span class="w"> </span><span class="nx">url</span><span class="p">);</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="s1">'OpenQrCode'</span><span class="o">:</span><span class="c1">// &lt;-- The OpenQrCode action comes in</span>
+<span class="w">          </span><span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span><span class="w"> </span><span class="nx">url</span><span class="p">);</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span><span class="w">          </span><span class="c1">// &lt;-- The When an Unknown action comes in</span>
+<span class="w">          </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="sb">`Unknown Action Fired: [</span><span class="si">${</span><span class="nx">action</span><span class="si">}</span><span class="sb">]`</span><span class="p">)</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">      </span><span class="p">};</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">});</span>
+</code></pre></div>
+<details class="question">
+<summary>Why not use <code>if</code> statement instead of <code>switch</code></summary>
+<p>If statements could work, but as you use more and more if statements, the code becomes a bit harder to read</p>
+<p>Using switches, if we wanted to define another action, it would be as simple as adding another case and adding codec below it to define how that case runs</p>
+<p>Both do the same job, some implementations are easier on the eyes than others</p>
+</details>
+<p></p><div style="display: flex; gap: 10px;">
+    <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch" target="_blank">
+      Learn more about <code>switch...case</code> <i class="fa-solid fa-square-up-right"></i>
+    </a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>
+<p>Once complete, <mark>Save</mark> and Activate the macro (if inactive)</p>
+</li>
+<li>
+<p>Start pressing the <mark>Open Site</mark> and <mark>Open QrCode 🔳</mark> buttons contained within your <code>Room Docs</code> panel</p>
+</li>
+<li>Monitor the Macro Console Output</li>
+</ul>
+</li>
+</ul>
+<details class="success">
+<summary>Compare your Macro</summary>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">xapi</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'xapi'</span><span class="p">;</span>
+
+<span class="nx">xapi</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">UserInterface</span><span class="p">.</span><span class="nx">Extensions</span><span class="p">.</span><span class="nx">Widget</span><span class="p">.</span><span class="nx">Action</span><span class="p">.</span><span class="nx">on</span><span class="p">(({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">debug</span><span class="p">({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">WidgetId</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="sb">`wx1_QrDocs`</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">Type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'released'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">app</span><span class="p">,</span><span class="w"> </span><span class="nx">action</span><span class="p">,</span><span class="w"> </span><span class="nx">url</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sb">`~`</span><span class="p">);</span>
+
+<span class="w">      </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="nx">action</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="s1">'OpenSite'</span><span class="o">:</span>
+<span class="w">          </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span><span class="w"> </span><span class="nx">url</span><span class="p">);</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="s1">'OpenQrCode'</span><span class="o">:</span>
+<span class="w">          </span><span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span><span class="w"> </span><span class="nx">url</span><span class="p">);</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span>
+<span class="w">          </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="sb">`Unknown Action Fired: [</span><span class="si">${</span><span class="nx">action</span><span class="si">}</span><span class="sb">]`</span><span class="p">)</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">      </span><span class="p">};</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">});</span>
+</code></pre></div>
+</details>
+<details class="success">
+<summary>Compare your Macro Console</summary>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Macro</th>
+<th>Logs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>QJS Ready</td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td><mark>OpenQrCode</mark> https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/</td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td><ins class="critic">OpenSite</ins> https://www.webex.com/us/en/workspaces.html</td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td><ins class="critic">OpenSite</ins> https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/</td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td><mark>OpenQrCode</mark> https://www.webex.com/us/en/workspaces.html</td>
+</tr>
+</tbody>
+</table>
+</details>
+</details>
+<hr>
+<hr>
+<h2 id="define-and-finalize-solution-rxe-m13"><strong>Define and finalize solution</strong> <sub>(rxe-m1.3)</sub></h2>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Now that we can access the data from our widgets as we expect, we can start to implement the function of opening a Web Page on out touch interface</p>
+</div>
+<details class="lesson" open="open">
+<summary>Lesson: Defining our <code>OpenSite</code> function <sub>(rxe-m1.3.1)</sub></summary>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>We'll be using the WebView Display API</p>
+<p>If you're working on a Desk or Board Series Endpoint use the parameter <mark>Target:&nbsp;</mark><ins class="critic"><abbr title="On Screen Display">OSD</abbr></ins> in the following lessons</p>
+<p>If you're working on a Room Series Endpoint with a Room Navigator attached use the parameter <mark>Target:&nbsp;</mark><ins class="critic">Controller</ins> in the following lessons</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul>
+<li>Room Series with 3rd Party Touch can use <mark><abbr title="On Screen Display">OSD</abbr></mark> as a Target value</li>
+<li>Room Series with Touch 10 CAN NOT use the <mark>Controller</mark> Target Value<ul>
+<li>If you have no touch display or room Navigator, you will need to build a WebView Close Panel</li>
+<li>This is not covered in this lab</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xCommand UserInterface WebView Display</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<ul>
+<li>Declare a new async function called <mark>openSite</mark> with the following function parameters<ul>
+<li>url</li>
+<li>target = '<abbr title="On Screen Display">OSD</abbr>'<ul>
+<li>Note: change <mark><abbr title="On Screen Display">OSD</abbr></mark> to <mark>Controller</mark> if a Room Navigator touch panel is available</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Within this function:<ul>
+<li>Structure the xAPI reference above using Macro Syntax with the following parameters and values<ul>
+<li>Url: <code>url</code></li>
+<li>Target: <code>target</code></li>
+</ul>
+</li>
+<li>Log a Successful response from your xAPI call</li>
+<li>Catch and log an error from your xAPI call</li>
+</ul>
+</li>
+<li>Replace <code>console.log(action, url);</code> under the <mark>OpenSite</mark> case within your WidgetActions event with this new <ins class="critic">openSite()</ins> function call and pass in the <code>url</code> object into your function</li>
+</ul>
+<details class="example">
+<summary>View <code>openSite(url, target)</code> function</summary>
+<div class="highlight"><pre><span></span><code><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">openSite</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="nx">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'OSD'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">openPage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">xapi</span><span class="p">.</span><span class="nx">Command</span><span class="p">.</span><span class="nx">UserInterface</span><span class="p">.</span><span class="nx">WebView</span><span class="p">.</span><span class="nx">Display</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">Url</span><span class="o">:</span><span class="w"> </span><span class="nx">url</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">Target</span><span class="o">:</span><span class="w"> </span><span class="nx">target</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Site Webview Opened for: [</span><span class="si">${</span><span class="nx">url</span><span class="si">}</span><span class="sb">]`</span><span class="p">,</span><span class="w"> </span><span class="nx">openPage</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">Context</span><span class="o">:</span><span class="w"> </span><span class="sb">`Failed to open Site WebView to: [</span><span class="si">${</span><span class="nx">url</span><span class="si">}</span><span class="sb">]`</span><span class="p">,</span>
+<span class="w">      </span><span class="p">...</span><span class="nx">e</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p></p><div style="display: flex; gap: 10px;">
+    <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">
+      Learn more about <code>Async Functions</code> <i class="fa-solid fa-square-up-right"></i>
+    </a>
+    <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch" target="_blank">
+      Learn more about <code>try..catch</code> statements <i class="fa-solid fa-square-up-right"></i>
+    </a>
+</div><p></p>
+</details>
+<ul>
+<li>
+<p>Once complete, <mark>Save</mark> and Activate the macro (if inactive)</p>
+</li>
+<li>
+<p>Start pressing the <mark>Open Site</mark> and <mark>Open QrCode 🔳</mark> buttons contained within your <code>Room Docs</code> panel</p>
+</li>
+<li>Monitor the Device <abbr title="On Screen Display">OSD</abbr> and Macro Console Output</li>
+</ul>
+</li>
+</ul>
+<details class="success">
+<summary>View <abbr title="On Screen Display">OSD</abbr> Output</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"><input id="__tabbed_5_2" name="__tabbed_5" type="radio"><div class="tabbed-labels"><label for="__tabbed_5_1">Lab 1451</label><label for="__tabbed_5_2">Reimagine Workspaces</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-3-3_lab1451_open.png" data-title="Lab 1451 WebView" data-desc-position="top"><img alt="Lab 1451 WebView" src="../../images/3-3-3_lab1451_open.png" width="600"></a>
+    <figcaption>Lab 1451 WebView</figcaption>
+</figure><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-3-3_reimagineWorkspaces_open.png" data-title="Reimagine Workspaces WebView" data-desc-position="top"><img alt="Reimagine Workspaces WebView" src="../../images/3-3-3_reimagineWorkspaces_open.png" width="600"></a>
+    <figcaption>Reimagine Workspaces WebView</figcaption>
+</figure><p></p>
+</div>
+</div>
+</div>
+</details>
+<details class="success">
+<summary>Compare your Macro</summary>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">xapi</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'xapi'</span><span class="p">;</span>
+
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">openSite</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="nx">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'OSD'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//&lt;-- Declare and define your openSite function</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">openPage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">xapi</span><span class="p">.</span><span class="nx">Command</span><span class="p">.</span><span class="nx">UserInterface</span><span class="p">.</span><span class="nx">WebView</span><span class="p">.</span><span class="nx">Display</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">Url</span><span class="o">:</span><span class="w"> </span><span class="nx">url</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">Target</span><span class="o">:</span><span class="w"> </span><span class="nx">target</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Site Webview Opened for: [</span><span class="si">${</span><span class="nx">url</span><span class="si">}</span><span class="sb">]`</span><span class="p">,</span><span class="w"> </span><span class="nx">openPage</span><span class="p">);</span><span class="w">  </span><span class="c1">//&lt;-- Log a Successful Response</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">Context</span><span class="o">:</span><span class="w"> </span><span class="sb">`Failed to open Site WebView to: [</span><span class="si">${</span><span class="nx">url</span><span class="si">}</span><span class="sb">]`</span><span class="p">,</span>
+<span class="w">      </span><span class="p">...</span><span class="nx">e</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span><span class="w"> </span><span class="c1">//&lt;-- Catch and log an Error</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">xapi</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">UserInterface</span><span class="p">.</span><span class="nx">Extensions</span><span class="p">.</span><span class="nx">Widget</span><span class="p">.</span><span class="nx">Action</span><span class="p">.</span><span class="nx">on</span><span class="p">(({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">debug</span><span class="p">({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">WidgetId</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="sb">`wx1_QrDocs`</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">Type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'released'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">app</span><span class="p">,</span><span class="w"> </span><span class="nx">action</span><span class="p">,</span><span class="w"> </span><span class="nx">url</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sb">`~`</span><span class="p">);</span>
+<span class="w">                        </span><span class="c1">// ↑ url object</span>
+<span class="w">      </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="nx">action</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="s1">'OpenSite'</span><span class="o">:</span>
+<span class="w">          </span><span class="nx">openSite</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span><span class="w"> </span><span class="c1">//&lt;-- Run the openSite() function and pass in the url object</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="s1">'OpenQrCode'</span><span class="o">:</span>
+<span class="w">          </span><span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span><span class="w"> </span><span class="nx">url</span><span class="p">);</span><span class="w"> </span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span>
+<span class="w">          </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="sb">`Unknown Action Fired: [</span><span class="si">${</span><span class="nx">action</span><span class="si">}</span><span class="sb">]`</span><span class="p">);</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">      </span><span class="p">};</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">});</span>
+</code></pre></div>
+</details>
+<details class="success">
+<summary>Compare your Macro Console</summary>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Macro</th>
+<th>Logs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>QJS Ready</td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td _status_:_ok_="&quot;status&quot;:&quot;OK&quot;">Site Webview Opened for: [https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/]</td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>OpenQrCode  https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/</td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td _status_:_ok_="&quot;status&quot;:&quot;OK&quot;">Site Webview Opened for: [https://www.webex.com/us/en/workspaces.html]</td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>OpenQrCode  https://www.webex.com/us/en/workspaces.html</td>
+</tr>
+</tbody>
+</table>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Defining our <code>OpenQrCode</code> function <sub>(rxe-m1.3.2)</sub></summary>
+<div class="admonition tip">
+<p class="admonition-title">Making QR Codes is NOT a normal function of the Codec</p>
+<p>In this lesson, in order to generate a QR code for our customization, then we'll need to leverage a 3rd party QR API Service</p>
+<p>This is how you can introduce more functionality to your device by leveraging the World of APIs</p>
+<div class="admonition important">
+<p class="admonition-title">Always Keep Security Top of Mind!</p>
+<p>It's easy to fall outside your organization's security policy especially when building new solutions.</p>
+<p>Make sure you work with your, or your Customer's, Information Security teams before implementing a new solution that requires Integration Authentication of any kind or reaches out on the internet.</p>
+<p>The security implications of a solution can force you building your solution using a different integration method, or even stop a project all together.</p>
+<p></p><div style="display: flex; gap: 10px;">
+    <a class="md-button md-button--primary" href="https://www.cisco.com/c/en/us/td/docs/voice_ip_comm/uc_system/design/guides/wx_security.html" target="_blank">
+      Checkout Webex's <i class="fa-solid fa-shield" style="color: #ff3a65;"></i> Security Technical References <i class="fa-solid fa-square-up-right"></i>
+    </a>
+</div><p></p>
+</div>
+</div>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xCommand UserInterface WebView Display</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<ul>
+<li>Declare a new async function called <mark>openQrCode</mark> with the following function parameters<ul>
+<li>url</li>
+<li>target = '<abbr title="On Screen Display">OSD</abbr>'<ul>
+<li>Note: change <mark><abbr title="On Screen Display">OSD</abbr></mark> to <mark>Controller</mark> if a Room Navigator touch panel is available</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Within this function:<ul>
+<li>Use ES6 JS's <code>encodeURI()</code> function to modify the <abbr title="Uniform Resource Locator">URL</abbr> in and assign it to a new object called <code>encodedUrl</code><ul>
+<li>This is because we'll be wrapping our target <abbr title="Uniform Resource Locator">URL</abbr> within a <abbr title="Uniform Resource Locator">URL</abbr> from our QR Code Service</li>
+</ul>
+</li>
+<li>Add your <code>encodedUrl</code> object to the data Url Parameter in the <abbr title="Uniform Resource Locator">URL</abbr> and assign it to a new object called <code>qrURL</code><ul>
+<li><pre><code>https://api.qrserver.com/v1/create-qr-code/?data=<ins class="critic">encodedUrl</ins></code></pre></li>
+</ul>
+</li>
+<li>Structure the xAPI reference above using Macro Syntax with the following parameters and values<ul>
+<li>Url: <code>formattedURL</code></li>
+<li>Target: <code>target</code></li>
+</ul>
+</li>
+<li>Log a Successful response from your xAPI call</li>
+<li>Catch and log an error from your xAPI call</li>
+</ul>
+</li>
+<li>Replace <code>console.warn(action, url);</code> under the <mark>OpenQrCode</mark> case within your WidgetActions event with this new <ins class="critic">openQrCode()</ins> function call and pass in the <code>url</code> object into your function</li>
+</ul>
+<details class="example">
+<summary>View <code>openQrCode(url, target)</code> function</summary>
+<div class="highlight"><pre><span></span><code><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">openQrCode</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="nx">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'OSD'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//&lt;-- Declare and define your openQrCode function</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">encodedUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">encodeURI</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span><span class="w">             </span><span class="c1">//&lt;-- Encode the URL that was provided</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">qrURL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`https://api.qrserver.com/v1/create-qr-code/?data=`</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">encodedUrl</span><span class="p">;</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">openPage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">xapi</span><span class="p">.</span><span class="nx">Command</span><span class="p">.</span><span class="nx">UserInterface</span><span class="p">.</span><span class="nx">WebView</span><span class="p">.</span><span class="nx">Display</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">Url</span><span class="o">:</span><span class="w"> </span><span class="nx">qrURL</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">Target</span><span class="o">:</span><span class="w"> </span><span class="nx">target</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`QR Webview Opened for: [</span><span class="si">${</span><span class="nx">url</span><span class="si">}</span><span class="sb">]`</span><span class="p">,</span><span class="w"> </span><span class="nx">openPage</span><span class="p">,</span><span class="w"> </span><span class="nx">qrURL</span><span class="p">);</span><span class="w"> </span><span class="c1">//&lt;-- Log a Successful Response</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">Context</span><span class="o">:</span><span class="w"> </span><span class="sb">`Failed to open QR WebView to: [</span><span class="si">${</span><span class="nx">url</span><span class="si">}</span><span class="sb">]`</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">QrUrl</span><span class="o">:</span><span class="w"> </span><span class="nx">qrURL</span><span class="p">,</span>
+<span class="w">      </span><span class="p">...</span><span class="nx">e</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span><span class="w"> </span><span class="c1">//&lt;-- Catch and log an Error</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p></p><div style="display: flex; gap: 10px;">
+    <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">
+      Learn more about <code>Async Functions</code> <i class="fa-solid fa-square-up-right"></i>
+    </a>
+    <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch" target="_blank">
+      Learn more about <code>try..catch</code> statements <i class="fa-solid fa-square-up-right"></i>
+    </a>
+</div><p></p>
+</details>
+<ul>
+<li>
+<p>Once complete, <mark>Save</mark> and Activate the macro (if inactive)</p>
+</li>
+<li>
+<p>Start pressing the <mark>Open Site</mark> and <mark>Open QrCode 🔳</mark> buttons contained within your <code>Room Docs</code> panel</p>
+</li>
+<li>Monitor the Device <abbr title="On Screen Display">OSD</abbr> and Macro Console Output</li>
+</ul>
+</li>
+</ul>
+<details class="success">
+<summary>View <abbr title="On Screen Display">OSD</abbr> Output</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"><input id="__tabbed_6_2" name="__tabbed_6" type="radio"><div class="tabbed-labels"><label for="__tabbed_6_1">Lab 1451</label><label for="__tabbed_6_2">Reimagine Workspaces</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-3-3_lab1451_qr.png" data-title="Lab 1451 WebView" data-desc-position="top"><img alt="Lab 1451 WebView" src="../../images/3-3-3_lab1451_qr.png" width="600"></a>
+    <figcaption>Lab 1451 WebView</figcaption>
+</figure><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><figure markdown="span">
+    <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../images/3-3-3_reimagineWorkspaces_qr.png" data-title="Reimagine Workspaces WebView" data-desc-position="top"><img alt="Reimagine Workspaces WebView" src="../../images/3-3-3_reimagineWorkspaces_qr.png" width="600"></a>
+    <figcaption>Reimagine Workspaces WebView</figcaption>
+</figure><p></p>
+</div>
+</div>
+</div>
+</details>
+<details class="success">
+<summary>Compare your Macro</summary>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">xapi</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'xapi'</span><span class="p">;</span>
+
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">openSite</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="nx">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'OSD'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">openPage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">xapi</span><span class="p">.</span><span class="nx">Command</span><span class="p">.</span><span class="nx">UserInterface</span><span class="p">.</span><span class="nx">WebView</span><span class="p">.</span><span class="nx">Display</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">Url</span><span class="o">:</span><span class="w"> </span><span class="nx">url</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">Target</span><span class="o">:</span><span class="w"> </span><span class="nx">target</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Site Webview Opened for: [</span><span class="si">${</span><span class="nx">url</span><span class="si">}</span><span class="sb">]`</span><span class="p">,</span><span class="w"> </span><span class="nx">openPage</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">Context</span><span class="o">:</span><span class="w"> </span><span class="sb">`Failed to open Site WebView to: [</span><span class="si">${</span><span class="nx">url</span><span class="si">}</span><span class="sb">]`</span><span class="p">,</span>
+<span class="w">      </span><span class="p">...</span><span class="nx">e</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">openQrCode</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="nx">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'OSD'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//&lt;-- Declare and define your openQrCode function</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">encodedUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">encodeURI</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span><span class="w">             </span><span class="c1">//&lt;-- Encode the URL that was provided</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">qrURL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`https://api.qrserver.com/v1/create-qr-code/?data=`</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">encodedUrl</span><span class="p">;</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">openPage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">xapi</span><span class="p">.</span><span class="nx">Command</span><span class="p">.</span><span class="nx">UserInterface</span><span class="p">.</span><span class="nx">WebView</span><span class="p">.</span><span class="nx">Display</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">Url</span><span class="o">:</span><span class="w"> </span><span class="nx">qrURL</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">Target</span><span class="o">:</span><span class="w"> </span><span class="nx">target</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`QR Webview Opened for: [</span><span class="si">${</span><span class="nx">url</span><span class="si">}</span><span class="sb">]`</span><span class="p">,</span><span class="w"> </span><span class="nx">openPage</span><span class="p">,</span><span class="w"> </span><span class="nx">qrURL</span><span class="p">);</span><span class="w"> </span><span class="c1">//&lt;-- Log a Successful Response</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">Context</span><span class="o">:</span><span class="w"> </span><span class="sb">`Failed to open QR WebView to: [</span><span class="si">${</span><span class="nx">url</span><span class="si">}</span><span class="sb">]`</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">QrUrl</span><span class="o">:</span><span class="w"> </span><span class="nx">qrURL</span><span class="p">,</span>
+<span class="w">      </span><span class="p">...</span><span class="nx">e</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span><span class="w"> </span><span class="c1">//&lt;-- Catch and log an Error</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">xapi</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">UserInterface</span><span class="p">.</span><span class="nx">Extensions</span><span class="p">.</span><span class="nx">Widget</span><span class="p">.</span><span class="nx">Action</span><span class="p">.</span><span class="nx">on</span><span class="p">(({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">debug</span><span class="p">({</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">,</span><span class="w"> </span><span class="nx">Type</span><span class="p">,</span><span class="w"> </span><span class="nx">Value</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">WidgetId</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="sb">`wx1_QrDocs`</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">Type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'released'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">app</span><span class="p">,</span><span class="w"> </span><span class="nx">action</span><span class="p">,</span><span class="w"> </span><span class="nx">url</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">WidgetId</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sb">`~`</span><span class="p">);</span>
+<span class="w">                        </span><span class="c1">// ↑ url object</span>
+<span class="w">      </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="nx">action</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="s1">'OpenSite'</span><span class="o">:</span>
+<span class="w">          </span><span class="nx">openSite</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="s1">'OpenQrCode'</span><span class="o">:</span>
+<span class="w">          </span><span class="nx">openQrCode</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span><span class="w"> </span><span class="c1">//&lt;-- Run the openQrCode() function and pass in the url object</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span>
+<span class="w">          </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="sb">`Unknown Action Fired: [</span><span class="si">${</span><span class="nx">action</span><span class="si">}</span><span class="sb">]`</span><span class="p">);</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">      </span><span class="p">};</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">});</span>
+</code></pre></div>
+</details>
+<details class="success">
+<summary>Compare your Macro Console</summary>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Macro</th>
+<th>Logs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td>QJS Ready</td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td _status_:_ok_="&quot;status&quot;:&quot;OK&quot;">Site Webview Opened for: [https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/]</td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td _status_:_ok_="&quot;status&quot;:&quot;OK&quot;">QR Webview Opened for: [https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/]</td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td _status_:_ok_="&quot;status&quot;:&quot;OK&quot;">Site Webview Opened for: [https://www.webex.com/us/en/workspaces.html]</td>
+</tr>
+<tr>
+<td>HH:MM:SS</td>
+<td>Room Docs</td>
+<td _status_:_ok_="&quot;status&quot;:&quot;OK&quot;">QR Webview Opened for: [https://www.webex.com/us/en/workspaces.html]</td>
+</tr>
+</tbody>
+</table>
+</details>
+</details>
+<hr>
+<hr>
+<div class="admonition abstract">
+<p class="admonition-title">Abstract</p>
+<p></p><h2>🥳 You made a <abbr title="User Interface">UI</abbr> and a Macro 🎉</h2><p></p>
+<p>But we can do a few more things to make this a really rugged solution that enabled simpler deployment and allows us to scale a bit better</p>
+<p>And we can do this in several ways</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../../rxp_exe_intro/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Abstract &amp; Best Practices">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Abstract &amp; Best Practices
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../rxp_exe_Quick_Docs_PT2/" class="md-footer__link md-footer__link--next" aria-label="Next: Part 2 - Optimize &lt;sup&gt;&lt;sup&gt;rxe-m2&lt;/sup&gt;&lt;/sup&gt;">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Part 2 - Optimize <sup><sup>rxe-m2</sup></sup>
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Cisco
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.indexes", "navigation.instant", "navigation.top", "navigation.footer", "search.suggest", "content.code.copy", "toc.integrate", "content.tooltips", "content.footnote.tooltips"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../../../template_assets/js/newLoad.js"></script>
+      
+        <script src="../../../../../template_assets/js/setInfo.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": false, "openEffect": "fade", "closeEffect": "fade", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

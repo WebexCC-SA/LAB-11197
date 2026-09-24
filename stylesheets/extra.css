@@ -1,0 +1,188 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css");
+@import "admonition.css";
+
+.md-typeset__table {
+    min-width: 100%;
+}
+
+.md-typeset table:not([class]) {
+    display: table;
+}
+
+.md-grid {
+    max-width: 1440px;
+}
+
+:root {
+    --md-primary-fg-color: #051C2C;
+    --md-accent-fg-color: #00bdeb;
+}
+
+[data-md-color-scheme="default"] {
+    --md-typeset-a-color: #3a7fff;
+    --md-accent-fg-color: #00bdeb;
+}
+
+[data-md-color-scheme="slate"] {
+    --md-typeset-a-color: #3a7fff;
+    --md-accent-fg-color: #00bdeb;
+}
+copy::after, .copy::after {
+  content: "\f0c5"; /* Font Awesome code for the copy icon */
+  font-family: "Font Awesome 5 Free"; /* The font-family may vary, ensure it matches the imported version */
+  font-weight: 900; /* Ensure the weight matches the icon style */
+  font-style: normal;
+  text-decoration: inherit;
+  display: inline-block; /* Ensure the icon is visible */
+  margin-left: 5px; /* Optional: Add space between text and icon */
+
+}
+
+copy:hover::after, .copy:hover::after {
+  color: #00bdeb;
+}
+form#info input{
+  border: solid 1px;
+}
+form#info button{
+    border:solid 2px;
+    border-radius: 25px;
+    padding: 10px;
+}
+form#info button:hover{
+    background-color:rgb(195, 193, 201);
+}
+
+#setValue-notification-container {
+    position: fixed; /* Stays in the same place even if the user scrolls */
+    top: 20px; /* Distance from the top of the viewport */
+    right: 20px; /* Distance from the right of the viewport */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between multiple notifications */
+    z-index: 1000; /* Ensures it appears above other content */
+}
+
+#setValue-notification-container {
+    position: fixed; /* Stays in the same place even if the user scrolls */
+    top: 20px; /* Distance from the top of the viewport */
+    right: 20px; /* Distance from the right of the viewport */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between multiple notifications */
+    z-index: 1000; /* Ensures it appears above other content */
+}
+
+.setValue-notification {
+    position: fixed; /* Stays relative to the viewport */
+    background-color: #4CAF50; /* Green background for success */
+    color: black; /* Black text for contrast */
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    /* Initial transform: starts slightly below and smaller, centered horizontally */
+    transform: translateX(-50%) translateY(-90%) scale(0.8);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    z-index: 1000; /* Ensures it appears above other content */
+    white-space: nowrap; /* Prevents text from wrapping, keeping it on one line */
+    pointer-events: none; /* Allows clicks to pass through the notification to elements behind it */
+}
+
+.setValue-notification.show {
+    opacity: 1;
+    /* Final transform: moves up and scales to full size, bottom-center aligned with click */
+    transform: translateX(-50%) translateY(-100%) scale(1);
+}
+
+/* Target a button with class .md-clipboard that is a direct child of a <pre> with class .no-copy-code-button */
+pre.no-copy-code-button > button.md-clipboard {
+  display: none !important;
+}
+
+roomosfind::after, .roomosfind::after {
+  content: "\f14c"; /* Font Awesome code for the roomosfind icon */
+  font-family: "Font Awesome 5 Free"; /* The font-family may vary, ensure it matches the imported version */
+  font-weight: 900; /* Ensure the weight matches the icon style */
+  font-style: normal;
+  text-decoration: inherit;
+  display: inline-block; /* Ensure the icon is visible */
+  margin-left: 5px; /* Optional: Add space between text and icon */
+}
+
+
+/* Base styles for roomosfind to make it look like a button */
+roomosfind {
+  display: inline-block;
+  padding: 0.6em 1.2em;
+  margin: 0.5em 0;
+  border-radius: 0.3em;
+  text-align: center;
+  cursor: pointer;
+  font-family: var(--md-text-font);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s;
+  box-sizing: border-box;
+}
+
+/* Light Mode & Dark Mode Default State (since your primary/accent are consistent across schemes) */
+/* This will be the darker color */
+[data-md-color-scheme="default"] roomosfind,
+[data-md-color-scheme="slate"] roomosfind {
+  background-color: var(--md-primary-fg-color); /* This is #051C2C (darker color) */
+  color: white; /* Text color for the darker background */
+  border: 1px solid var(--md-primary-fg-color); /* Border matches background */
+  box-shadow: var(--md-shadow-z1);
+}
+
+/* Light Mode & Dark Mode Hover/Active State */
+/* This will be the baby blue color */
+[data-md-color-scheme="default"] roomosfind:hover,
+[data-md-color-scheme="default"] roomosfind:focus,
+[data-md-color-scheme="slate"] roomosfind:hover,
+[data-md-color-scheme="slate"] roomosfind:focus {
+  background-color: var(--md-accent-fg-color); /* This is #00bdeb (baby blue) */
+  color: black; /* Text color for the baby blue background */
+  border-color: var(--md-accent-fg-color); /* Border matches hover background */
+  box-shadow: var(--md-shadow-z2);
+}
+
+.code-label {
+  margin: 1em 0;
+  overflow: hidden;
+  border-radius: 0.12rem;
+  background: var(--md-code-bg-color);
+  color: var(--md-code-fg-color);
+}
+
+.code-label::before {
+  display: block;
+  padding: 0.55rem 1rem 0.45rem;
+  border-bottom: 1px solid color-mix(
+    in srgb,
+    var(--md-code-fg-color) 14%,
+    transparent
+  );
+  background: var(--md-code-bg-color);
+  color: var(--md-code-fg-color);
+  content: attr(data-title);
+  font-family: var(--md-text-font-family);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.code-label pre {
+  margin: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.code-label pre code {
+  display: block;
+  padding: 0.7rem 1rem;
+  background: transparent;
+  font-size: var(--md-code-font-size);
+}

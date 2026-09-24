@@ -1,0 +1,2292 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="LAB-11197: Deep-dive into Cisco RoomOS xAPIs">
+      
+      
+        <meta name="author" content="Bobby McGonigle, Christopher Norman">
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../template_assets/webex75.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Access RoomOS xAPI via Webex Cloud (section rxp-5) - LAB-11197: Deep-dive into Cisco RoomOS xAPIs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/customTextHighlight.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#access-roomos-xapi-via-webex-cloud-section-rxp-5" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" class="md-header__button md-logo" aria-label="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" data-md-component="logo">
+      
+  <img src="../../../../template_assets/webexLogo91.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LAB-11197: Deep-dive into Cisco RoomOS xAPIs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Access RoomOS xAPI via Webex Cloud (section rxp-5)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="indigo" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home&nbsp;<i class="fa-solid fa-house" style="color:#B197FC;"></i>
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../Setup/stp_intro/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Lab Setup&nbsp;<i class="fa-solid fa-gear"></i>
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../rxp_intro/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  RoomOS xAPI &amp; UserInterfaces&nbsp;<i class="fa-solid fa-video" style="color: #428bff;"></i>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Deployment/dep_intro/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Deployment&nbsp;<i class="fa-solid fa-cloud-arrow-up" style="color: #ff0000;"></i>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../Resources/res_tools/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tools&nbsp;<i class="fa-solid fa-gear"></i>
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Resources/res_guides/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Resources&nbsp;<i class="fa-solid fa-globe" style="color:#ffd903;"></i>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" class="md-nav__button md-logo" aria-label="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" data-md-component="logo">
+      
+  <img src="../../../../template_assets/webexLogo91.png" alt="logo">
+
+    </a>
+    LAB-11197: Deep-dive into Cisco RoomOS xAPIs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home&nbsp;<i class="fa-solid fa-house" style="color:#B197FC;"></i>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Setup/stp_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Setup&nbsp;<i class="fa-solid fa-gear"></i>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS xAPI &amp; UserInterfaces&nbsp;<i class="fa-solid fa-video" style="color: #428bff;"></i>
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RoomOS xAPI &amp; UserInterfaces&nbsp;<i class="fa-solid fa-video" style="color: #428bff;"></i>
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2">
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS xAPI
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RoomOS xAPI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rxp_xapi_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What are RoomOS xAPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rxp_xapi_ssh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH <sup><sup>rxp-1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rxp_xapi_http/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP <sup><sup>rxp-3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rxp_xapi_macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macros <sup><sup>rxp-6</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS UserInterfaces
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RoomOS UserInterfaces
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What are RoomOS UserInterfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features <sup><sup>rxu-1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extensions <sup><sup>rxu-2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_messages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Messages <sup><sup>rxu-3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_webContent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Content <sup><sup>rxu-4</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solution Exercises
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Solution Exercises
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_exercises/rxp_exe_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Abstract &amp; Best Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_2">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4_2" id="__nav_3_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macro Based Exercises
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Macro Based Exercises
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_2_1">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4_2_1" id="__nav_3_4_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_4_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_exercises/macros/rxp_exe_Quick_Docs_PT1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 1 - Start Simple <sup><sup>rxe-m1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_exercises/macros/rxp_exe_Quick_Docs_PT2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 2 - Optimize <sup><sup>rxe-m2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4">
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment&nbsp;<i class="fa-solid fa-cloud-arrow-up" style="color: #ff0000;"></i>
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment&nbsp;<i class="fa-solid fa-cloud-arrow-up" style="color: #ff0000;"></i>
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment Lab Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3">
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Hub
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Control Hub
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_controlHub/dep_controlHub_prepDevices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tag Your Pod Device <sup><sup>dep-1.1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_controlHub/dep_controlHub_configTemplates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration Templates <sup><sup>dep-1.2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_controlHub/dep_controlHub_runCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Run Commands <sup><sup>dep-1.3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4">
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CE-Deploy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CE-Deploy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_localVsCloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connect Your Organization <sup><sup>dep-2.1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_runCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bulk xAPI Commands <sup><sup>dep-2.2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployBranding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Personalization <sup><sup>dep-2.3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployMacros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macros &amp; UI Extensions <sup><sup>dep-2.4</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployLocalUsers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Device Users &amp; On-Premise Access <sup><sup>dep-2.5</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_backupsAndLogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    On-Prem Toolkit <sup><sup>dep-2.6</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fleet Intelligence <sup><sup>dep-2.7</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_conclusion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment Conclusion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Resources/res_tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools&nbsp;<i class="fa-solid fa-gear"></i>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources&nbsp;<i class="fa-solid fa-globe" style="color:#ffd903;"></i>
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Resources&nbsp;<i class="fa-solid fa-globe" style="color:#ffd903;"></i>
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Resources/res_guides/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Resources/res_communities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Communities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="access-roomos-xapi-via-webex-cloud-section-rxp-5">Access RoomOS xAPI via Webex Cloud <sub>(section rxp-5)</sub></h1>
+<div class="admonition abstract">
+<p class="admonition-title">Abstract</p>
+<p>Webex Cloud xAPI lets an authorized application address a cloud-registered RoomOS device through <code>https://webexapis.com/v1</code>, rather than through a direct connection to the device. The RoomOS xAPI paths remain familiar; the <abbr title="Hypertext Transfer Protocol">HTTP</abbr> method, endpoint, authentication, and request body are specific to the cloud service.</p>
+<p>This Lesson uses Postman to practice one RoomOS device at a time. Cloud xAPI is useful when direct device reachability is unavailable, but a command still requires the device to be online. Configuration changes are stored by Webex and can be applied after an offline device reconnects.</p>
+</div>
+<h2 id="section-rxp-5-requirements">Section rxp-5 Requirements</h2>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<ul>
+<li>Use a Webex cloud-registered RoomOS device that your lab account is allowed to administer.</li>
+<li>Install or open Postman. This Lesson uses its collection as a request scaffold; do not paste a personal access token into screenshots, shared collections, or source control.</li>
+<li>A personal access token is suitable only for this guided lab. A deployed integration needs an appropriate OAuth or Workspace Integration authorization model.</li>
+</ul>
+<p>Download <a href="../../../DownloadContent/PostMan%20Collections/WX1-Lab-1451-CloudxAPI-PostMan-Collection.postman_collection.json.zip" target="_blank">the Cloud xAPI Postman collection</a>.</p>
+</div>
+<h2 id="cloud-xapi-authentication-and-format-rxp-51">Cloud xAPI Authentication and Format <sub>(rxp-5.1)</sub></h2>
+<p>All requests use <code>Authorization: Bearer &lt;token&gt;</code>. Set <code>Accept: application/json</code>; use <code>Content-Type: application/json</code> for commands and <code>Content-Type: application/json-patch+json</code> for configuration patches.</p>
+<table>
+<thead>
+<tr>
+<th>RoomOS xAPI branch</th>
+<th>Cloud request form</th>
+<th>What changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>xCommand</code></td>
+<td><code>POST /v1/xapi/command/&lt;Command.Key&gt;</code></td>
+<td>Put <code>deviceId</code> and arguments in the JSON body.</td>
+</tr>
+<tr>
+<td><code>xStatus</code></td>
+<td><code>GET /v1/xapi/status?deviceId=&lt;id&gt;&amp;name=&lt;Status.Key&gt;</code></td>
+<td>Query a current cloud-visible status value.</td>
+</tr>
+<tr>
+<td><code>xConfiguration</code></td>
+<td><code>GET</code> or <code>PATCH /v1/deviceConfigurations?deviceId=&lt;id&gt;</code></td>
+<td>Read configurations or submit a JSON Patch.</td>
+</tr>
+<tr>
+<td>feedback</td>
+<td>Workspace Integration</td>
+<td>Notifications require an integration approved in Control Hub.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Cloud xAPI permissions are token-scope dependent. Commands and statuses use their respective xAPI scopes; device configuration reads and writes require the relevant administrator device scopes. If Postman returns <code>401</code> or <code>403</code>, check the token and its granted permissions before changing the request syntax.</p>
+</div>
+<h2 id="get-a-token-and-configure-postman-rxp-52">Get a token and configure Postman <sub>(rxp-5.2)</sub></h2>
+<ol>
+<li>Go to <a href="https://developer.webex.com" target="_blank">Webex for Developers</a>, sign in with the lab account, and copy its personal access token.</li>
+<li>Import the downloaded collection, select its root folder, and open <strong>Variables</strong>.</li>
+<li>Set <code>developer_Token</code> and <code>device_Id</code> in the current value column. Keep the token out of exported collections.</li>
+<li>To find the device ID, run the pre-provided <strong>List Devices</strong> request and copy the <code>id</code> for the RoomOS device you will use. You may also obtain it from the device's <code>xStatus Webex DeveloperId</code> output.</li>
+</ol>
+<details class="tip">
+<summary>View the collection setup</summary>
+<p></p><figure markdown="span">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-5-2_Config-Postman.gif" data-title="Configure the Cloud xAPI Postman collection" data-desc-position="top"><img alt="Configure the Cloud xAPI Postman collection" src="../images/2-5-2_Config-Postman.gif" width="600"></a>
+  <figcaption>Set the collection variables before sending a request.</figcaption>
+</figure><p></p>
+</details>
+<h2 id="webex-devices-and-workspaces-apis-rxp-53">Webex Devices and Workspaces APIs <sub>(rxp-5.3)</sub></h2>
+<p>Webex device and workspace APIs provide organization inventory context; they are not RoomOS xAPI branches. A device belongs to one workspace, while a workspace can contain zero or more devices.</p>
+<details class="lesson" open="open">
+<summary>Lesson: List Devices</summary>
+<p>Send the collection's <strong>List Devices</strong> request. Locate your RoomOS device and record its <code>id</code> as <code>device_Id</code>.</p>
+<details class="success">
+<summary>Successful syntax and response</summary>
+<div class="highlight"><pre><span></span><code><span class="err">GET https://webexapis.com/v1/devices</span>
+<span class="err">Authorization: Bearer &lt;token&gt;</span>
+</code></pre></div>
+<p>A successful response contains an <code>items</code> array. The RoomOS device object's <code>id</code>, <code>displayName</code>, <code>workspaceId</code>, and <code>connectionStatus</code> help you select the correct target.</p>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: List Workspaces</summary>
+<p>Send the collection's <strong>List Workspaces</strong> request. Compare the workspace <code>id</code> with the device's <code>workspaceId</code> and identify the corresponding workspace name.</p>
+<details class="success">
+<summary>Successful syntax and response</summary>
+<div class="highlight"><pre><span></span><code><span class="err">GET https://webexapis.com/v1/workspaces</span>
+<span class="err">Authorization: Bearer &lt;token&gt;</span>
+</code></pre></div>
+</details>
+</details>
+<h2 id="executing-xcommands-rxp-54">Executing xCommands <sub>(rxp-5.4)</sub></h2>
+<p>For every command in this section, start from the terminal form, convert its space-separated RoomOS xAPI path to a dot-separated <code>Command.Key</code>, and construct the Cloud request. Run it, observe the RoomOS device, then compare your work with the collapsed answer.</p>
+<details class="lesson" open="open">
+<summary>Lesson: Execute an xCommand</summary>
+<p>Terminal form:</p>
+<div class="highlight"><pre><span></span><code>xCommand<span class="w"> </span>Video<span class="w"> </span>Selfview<span class="w"> </span>Set<span class="w"> </span>Mode:<span class="w"> </span>On<span class="w"> </span>FullScreenMode:<span class="w"> </span>On<span class="w"> </span>OnMonitorRole:<span class="w"> </span>First
+</code></pre></div>
+<p>In the <strong>Execute an xCommand</strong> Postman request, derive the command key for the <abbr title="Uniform Resource Locator">URL</abbr> and add the three arguments to the <code>arguments</code> object. Send the request and observe the device self-view.</p>
+<details class="success">
+<summary>Successful syntax and log output</summary>
+<div class="highlight"><pre><span></span><code><span class="err">POST https://webexapis.com/v1/xapi/command/Video.Selfview.Set</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"deviceId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ device_Id }}"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"Mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"On"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"FullScreenMode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"On"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"OnMonitorRole"</span><span class="p">:</span><span class="w"> </span><span class="s2">"First"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"> </span><span class="nt">"deviceId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ device_Id }}"</span><span class="p">,</span><span class="w"> </span><span class="nt">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Execute an xCommand with multiple arguments with the same name</summary>
+<p>Terminal form:</p>
+<div class="highlight"><pre><span></span><code>xCommand<span class="w"> </span>Video<span class="w"> </span>Input<span class="w"> </span>SetMainVideoSource<span class="w"> </span>ConnectorId:<span class="w"> </span><span class="m">1</span><span class="w"> </span>ConnectorId:<span class="w"> </span><span class="m">1</span><span class="w"> </span>Layout:<span class="w"> </span>Equal
+</code></pre></div>
+<p>Use the next request in the collection. Convert the repeated <code>ConnectorId</code> arguments into a JSON array, retain <code>Layout</code>, and send the command.</p>
+<details class="success">
+<summary>Successful syntax and log output</summary>
+<div class="highlight"><pre><span></span><code><span class="err">POST https://webexapis.com/v1/xapi/command/Video.Input.SetMainVideoSource</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"deviceId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ device_Id }}"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"ConnectorId"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nt">"Layout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Equal"</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Execute an xCommand with a multiline argument</summary>
+<p>Terminal form:</p>
+<div class="highlight"><pre><span></span><code>xCommand<span class="w"> </span>UserInterface<span class="w"> </span>Extensions<span class="w"> </span>Panel<span class="w"> </span>Save<span class="w"> </span>PanelId:<span class="w"> </span>wx1_lab_multilineCommand
+&lt;Extensions&gt;&lt;Panel&gt;&lt;PanelId&gt;wx1_lab_multilineCommand&lt;/PanelId&gt;&lt;Location&gt;HomeScreen&lt;/Location&gt;&lt;Icon&gt;Info&lt;/Icon&gt;&lt;Color&gt;#FF70CF&lt;/Color&gt;&lt;Name&gt;Cloud<span class="w"> </span>xAPI<span class="w"> </span>multiline<span class="w"> </span>command&lt;/Name&gt;&lt;ActivityType&gt;Custom&lt;/ActivityType&gt;&lt;/Panel&gt;&lt;/Extensions&gt;
+.
+</code></pre></div>
+<p>Use the multiline request. Keep <code>PanelId</code> in <code>arguments</code> and turn the <abbr title="Extensible Markup Language">XML</abbr> line into a JSON string in <code>body</code>; the body is not another argument. Send the request and confirm that the panel appears.</p>
+<details class="success">
+<summary>Successful syntax and log output</summary>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"deviceId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ device_Id }}"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"PanelId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wx1_lab_multilineCommand"</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"body"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;Extensions&gt;&lt;Panel&gt;&lt;PanelId&gt;wx1_lab_multilineCommand&lt;/PanelId&gt;&lt;Location&gt;HomeScreen&lt;/Location&gt;&lt;Icon&gt;Info&lt;/Icon&gt;&lt;Color&gt;#FF70CF&lt;/Color&gt;&lt;Name&gt;Cloud xAPI multiline command&lt;/Name&gt;&lt;ActivityType&gt;Custom&lt;/ActivityType&gt;&lt;/Panel&gt;&lt;/Extensions&gt;"</span>
+<span class="p">}</span>
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Execute an xCommand that generates data and returns a response</summary>
+<p>Terminal form:</p>
+<div class="highlight"><pre><span></span><code>xCommand<span class="w"> </span>UserInterface<span class="w"> </span>Extensions<span class="w"> </span>List<span class="w"> </span>ActivityType:<span class="w"> </span>Custom
+</code></pre></div>
+<p>Construct and send the Cloud command. Inspect <code>result.Extensions.Panel</code> for the panel created in the previous Lesson.</p>
+<details class="success">
+<summary>Successful syntax and log output</summary>
+<div class="highlight"><pre><span></span><code><span class="err">POST https://webexapis.com/v1/xapi/command/UserInterface.Extensions.List</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"deviceId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ device_Id }}"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"ActivityType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Custom"</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</details>
+</details>
+<h2 id="getting-and-setting-xconfigurations-rxp-55">Getting and setting xConfigurations <sub>(rxp-5.5)</sub></h2>
+<p>Cloud configuration requests use the <code>deviceConfigurations</code> resource. A <code>GET</code> reads a key; a <code>PATCH</code> uses JSON Patch to set (<code>replace</code>) or clear (<code>remove</code>) a configured value. The path ends in <code>/sources/configured/value</code>.</p>
+<details class="lesson" open="open">
+<summary>Lesson: Get an xConfiguration value</summary>
+<p>Terminal form:</p>
+<div class="highlight"><pre><span></span><code>xConfiguration<span class="w"> </span>Audio<span class="w"> </span>DefaultVolume
+</code></pre></div>
+<p>In the collection's request, derive the dot-separated configuration key, send it, and identify the effective <code>value</code> in the response.</p>
+<details class="success">
+<summary>Successful syntax and log output</summary>
+<div class="highlight"><pre><span></span><code><span class="err">GET https://webexapis.com/v1/deviceConfigurations?deviceId={{ device_Id }}&amp;key=Audio.DefaultVolume</span>
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Get multiple xConfiguration values under a common node</summary>
+<p>Terminal form:</p>
+<div class="highlight"><pre><span></span><code>xConfiguration<span class="w"> </span>Audio
+</code></pre></div>
+<p>Query the <code>Audio</code> node using the collection request. Compare the returned child keys with the single-key response.</p>
+<details class="success">
+<summary>Successful syntax and log output</summary>
+<div class="highlight"><pre><span></span><code><span class="err">GET https://webexapis.com/v1/deviceConfigurations?deviceId={{ device_Id }}&amp;key=Audio</span>
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Set a new xConfiguration value</summary>
+<p>Terminal form:</p>
+<div class="highlight"><pre><span></span><code>xConfiguration<span class="w"> </span>Audio<span class="w"> </span>DefaultVolume:<span class="w"> </span><span class="m">100</span>
+</code></pre></div>
+<p>In the PATCH scaffold, construct one JSON Patch operation that sets the configured value to <code>100</code>. Send it and compare the returned effective value.</p>
+<details class="success">
+<summary>Successful syntax and log output</summary>
+<div class="highlight"><pre><span></span><code><span class="err">PATCH https://webexapis.com/v1/deviceConfigurations?deviceId={{ device_Id }}</span>
+<span class="err">Content-Type: application/json-patch+json</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"op"</span><span class="p">:</span><span class="w"> </span><span class="s2">"replace"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Audio.DefaultVolume/sources/configured/value"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Set an xConfiguration to its default value</summary>
+<p>Remove the configured <code>Audio.DefaultVolume</code> value. This returns control to the default or a higher-precedence configuration source.</p>
+<details class="success">
+<summary>Successful syntax and log output</summary>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"op"</span><span class="p">:</span><span class="w"> </span><span class="s2">"remove"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Audio.DefaultVolume/sources/configured/value"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Set multiple xConfiguration values in a single request</summary>
+<p>Create two <code>replace</code> operations for these terminal forms:</p>
+<div class="highlight"><pre><span></span><code>xConfiguration<span class="w"> </span>Video<span class="w"> </span>Input<span class="w"> </span>AirPlay<span class="w"> </span>Mode:<span class="w"> </span>On
+xConfiguration<span class="w"> </span>Video<span class="w"> </span>Input<span class="w"> </span>AirPlay<span class="w"> </span>Beacon:<span class="w"> </span>Auto
+</code></pre></div>
+<details class="success">
+<summary>Successful syntax and log output</summary>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"op"</span><span class="p">:</span><span class="w"> </span><span class="s2">"replace"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Video.Input.AirPlay.Mode/sources/configured/value"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"On"</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"op"</span><span class="p">:</span><span class="w"> </span><span class="s2">"replace"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Video.Input.AirPlay.Beacon/sources/configured/value"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Auto"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+</details>
+</details>
+<h2 id="getting-xstatuses-rxp-56">Getting xStatuses <sub>(rxp-5.6)</sub></h2>
+<p>Cloud xAPI status requests query the current status data retained by Webex. The RoomOS device must be cloud connected for current data to be available.</p>
+<details class="lesson" open="open">
+<summary>Lesson: Get an xStatus value</summary>
+<p>Terminal form:</p>
+<div class="highlight"><pre><span></span><code>xStatus<span class="w"> </span>Audio<span class="w"> </span>Volume
+</code></pre></div>
+<p>Construct the status <code>name</code> value and send the request. Change the volume through the device <abbr title="User Interface">UI</abbr>, then send it again to observe the new value.</p>
+<details class="success">
+<summary>Successful syntax and log output</summary>
+<div class="highlight"><pre><span></span><code><span class="err">GET https://webexapis.com/v1/xapi/status?deviceId={{ device_Id }}&amp;name=Audio.Volume</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"> </span><span class="nt">"deviceId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ device_Id }}"</span><span class="p">,</span><span class="w"> </span><span class="nt">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"Audio"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"Volume"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Get multiple xStatus values under a common node</summary>
+<p>Terminal form:</p>
+<div class="highlight"><pre><span></span><code>xStatus<span class="w"> </span>Audio
+</code></pre></div>
+<p>Query the common <code>Audio</code> node, send the request, and compare the child values with the single <code>Audio.Volume</code> result.</p>
+<details class="success">
+<summary>Successful syntax and log output</summary>
+<div class="highlight"><pre><span></span><code><span class="err">GET https://webexapis.com/v1/xapi/status?deviceId={{ device_Id }}&amp;name=Audio</span>
+</code></pre></div>
+</details>
+</details>
+<h2 id="subscribing-to-xconfigurations-xstatuses-and-xevents-rxp-57">Subscribing to xConfigurations, xStatuses, and xEvents <sub>(rxp-5.7)</sub></h2>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>The Postman collection deliberately stops at request/response xAPI. Cloud notifications are implemented through a <strong>Workspace Integration</strong>, which an administrator enables in Control Hub. The integration receives approved status and event changes through either a public <abbr title="Hypertext Transfer Protocol Secure">HTTPS</abbr> webhook or long polling; it is an application deployment, not a one-device Postman request.</p>
+<p>This lab does not create, configure, or activate a Workspace Integration. Review the <a href="https://developer.webex.com/docs/workspace-integrations" target="_blank">Workspace Integrations guide</a> after completing the fundamentals. When you build one, request the narrowest xAPI access necessary and validate webhook signatures before processing payloads.</p>
+</div>
+<div class="admonition challenge">
+<p class="admonition-title">Challenge: identify the notification model</p>
+<p>Choose one visible event from this Lesson, such as <code>UserInterface.Extensions.Panel.Clicked</code>. Explain why its cloud notification needs an approved Workspace Integration rather than a direct device feedback subscription. Then identify whether a webhook or long polling better suits an internal service that cannot accept public inbound traffic.</p>
+</div>
+<h2 id="section-rxp-5-cleanup-rxp-58">Section rxp-5 Cleanup <sub>(rxp-5.8)</sub></h2>
+<div class="highlight"><pre><span></span><code>    ```shell title="Type into terminal and press Enter"
+    xConfig Audio DefaultVolume: 50
+    xCommand UserInterface Extensions Panel Remove PanelId: wx1_lab_multilineCommand
+    xCommand Video Selfview Set Mode: Off FullscreenMode: Off
+    xCommand Video Input SetMainVideoSource ConnectorId: 1
+    xCommand Audio Volume SetToDefault Device: Internal
+    xCommand HTTPFeedBack Deregister FeedbackSlot: 1 FeedbackSlot: 2 FeedbackSlot: 3 FeedbackSlot: 4
+    ```
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Cisco
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.indexes", "navigation.instant", "navigation.top", "navigation.footer", "search.suggest", "content.code.copy", "toc.integrate", "content.tooltips", "content.footnote.tooltips"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../../template_assets/js/newLoad.js"></script>
+      
+        <script src="../../../../template_assets/js/setInfo.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": false, "openEffect": "fade", "closeEffect": "fade", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

@@ -1,0 +1,596 @@
+{
+	"info": {
+		"_postman_id": "5f91b5bd-3ca3-4553-a5ad-fd250920b232",
+		"name": "WX1-Lab:1451-HTTP-PostMan-Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33432647",
+		"_collection_link": "https://bobby-cisco-devicetme.postman.co/workspace/New-Workspace~fa4d23cd-5f87-4d20-a2b2-11760c35282d/collection/33432647-5f91b5bd-3ca3-4553-a5ad-fd250920b232?action=share&source=collection_link&creator=33432647"
+	},
+	"item": [
+		{
+			"name": "HTTP",
+			"item": [
+				{
+					"name": "Section: rxp-3.3 - Executing xCommands",
+					"item": [
+						{
+							"name": "Execute an xCommand",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "<!-- Place your XML for [xCommand Video Selfview Set] in the Correct Location -->",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/putxml",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"putxml"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Execute multiple xCommands in a single request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "<!-- Place your XML for [xCommand UserInterface Message Rating Display] in the Correct Location -->\n<!-- Hint: All 3 share xCommand as a Highest Common Node, but 2 of them share UserInterface as a Common Node Path -->\n<Command>\n  <Video>\n    <Selfview>\n      <Set>\n        <Mode>Off</Mode>\n      </Set>\n    </Selfview>\n  </Video>\n  <UserInterface>\n    <WebView>\n      <Display>\n        <Mode>Modal</Mode>\n        <Url>https://roomos.cisco.com</Url>\n      </Display>\n    </WebView>\n  </UserInterface>\n</Command>",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/putxml",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"putxml"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Execute an xCommand with multiple arguments with the same name",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "<!-- Place your XML for [xCommand Video Input SetMainVideoSource] in the Correct Location -->\n<!-- Hint: You only have to duplicate the requested Parameter, nothing else -->\n<Command>\n  <UserInterface>\n    <WebView>\n      <Clear></Clear>\n    </WebView>\n    <Message>\n      <Rating>\n        <Clear></Clear>\n      </Rating>\n    </Message>\n  </UserInterface>\n  <Video>\n    <Selfview>\n      <Set>\n        <Mode>On</Mode>\n        <FullScreenMode>On</FullScreenMode>\n        <OnMonitorRole>First</OnMonitorRole>\n      </Set>\n    </Selfview>\n    <Input>\n      <SetMainVideoSource>\n        <ConnectorId>1</ConnectorId>\n        <Layout>Prominent</Layout>\n      </SetMainVideoSource>\n    </Input>\n  </Video>\n</Command>",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/putxml",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"putxml"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Execute an xCommand with a multiline argument",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "<!-- Place your XML for [xCommand UserInterface Extensions Panel Save] in the Correct Location -->\n<!-- Hint: Don't Wrap XML around XML! -->\n<Command>\n  <Video>\n    <Selfview>\n      <Set>\n        <Mode>Off</Mode>\n      </Set>\n    </Selfview>\n    <Input>\n      <SetMainVideoSource>\n        <ConnectorId>1</ConnectorId>\n        <Layout>Equal</Layout>\n      </SetMainVideoSource>\n    </Input>\n  </Video>\n</Command>",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/putxml",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"putxml"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Execute an xCommand which generates data and responds",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "<!-- Place your XML for [xCommand UserInterface Extensions List] in the Correct Location -->\n",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/putxml",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"putxml"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Section: rxp-3.4 - Getting and Setting xConfigurations",
+					"item": [
+						{
+							"name": "Set a new xConfiguration Value",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/xml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "<!-- Place your XML for [xConfiguration Audio DefaultVolume] in the Correct Location -->",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/putxml",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"putxml"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Setting multiple xConfiguration Values in a single Request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/xml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "<!-- Place your XML for [xConfiguration Audio DefaultVolume] in the Correct Location -->\n<!-- Hint: Both share xConfig as a Highest Common Node Path -->\n<Configuration>\n  <Audio>\n    <DefaultVolume>50</DefaultVolume>\n  </Audio>\n</Configuration>",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/putxml",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"putxml"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Getting an xConfiguration Value",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/xml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "<!-- Hint: You shouldn't write anything here ;) -->",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/getxml?location=",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"getxml"
+									],
+									"query": [
+										{
+											"key": "location",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Getting multiple xConfiguration Values under a common Node",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/xml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "<!-- Hint: You shouldn't write anything here ;) -->",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/getxml?location=",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"getxml"
+									],
+									"query": [
+										{
+											"key": "location",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Section: rxp-3.5 - Getting xStatuses",
+					"item": [
+						{
+							"name": "Getting an xStatus",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/xml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "<!-- Hint: You shouldn't write anything here ;) -->",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/getxml?location=",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"getxml"
+									],
+									"query": [
+										{
+											"key": "location",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Getting multiple xConfiguration Statuses under a common Node",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/xml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "<!-- Hint: You shouldn't write anything here ;) -->",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/getxml?location=Status/Audio",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"getxml"
+									],
+									"query": [
+										{
+											"key": "location",
+											"value": "Status/Audio"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Section: rxp-3.6 - Using WebHooks to subscribe to xConfigurations, xStatuses and xEvents",
+					"item": [
+						{
+							"name": "Subscribe to the full xConfiguration Branch",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "<Command>\n  <HttpFeedback>\n    <Register>\n      <Expression>Configuration/</Expression>\n      <FeedbackSlot>1</FeedbackSlot>\n      <ServerUrl>{{WebhookSite_Unique_Url}}</ServerUrl>\n    </Register>\n  </HttpFeedback>\n</Command>",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/putxml",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"putxml"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Subscribe to the full xStatus Branch",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "<Command>\n  <HttpFeedback>\n    <Register>\n      <Expression>Status/</Expression>\n      <FeedbackSlot>1</FeedbackSlot>\n      <ServerUrl>{{WebhookSite_Unique_Url}}</ServerUrl>\n    </Register>\n  </HttpFeedback>\n</Command>",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/putxml",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"putxml"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Subscribe to the full xEvent Branch",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "<Command>\n  <HttpFeedback>\n    <Register>\n      <Expression>Event/</Expression>\n      <FeedbackSlot>1</FeedbackSlot>\n      <ServerUrl>{{WebhookSite_Unique_Url}}</ServerUrl>\n    </Register>\n  </HttpFeedback>\n</Command>",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/putxml",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"putxml"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Subscribe to Specific Expressions on any Branch",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "<Command>\n  <HttpFeedback>\n    <Register>\n      <Expression>Status/Audio/Volume</Expression>\n      <Expression>Event/UserInterface/Extensions</Expression>\n      <FeedbackSlot>1</FeedbackSlot>\n      <ServerUrl>{{WebhookSite_Unique_Url}}</ServerUrl>\n    </Register>\n  </HttpFeedback>\n</Command>",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{device_ipAddress}}/putxml",
+									"protocol": "https",
+									"host": [
+										"{{device_ipAddress}}"
+									],
+									"path": [
+										"putxml"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{device_password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{device_username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "device_username",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "device_password",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "device_ipAddress",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "WebhookSite_Unique_Url",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

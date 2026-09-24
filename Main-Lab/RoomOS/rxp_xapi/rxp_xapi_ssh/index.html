@@ -1,0 +1,3562 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="LAB-11197: Deep-dive into Cisco RoomOS xAPIs">
+      
+      
+        <meta name="author" content="Bobby McGonigle, Christopher Norman">
+      
+      
+      
+        <link rel="prev" href="../rxp_xapi_intro/">
+      
+      
+        <link rel="next" href="../rxp_xapi_http/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../template_assets/webex75.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>SSH rxp-1 - LAB-11197: Deep-dive into Cisco RoomOS xAPIs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/customTextHighlight.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#access-roomos-xapi-via-ssh-section-rxp-1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" class="md-header__button md-logo" aria-label="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" data-md-component="logo">
+      
+  <img src="../../../../template_assets/webexLogo91.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LAB-11197: Deep-dive into Cisco RoomOS xAPIs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SSH <sup><sup>rxp-1</sup></sup>
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="indigo" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home&nbsp;<i class="fa-solid fa-house" style="color:#B197FC;"></i>
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../Setup/stp_intro/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Lab Setup&nbsp;<i class="fa-solid fa-gear"></i>
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../rxp_intro/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  RoomOS xAPI &amp; UserInterfaces&nbsp;<i class="fa-solid fa-video" style="color: #428bff;"></i>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Deployment/dep_intro/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Deployment&nbsp;<i class="fa-solid fa-cloud-arrow-up" style="color: #ff0000;"></i>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../Resources/res_tools/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tools&nbsp;<i class="fa-solid fa-gear"></i>
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Resources/res_guides/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Resources&nbsp;<i class="fa-solid fa-globe" style="color:#ffd903;"></i>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" class="md-nav__button md-logo" aria-label="LAB-11197: Deep-dive into Cisco RoomOS xAPIs" data-md-component="logo">
+      
+  <img src="../../../../template_assets/webexLogo91.png" alt="logo">
+
+    </a>
+    LAB-11197: Deep-dive into Cisco RoomOS xAPIs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home&nbsp;<i class="fa-solid fa-house" style="color:#B197FC;"></i>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Setup/stp_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Setup&nbsp;<i class="fa-solid fa-gear"></i>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked="">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS xAPI &amp; UserInterfaces&nbsp;<i class="fa-solid fa-video" style="color: #428bff;"></i>
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RoomOS xAPI &amp; UserInterfaces&nbsp;<i class="fa-solid fa-video" style="color: #428bff;"></i>
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked="">
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS xAPI
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RoomOS xAPI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rxp_xapi_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What are RoomOS xAPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH <sup><sup>rxp-1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH <sup><sup>rxp-1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#section-rxp-1-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section rxp-1 Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#establish-ssh-connection-to-device-rxp-11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Establish SSH Connection to Device (rxp-1.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#navigating-the-terminal-rxp-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Navigating the Terminal (rxp-1.2)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#executing-commands-rxp-13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executing Commands (rxp-1.3)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-setting-and-subscribing-to-xconfigurations-rxp-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting, Setting and Subscribing to xConfigurations (rxp-1.4)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-and-subscribing-to-status-rxp-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting and Subscribing to Status (rxp-1.5)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subscribing-to-events-rxp-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subscribing to Events (rxp-1.6)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tagging-your-xapi-calls-rxp-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tagging your xAPI Calls (rxp-1.7)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-rxp-1-cleanup-rxp-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section rxp-1 Cleanup (rxp-1.8)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rxp_xapi_http/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP <sup><sup>rxp-3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rxp_xapi_macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macros <sup><sup>rxp-6</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RoomOS UserInterfaces
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RoomOS UserInterfaces
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What are RoomOS UserInterfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features <sup><sup>rxu-1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extensions <sup><sup>rxu-2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_messages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Messages <sup><sup>rxu-3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_userInterface/rxp_ui_webContent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Content <sup><sup>rxu-4</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solution Exercises
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Solution Exercises
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_exercises/rxp_exe_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Abstract &amp; Best Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_2">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4_2" id="__nav_3_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macro Based Exercises
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Macro Based Exercises
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_2_1">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4_2_1" id="__nav_3_4_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_4_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_exercises/macros/rxp_exe_Quick_Docs_PT1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 1 - Start Simple <sup><sup>rxe-m1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rxp_exercises/macros/rxp_exe_Quick_Docs_PT2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 2 - Optimize <sup><sup>rxe-m2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4">
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment&nbsp;<i class="fa-solid fa-cloud-arrow-up" style="color: #ff0000;"></i>
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment&nbsp;<i class="fa-solid fa-cloud-arrow-up" style="color: #ff0000;"></i>
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment Lab Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3">
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Hub
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Control Hub
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_controlHub/dep_controlHub_prepDevices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tag Your Pod Device <sup><sup>dep-1.1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_controlHub/dep_controlHub_configTemplates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration Templates <sup><sup>dep-1.2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_controlHub/dep_controlHub_runCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Run Commands <sup><sup>dep-1.3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4">
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CE-Deploy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CE-Deploy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_localVsCloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connect Your Organization <sup><sup>dep-2.1</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_runCommands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bulk xAPI Commands <sup><sup>dep-2.2</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployBranding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Personalization <sup><sup>dep-2.3</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployMacros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macros &amp; UI Extensions <sup><sup>dep-2.4</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_deployLocalUsers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Device Users &amp; On-Premise Access <sup><sup>dep-2.5</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_backupsAndLogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    On-Prem Toolkit <sup><sup>dep-2.6</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_ceDeploy/dep_ceDeploy_cloud_dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fleet Intelligence <sup><sup>dep-2.7</sup></sup>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Deployment/dep_conclusion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment Conclusion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Resources/res_tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools&nbsp;<i class="fa-solid fa-gear"></i>
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources&nbsp;<i class="fa-solid fa-globe" style="color:#ffd903;"></i>
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Resources&nbsp;<i class="fa-solid fa-globe" style="color:#ffd903;"></i>
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Resources/res_guides/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Resources/res_communities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Communities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="access-roomos-xapi-via-ssh-section-rxp-1">Access RoomOS xAPI via <abbr title="Secure Shell">SSH</abbr> <sub>(section rxp-1)</sub></h1>
+<div class="admonition abstract">
+<p class="admonition-title">Abstract</p>
+<p>In this section, we'll dive into the various pieces of the RoomOS Device xAPI stack and how to make use of them in various ways over a Secure Shell (<abbr title="Secure Shell">SSH</abbr>) Session to a Cisco RoomOS Device.</p>
+<p>Understanding how to navigate a terminal session with a Cisco RoomOS Device will be instrumental in your device management and customization journey, but it's also a key integration pillar for many services on the market, such as a room control processors (Crestron, Extron, Etc)</p>
+</div>
+<h2 id="section-rxp-1-requirements">Section rxp-1 Requirements</h2>
+<div class="admonition important">
+<div class="admonition note inline end">
+<p class="admonition-title">Note</p>
+<p>This lab assumes you have access to a Cisco RoomOS Device that is already setup and ready for use. If your device is not registered and online, please do so before beginning</p>
+</div>
+<p><strong>Hardware</strong></p>
+<ul>
+<li>A Laptop</li>
+<li>A Cisco Desk, Board or Room Series Device running the most recent On Premise or Cloud Stable software<ul>
+<li>A Touch Controller is required when working on a Room Series Device. Either Room navigator or 3rd part touch display</li>
+<li>Preferred Device: Cisco Desk Series devices</li>
+</ul>
+</li>
+<li>A minimum of 1 camera (Either Integrated or External)<ul>
+<li>For systems using external cameras, such as a Quad Camera, this lab assumes your cameras is connected to ConnectorId 1 and configured for Camera ControlId 1</li>
+</ul>
+</li>
+</ul>
+<p><strong>Software</strong></p>
+<ul>
+<li>Laptop<ul>
+<li>Recommended Browser: Chrome or Firefox</li>
+<li>Recommended Terminal Software:<ul>
+<li>Command Prompt (Windows)</li>
+<li>Terminal (MAC)</li>
+<li><a href="https://apps.microsoft.com/detail/xpfnzksklbp7rj?hl=en-US&amp;gl=US">Putty</a> (Windows)</li>
+<li><a href="https://termius.com/">Termius</a> (Windows, MAC, Linux)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>RoomOS Device<ul>
+<li>Either the current On Premise or Cloud Stable release</li>
+</ul>
+</li>
+</ul>
+<p><strong>Network</strong></p>
+<ul>
+<li>Local Access to the RoomOS Device over port 22</li>
+<li>General access to the Internet</li>
+</ul>
+</div>
+<h2 id="establish-ssh-connection-to-device-rxp-11"><strong>Establish <abbr title="Secure Shell">SSH</abbr> Connection to Device</strong> <sub>(rxp-1.1)</sub></h2>
+<ul>
+<li>Open the Terminal application on your device</li>
+<li>Connect to the Device via <abbr title="Secure Shell">SSH</abbr> using the built in OpenSSH platform in your terminal window</li>
+</ul>
+<div class="admonition note inline end">
+<p class="admonition-title">Note</p>
+<p>Replace <hl_3>[USERNAME]</hl_3> with your Codec's Username and <hl_5>[HOST_ADDRESS]</hl_5> with your Codec's Host address (IPv4, IPv6, or FQDN)</p>
+</div>
+<div class="code-label" data-title="Type into terminal and press Enter">
+    <pre><code>ssh <w class="username">[ROOMOS_USERNAME]</w>@<w class="ipAddress">[ROOMOS_HOST_ADDRESS]</w></code></pre> 
+</div>
+
+<details class="warning">
+<summary>If you encountered an warning running the command above, click here</summary>
+<p>If you encounter the following warning</p>
+<div class="no-copy highlight"><pre><span></span><code>ssh [USERNAME]@[IP_ADDRESS]   
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the RSA key sent by the remote host is
+SHA256:############################################
+Please contact your system administrator.
+Add correct host key in [PATH]/.ssh/known_hosts to get rid of this message.
+Offending RSA key in [PATH]/.ssh/known_hosts:##
+Host key for [IP_ADDRESS] has changed and you have requested strict checking.
+Host key verification failed.
+</code></pre></div>
+<p>Double Check your device information and try again, if the information you entered is correct, try the following</p>
+<p>Then run the following command to clear an old <abbr title="Secure Shell">SSH</abbr> Sha Key
+Be sure to replace <hl_5>[HOST_ADDRESS]</hl_5> with your Codec's Host address (IPv4, IPv6, or FQDN)</p>
+<p></p><div class="code-label no-copy-code-button" data-title="Type into terminal and press Enter">
+    <pre class="no-copy-code-button"><code>ssh-keygen -R <hl_5><w class="ipAddress">[ROOMOS_HOST_ADDRESS]</w></hl_5></code></pre>
+</div><p></p>
+<hr>
+</details>
+<p><br></p>
+<ul>
+<li>The OpenSSH platform will ask for you to confirm the device before connecting<ul>
+<li>Type <hl_1>yes</hl_1> when prompted into the terminal, then hit enter  </li>
+<li>Type the <hl_7>password</hl_7> for the <hl_3><w class="username">[ROOMOS_USERNAME]</w></hl_3> account into the terminal when prompted, then hit enter<ul>
+<li>Password: <hl_3><copy><w class="password">[ROOMOS_PASSWORD]</w></copy></hl_3></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="admonition success">
+<p class="admonition-title">Successfully connecting to the Codec should prompt the following information and is now awaiting your input</p>
+<div class="no-copy highlight"><pre><span></span><code>Welcome to  
+Cisco Codec Release RoomOS [Codec_Software_Version]
+SW Release Date: [Codec_Software_ReleaseDate]
+*r Login successful
+OK
+</code></pre></div>
+</div>
+<h2 id="navigating-the-terminal-rxp-12"><strong>Navigating the Terminal</strong> <sub>(rxp-1.2)</sub></h2>
+<div class="admonition abstract">
+<p class="admonition-title">Abstract</p>
+<p>In a terminal session with a Cisco Codec, you can execute commands, get, set or subscribe to configs, get or subscribe to status information as well as subscribe to events.</p>
+<p>These are especially useful when developing a customization or troubleshooting a system.</p>
+<p>Click to expand each lesson below, execute the contents as directed in your terminal session and observe the responses in the terminal window.</p>
+</div>
+<details class="lesson" open="open">
+<summary>Lesson: Lists All User Command Nodes <sub>(rxp-1.2.1)</sub></summary>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>?
+</code></pre></div>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<p></p><pre><code>- User Commands -
+help            <hl_1>xcommand</hl_1>        <hl_2>xconfiguration</hl_2>  xdocument       <hl_3>xevent</hl_3>
+<hl_4>xfeedback</hl_4>       xgetxml         <hl_7>xpreferences</hl_7>    <hl_5>xstatus</hl_5>         xtransaction
+bye             echo            log             systemtools
+OK
+</code></pre><p></p>
+<p>We won't cover every shell command above, we'll only focus on <hl_2>xConfigurations</hl_2>, <hl_1>xCommands</hl_1>, <hl_5>xStatuses</hl_5>, <hl_3>xEvents</hl_3> and <hl_4>xFeedback</hl_4> as those contain all the Device xAPI references we need to develop a custom solution. But we'll also take a brief stop at <hl_7>xPreferences</hl_7> as it's important for <abbr title="Secure Shell">SSH</abbr> and Serial based integrations.</p>
+<p>For more information on the rest of those paths, check out the <a href="https://www.cisco.com/c/dam/en/us/td/docs/telepresence/endpoint/roomos-1114/api-reference-guide-roomos-1114.pdf">Offical xAPI Guide</a>.Page 33 defines all nodes</p>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Lists Terminal Preference Option <sub>(rxp-1.2.2)</sub></summary>
+<ul>
+<li>Lists Terminal Preference Options<ul>
+<li>The xPreferences command is used to set preferences for the RS-232 and <abbr title="Secure Shell">SSH</abbr> sessions. </li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xpref<span class="w"> </span>?
+</code></pre></div>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>xpreferences usage:
+  xpreferences outputmode &lt;terminal/xml/json&gt;
+OK
+</code></pre></div>
+<p>Setting <code>xpreferences outputmode</code> to JSON will change the terminal response output into a JSON format and likewise with <abbr title="Extensible Markup Language">XML</abbr></p>
+<p>Why might you consider JSON or <abbr title="Extensible Markup Language">XML</abbr>? </p>
+<ul>
+<li>Your customization environment may be able to handle responses from the xAPI more efficiently if it's in an output format that easier for your environment to ingest</li>
+<li>For testing, we'd recommend the terminal format, but when interfacing via a Room Control Processor or another service, you may have tools available to you to parse either JSON or <abbr title="Extensible Markup Language">XML</abbr> to optimize you solution</li>
+</ul>
+<details class="example">
+<summary>Click Here to review different Output Mode responses</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Terminal</label><label for="__tabbed_1_2"><abbr title="Extensible Markup Language">XML</abbr></label><label for="__tabbed_1_3">JSON</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="no-copy highlight"><pre><span></span><code>xpref outputmode terminal
+
+OK
+xStatus Audio Volume            
+*s Audio Volume: 50
+** end
+
+OK
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="no-copy highlight"><pre><span></span><code>xpref outputmode xml 
+xStatus Audio Volume
+&lt;XmlDoc resultId=""&gt;
+&lt;Status&gt;
+  &lt;Audio&gt;
+    &lt;Volume&gt;50&lt;/Volume&gt;
+  &lt;/Audio&gt;
+&lt;/Status&gt;
+&lt;/XmlDoc&gt;
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="no-copy highlight"><pre><span></span><code>xpref outputmode json    
+xStatus Audio Volume
+{
+  "Status": {
+    "Audio": {
+      "Volume": {
+        "Value": "50"
+      }
+    }
+  }
+}
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: List Device Command Node References <sub>(rxp-1.2.3)</sub></summary>
+<ul>
+<li>Lists all first level nodes of for xCommands</li>
+</ul>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xCommand<span class="w"> </span>?
+</code></pre></div>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>- User Commands -
+
+AirPlay          HttpClient       Provisioning     UserInterface    
+Audio            HttpFeedback     Proximity        UserManagement   
+Bookings         Logging          RemoteAccess     UserPresence     
+Call             Macros           RoomCleanup      Video            
+CallHistory      Message          RoomPreset       WebEngine        
+Camera           MicrosoftTeams   Security         Webex            
+Cameras          Network          SerialPort       WebRTC           
+Conference       Peripherals      Standby          Whiteboard       
+Diagnostics      Phonebook        SystemUnit       Zoom             
+Dial             Presentation     Time             
+
+OK
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: List Device Config Node References <sub>(rxp-1.2.4)</sub></summary>
+<ul>
+<li>Lists all first level nodes of for xConfigurations</li>
+</ul>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xConfiguration<span class="w"> </span>?
+</code></pre></div>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>- User Configurations -
+
+Apps              Logging           RoomAnalytics     ThousandEyes      
+Audio             Macros            RoomCleanup       Time              
+Bookings          MicrosoftTeams    RoomScheduler     UserInterface     
+CallHistory       Network           RTP               UserManagement    
+Cameras           NetworkServices   Security          Video             
+Conference        Peripherals       Sensors           VoiceControl      
+FacilityService   Phonebook         SerialPort        WebEngine         
+Files             Provisioning      SIP               Webex             
+HttpClient        Proximity         Standby           WebRTC            
+HttpFeedback      RemoteAccess      SystemUnit        Zoom              
+
+OK
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: List Device Status Node References <sub>(rxp-1.2.5)</sub></summary>
+<ul>
+<li>Lists all first level nodes of for xStatuses</li>
+</ul>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xStatus<span class="w"> </span>?
+</code></pre></div>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>- Status -
+
+Audio             ICE               Proximity         Time              
+Bookings          Logging           RemoteAccess      UserInterface     
+Call              MediaChannels     RoomAnalytics     Video             
+Cameras           MicrosoftTeams    RoomPreset        WebEngine         
+Capabilities      Network           SIP               Webex             
+Conference        NetworkServices   Standby           WebRTC            
+Diagnostics       Peripherals       SystemUnit        
+HttpFeedback      Provisioning      ThousandEyes      
+
+OK
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: List Device Event Node References <sub>(rxp-1.2.6)</sub></summary>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xEvent<span class="w"> </span>?
+</code></pre></div>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>xEvent ?
+** end
+
+OK
+</code></pre></div>
+</details>
+<details class="curious">
+<summary><img alt="🤔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f914.svg" title=":thinking:"> The output of <code>xEvent ?</code> was not what you expected?</summary>
+<p>Try Removing the <code>?</code> from <code>xEvent</code> and re-run the command</p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xEvent
+</code></pre></div>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>xEvent  
+*es Event Audio Input Connectors Ethernet SubId LoudspeakerActivity
+*es Event Audio Input Connectors Ethernet SubId NoiseLevel
+*es Event Audio Input Connectors Ethernet SubId PPMeter
+*es Event Audio Input Connectors Ethernet SubId VuMeter
+*es Event Audio Input Connectors HDMI Left PPMeter
+*es Event Audio Input Connectors HDMI Left VuMeter
+*es Event Audio Input Connectors HDMI Right PPMeter
+*es Event Audio Input Connectors HDMI Right VuMeter
+*es Event Audio Input Connectors Line PPMeter
+*es Event Audio Input Connectors Line VuMeter
+[... And the list goes on]
+OK
+</code></pre></div>
+</details>
+<p>All parent branches of the xAPI (TC, CE, and now RoomOS) have been in production for many years. The xEvent branch serves as a reminder that, as developers, we sometimes make decisions early on that have lasting effects. While there are differences in this branch that were introduced during earlier development, we have chosen to preserve them to ensure backwards compatibility with existing integrations. This approach helps avoid major disruptive changes for our community and supports solutions that are still in use today <img alt="😃" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f603.svg" title=":smiley:"></p>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Search for an xAPI using a Wildcard <code>//</code> <sub>(rxp-1.2.7)</sub></summary>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xConfiguration<span class="w"> </span>//<span class="w"> </span>Name<span class="w"> </span>?
+</code></pre></div>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="admonition note inline end">
+<p class="admonition-title">Note</p>
+<p>You can also place a wildcard in multiple places within a path</p>
+<div class="no-copy highlight"><pre><span></span><code>xConfiguration // Video // Name ?
+</code></pre></div>
+</div>
+<div class="no-copy highlight"><pre><span></span><code>xConfiguration // Name ?
+*? xConfiguration FacilityService Service[1] Name: &lt;S: 0, 1024&gt;
+*? xConfiguration FacilityService Service[2] Name: &lt;S: 0, 1024&gt;
+*? xConfiguration FacilityService Service[3] Name: &lt;S: 0, 1024&gt;
+*? xConfiguration FacilityService Service[4] Name: &lt;S: 0, 1024&gt;
+*? xConfiguration FacilityService Service[5] Name: &lt;S: 0, 1024&gt;
+*? xConfiguration Network[1] DNS Domain Name: &lt;S: 0, 64&gt;
+*? xConfiguration SystemUnit Name: &lt;S: 0, 50&gt;
+*? xConfiguration UserInterface NameAndSiteLabels Mode: &lt;Auto, Hidden&gt;
+*? xConfiguration UserInterface Theme Name: &lt;Auto, Light, Night&gt;
+*? xConfiguration Video Input Connector[1] Name: &lt;S: 0, 50&gt;
+*? xConfiguration Video Input Connector[2] Name: &lt;S: 0, 50&gt;
+*? xConfiguration Video Input Connector[3] Name: &lt;S: 0, 50&gt;
+*? xConfiguration Video Input Connector[4] Name: &lt;S: 0, 50&gt;
+
+OK
+</code></pre></div>
+</details>
+</details>
+<details class="lesson">
+<summary>Lesson: Discover xAPI Documentation using <code>??</code> <sub>(rxp-1.2.8)</sub></summary>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xConfiguration<span class="w"> </span>Audio<span class="w"> </span>DefaultVolume<span class="w"> </span>??
+</code></pre></div>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>*? xConfiguration Audio DefaultVolume: &lt;0..100&gt;
+*? - Define the default volume for the speakers. For all devices except the Desk series, the volume is set to this level when you switch on the device or restart it. Desk devices remember the last audio level set by the user also after a restart.
+You can use the controls on the user interface or the Audio Volume commands to change the volume both in call and out of call. The Audio Volume SetToDefault command resets the volume to the default value.
+*? 100
+*? 0
+*? - Default value: 50
+
+OK
+</code></pre></div>
+</details>
+</details>
+<h2 id="executing-commands-rxp-13"><strong>Executing Commands</strong> <sub>(rxp-1.3)</sub></h2>
+<div class="admonition abstract">
+<p class="admonition-title">xCommands</p>
+<p>Commands instruct the device to execute actions. Examples include dialing a number or to search the phone book. All commands executed via <abbr title="Secure Shell">SSH</abbr> or RS232 start with the prefix <hl_2>xCommand</hl_2> followed by a command path</p>
+<p>Click to expand each xCommand Lesson below, execute each task in your terminal session as instructed and observe the responses in your terminal window as well as observe what happens to your Cisco RoomOS Device after each command is run</p>
+</div>
+<details class="lesson" open="open">
+<summary>Lesson: Execute an xCommand <sub>(rxp-1.3.1)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xCommand Video SelfView Set</p>
+</li>
+<li>
+<p><strong>Task</strong>:</p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xCommand<span class="w"> </span>Video<span class="w"> </span>SelfView<span class="w"> </span>Set<span class="w"> </span>Mode:<span class="w"> </span>On<span class="w"> </span>FullscreenMode:<span class="w"> </span>On<span class="w"> </span>OnMonitorRole:<span class="w"> </span>First
+</code></pre></div>
+<ul>
+<li>Observe the change to your Codec's Display, you should see your camera's SelfView Video in Full Screen on the <abbr title="On Screen Display">OSD</abbr> of your device.</li>
+</ul>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xCommand<span class="w"> </span>Video<span class="w"> </span>SelfView<span class="w"> </span>Set<span class="w"> </span>Mode:<span class="w"> </span>On<span class="w"> </span>FullscreenMode:<span class="w"> </span>Off
+</code></pre></div>
+<ul>
+<li>Observe the change to your Codec's Display, you should see your camera feed in a Picture in Picture (<abbr title="Picture in Picture">PIP</abbr>) Window</li>
+</ul>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xCommand<span class="w"> </span>Video<span class="w"> </span>SelfView<span class="w"> </span>Set<span class="w"> </span>Mode:<span class="w"> </span>Off
+</code></pre></div>
+<ul>
+<li>Now your camera video should be closed</li>
+</ul>
+</li>
+</ul>
+<details class="tip">
+<summary>Additional Info</summary>
+<p>Notice when we set the Mode parameter to <hl_1>On</hl_1> we included the FullScreenMode and OnMonitorRole parameters, but when we decided to set FullScreenMode <hl_7>Off</hl_7>, we left out OnMonitorRole.</p>
+<p>These are what's known as <hl_3>Optional Parameters</hl_3>, which are parameter's that are not required to be added in order to execute a command. These optional parameters have a default value that may or may not be applied and this is largely determined by the independent xAPI itself. You may also have <hl_5>Required Parameters</hl_5>. Required parameters must be run or else the xCommand will error out in the console and these required parameters are specifically called out in the documentation for the API.</p>
+</details>
+<p>As you explore the API, feel free to click on the <hl_0>xAPI</hl_0> link at the bottom of each lesson to Learn more about the xAPI you're working with.</p>
+<p><roomosdoc>xCommand Video SelfView Set</roomosdoc></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Execute an xCommand with multiple arguments with the same name <sub>(rxp-1.3.2)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI(s)</strong>:</p>
+<ul>
+<li>xCommand Video SelfView Set</li>
+<li>xCommand Video Input SetMainVideoSource</li>
+</ul>
+</li>
+<li>
+<p><strong>Task</strong>:</p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xCommand<span class="w"> </span>Video<span class="w"> </span>SelfView<span class="w"> </span>Set<span class="w"> </span>Mode:<span class="w"> </span>On<span class="w"> </span>FullscreenMode:<span class="w"> </span>On
+</code></pre></div>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xCommand<span class="w"> </span>Video<span class="w"> </span>Input<span class="w"> </span>SetMainVideoSource<span class="w"> </span>ConnectorId:<span class="w"> </span><span class="m">1</span><span class="w"> </span>ConnectorId:<span class="w"> </span><span class="m">1</span>
+</code></pre></div>
+<ul>
+<li>Observe the change to your Codec's Display, you should see 2 instances of your camera feed spread equally in FullScreen</li>
+</ul>
+<details class="tip">
+<summary>Additional Info</summary>
+<ul>
+<li>
+<p>xCommand Video Input SetMainVideoSource, and other xAPIs like it offer some parameters that allow you to enter them in multiple times. Notice how we used <hl_6>ConnectorId: 1</hl_6> twice. This will create a 2x1 composition of your first video input connector and set this as your <abbr title="Your camera feed rendered in SelfView or sent to the Far End of a Video Call">MainSource</abbr> by default. This will effect SelfView and what you output on the far end of the Video Call.</p>
+</li>
+<li>
+<p>Even though it's <hl_7>NOT</hl_7> practical to send a duplicate camera source into a call as we are now, it allows us a chance to interact with this xAPI and understand how it operates. This xAPI in particular was built to handle multiple video source inputs. For instance, if you had a Room Kit EQ with 4 cameras connected, you can compose all 4 cameras as apart of your <abbr title="Your camera feed rendered in SelfView or sent to the Far End of a Video Call">MainSource</abbr>, giving you an opportunity to visually communicate to the Far End in new ways</p>
+</li>
+</ul>
+</details>
+<details class="success">
+<summary>View Successful <abbr title="On Screen Display">OSD</abbr> Output</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-2-3_SetMain-2xEqual.png" data-title="Official API Doc" data-desc-position="top"><img alt="Official API Doc" src="../images/2-2-3_SetMain-2xEqual.png" width="400"></a>
+</figure><p></p>
+</details>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xCommand<span class="w"> </span>Video<span class="w"> </span>Input<span class="w"> </span>SetMainVideoSource<span class="w"> </span>ConnectorId:<span class="w"> </span><span class="m">1</span><span class="w"> </span>ConnectorId:<span class="w"> </span><span class="m">1</span><span class="w"> </span>Layout:<span class="w"> </span>PIP
+</code></pre></div>
+<ul>
+<li>Observe the change to your Codec's Display, you should see 2 instances of your camera feed, 1 FullScreen and another in a <abbr title="Picture in Picture">PIP</abbr> window</li>
+</ul>
+<details class="tip">
+<summary>Additional Info</summary>
+<p>xCommand Video Input SetMainVideoSource has more than one parameter we can use to alter the composition in our <abbr title="Your camera feed rendered in SelfView or sent to the Far End of a Video Call">MainSource</abbr>. By default, the <hl_1>Layout</hl_1> parameter is set to a value of <hl_1>Equal</hl_1>, but we could opt for <hl_2><abbr title="Picture in Picture">PIP</abbr></hl_2> or <hl_3>Prominent</hl_3> as <hl_1>Layout</hl_1> values as well.</p>
+</details>
+<details class="success">
+<summary>View Successful <abbr title="On Screen Display">OSD</abbr> Output</summary>
+<p>Successful execution of this command, with <hl_2><abbr title="Picture in Picture">PIP</abbr></hl_2> set as the <hl_1>Layout</hl_1>, will look similar to image below</p>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-2-3_SetMain-2xPIP.png" data-title="Official API Doc" data-desc-position="top"><img alt="Official API Doc" src="../images/2-2-3_SetMain-2xPIP.png" width="400"></a>
+</figure><p></p>
+</details>
+<ul>
+<li>Lets wrap this lesson up by setting your <abbr title="Your camera feed rendered in SelfView or sent to the Far End of a Video Call">MainSource</abbr> back to a single connector and disabling SelfView</li>
+</ul>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xCommand<span class="w"> </span>Video<span class="w"> </span>Input<span class="w"> </span>SetMainVideoSource<span class="w"> </span>ConnectorId:<span class="w"> </span><span class="m">1</span>
+xCommand<span class="w"> </span>Video<span class="w"> </span>SelfView<span class="w"> </span>Set<span class="w"> </span>Mode:<span class="w"> </span>Off
+</code></pre></div>
+<ul>
+<li>Observe the change to your Codec's Display, your SelfView should be gone now</li>
+</ul>
+</li>
+</ul>
+<p><roomosdoc>xCommand Video SelfView Set</roomosdoc>
+<roomosdoc>xCommand Video Input SetMainVideoSource</roomosdoc></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Execute an xCommand with a multiline argument  <sub>(rxp-1.3.3)</sub></summary>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Some commands require a larger body of data. This data is written as a large string; some written in a variety of formats and this format is outlined by the individual xAPI's documentation</p>
+<p>When working in a terminal window, multiline commands are formatted as follows:</p>
+<div class="admonition example">
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">Base Structure</label><label for="__tabbed_2_2">Full xAPI Example</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="no-copy highlight"><pre><span></span><code>[Command Path]          # Your xCommand Path to run
+[Multi Line Content]    # Your Multi Line content (Body)
+.                       # Terminate your Multi Line content with a dot .
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="no-copy highlight"><pre><span></span><code>xCommand Macros Macro Save Name: Test   # Your xCommand Path to run
+import xapi from 'xapi';                # Your Multi Line content (Body)
+
+console.log('Hello World');
+.                                       # Terminate your Multi Line content with a dot .
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command must be terminated with a dot <hl_0>.</hl_0> on the last line to indicate the command is complete</p>
+</div>
+</div>
+</div>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xCommand UserInterface Extensions Panel Save</p>
+</li>
+<li>
+<p><strong>Task</strong>:</p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xCommand<span class="w"> </span>UserInterface<span class="w"> </span>Extensions<span class="w"> </span>Panel<span class="w"> </span>Save<span class="w"> </span>PanelId:<span class="w"> </span>wx1_lab_multilineCommand
+&lt;Extensions&gt;&lt;Panel&gt;&lt;Order&gt;1&lt;/Order&gt;&lt;PanelId&gt;wx1_lab_multilineCommand&lt;/PanelId&gt;&lt;Location&gt;HomeScreen&lt;/Location&gt;&lt;Icon&gt;Info&lt;/Icon&gt;&lt;Color&gt;#1170CF&lt;/Color&gt;&lt;Name&gt;MultiLine<span class="w"> </span>Command<span class="w"> </span><span class="o">[</span>Section<span class="w"> </span><span class="o">(</span>rxp-1.3<span class="o">)]</span>&lt;/Name&gt;&lt;ActivityType&gt;Custom&lt;/ActivityType&gt;&lt;/Panel&gt;&lt;/Extensions&gt;
+.
+</code></pre></div>
+</li>
+<li>
+<p>Observe the change to your Codec's Display, you should see a new Panel Button labeled <code>MultiLine Command [Section (rxp-1.3)]</code> on your Touch Control interface</p>
+</li>
+</ul>
+<details class="success">
+<summary>View Successful <abbr title="On Screen Display">OSD</abbr> output</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-2-3_UI-Panel-Save.png" data-title="Official API Doc" data-desc-position="top"><img alt="Official API Doc" src="../images/2-2-3_UI-Panel-Save.png" width="600"></a>
+</figure><p></p>
+</details>
+<p><roomosdoc>xCommand UserInterface Extensions Panel Save</roomosdoc></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Execute an xCommand which generates data and responds  <sub>(rxp-1.3.4)</sub></summary>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Some commands will generate data and output a response of that data. All commands will respond with either "OK" or "Error" but other commands can provide additional information.</p>
+</div>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xCommand Extensions List</p>
+</li>
+<li>
+<p><strong>Task</strong>:</p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xCommand<span class="w"> </span>UserInterface<span class="w"> </span>Extensions<span class="w"> </span>List<span class="w"> </span>ActivityType:<span class="w"> </span>Custom
+</code></pre></div>
+</li>
+<li>
+<p>Observe your Terminal Window's output, you should see details of both the <code>MultiLine Command [Section (rxp-1.3)]</code> panel you loaded in previously as well as the <code>Subscription Assistant</code> panel details</p>
+</li>
+</ul>
+<details class="success">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>OK
+*r ExtensionsListResult (status=OK): 
+*r ExtensionsListResult Extensions Version: "1.11"
+*r ExtensionsListResult Extensions Panel 1 Icon: Custom
+*r ExtensionsListResult Extensions Panel 1 Location: HomeScreenAndCallControls
+*r ExtensionsListResult Extensions Panel 1 ActivityType: Custom
+*r ExtensionsListResult Extensions Panel 1 Name: "Subscription Assistant"
+*r ExtensionsListResult Extensions Panel 1 PanelId: "subAssistLab"
+*r ExtensionsListResult Extensions Panel 1 Origin: local
+*r ExtensionsListResult Extensions Panel 1 Order: 99
+[...]
+*r ExtensionsListResult Extensions Panel 2 Icon: Info
+*r ExtensionsListResult Extensions Panel 2 Location: HomeScreen
+*r ExtensionsListResult Extensions Panel 2 ActivityType: Custom
+*r ExtensionsListResult Extensions Panel 2 Name: "MultiLine Command [Section (rxp-1.3)]"
+*r ExtensionsListResult Extensions Panel 2 PanelId: "wx1_lab_multilineCommand"
+*r ExtensionsListResult Extensions Panel 2 Origin: local
+*r ExtensionsListResult Extensions Panel 2 Order: 1
+*r ExtensionsListResult Extensions Panel 2 Color: "#1170CF"
+*r ExtensionsListResult Extensions Panel 2 Visibility: Auto
+</code></pre></div>
+</details>
+<p><roomosdoc>xCommand UserInterface Extensions List</roomosdoc></p>
+</details>
+<h2 id="getting-setting-and-subscribing-to-xconfigurations-rxp-14"><strong>Getting, Setting and Subscribing to xConfigurations</strong> <sub>(rxp-1.4)</sub></h2>
+<div class="admonition abstract">
+<p class="admonition-title">xConfigurations</p>
+<p>Configurations are device settings that persistent across device boots.</p>
+<p>Click to expand each xConfiguration Lesson below, execute them in your terminal session and observe the responses in the terminal window</p>
+</div>
+<details class="lesson" open="open">
+<summary>Lesson: Getting an xConfiguration Value <sub>(rxp-1.4.1)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xConfiguration Audio DefaultVolume</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xConfiguration<span class="w"> </span>Audio<span class="w"> </span>DefaultVolume
+</code></pre></div>
+<ul>
+<li>Observe your Terminal Window's output, you should see the value for your Audio DefaultVolume</li>
+</ul>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>*c xConfiguration Audio DefaultVolume: 50
+** end
+
+OK
+</code></pre></div>
+</details>
+</li>
+</ul>
+<p><roomosdoc>xConfiguration Audio DefaultVolume</roomosdoc></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Set a new xConfiguration Value <sub>(rxp-1.4.2)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xConfiguration Audio DefaultVolume</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xConfiguration<span class="w"> </span>Audio<span class="w"> </span>DefaultVolume:<span class="w"> </span><span class="m">75</span>
+</code></pre></div>
+<ul>
+<li>Observe your terminal output and review the response</li>
+</ul>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>** end
+
+OK
+</code></pre></div>
+</details>
+<ul>
+<li>Now that we've set the default volume to 75, let's double check our work by getting that value one more time</li>
+</ul>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xConfiguration<span class="w"> </span>Audio<span class="w"> </span>DefaultVolume
+</code></pre></div>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>*c xConfiguration Audio DefaultVolume: 75
+** end
+
+OK
+</code></pre></div>
+</details>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <hl_0>getting</hl_0> and <hl_0>setting</hl_0> of an xConfiguration only differs slightly when accessing via a terminal.</p>
+<p>Click on the tabs below to see the differences side by side</p>
+<div class="admonition blank">
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><input id="__tabbed_3_2" name="__tabbed_3" type="radio"><div class="tabbed-labels"><label for="__tabbed_3_1">Get xConfiguration</label><label for="__tabbed_3_2">Set xConfiguration</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>xConfiguration Audio DefaultVolume</p>
+</div>
+<div class="tabbed-block">
+<p>xConfiguration Audio DefaultVolume<hl_3>: 75</hl_3></p>
+</div>
+</div>
+</div>
+</div>
+<details class="curious">
+<summary><img alt="🤔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f914.svg" title=":thinking:"> Do xConfigurations offer Multiple Parameters or have Multiline execution?</summary>
+<p>No, that's solely related to xCommands. xConfigurations only ever contain 1 value and though some of those values can be quite long, they are set as a single line string in the terminal window</p>
+</details>
+</div>
+<p><roomosdoc>xConfiguration Audio DefaultVolume</roomosdoc></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Get multiple xConfiguration Values under a Common Node <sub>(rxp-1.4.3)</sub></summary>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>In many cases, you may want to pull information in bulk. We can do this easily by running an xConfiguration Get request on a <hl_0>Higher Common Node</hl_0> in the xAPI path</p>
+<div class="admonition curious">
+<p class="admonition-title">What do we mean by <code>Higher Common Node</code></p>
+<p>Click on the tabs below, to see how we'll change our requests by accessing a <code>Higher Common Node</code> on each level of an xAPI Path</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:4"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"><input id="__tabbed_4_2" name="__tabbed_4" type="radio"><input id="__tabbed_4_3" name="__tabbed_4" type="radio"><input id="__tabbed_4_4" name="__tabbed_4" type="radio"><div class="tabbed-labels"><label for="__tabbed_4_1">Full xAPI Path</label><label for="__tabbed_4_2">Next Higher Common Node</label><label for="__tabbed_4_3">Highest Common Node</label><label for="__tabbed_4_4">View Visual Diagram</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><ins class="critic">xConfiguration Bluetooth Allowed</ins></p>
+</div>
+<div class="tabbed-block">
+<p><ins class="critic">xConfiguration Bluetooth</ins> <del class="critic">Allowed</del></p>
+</div>
+<div class="tabbed-block">
+<p><ins class="critic">xConfiguration</ins> <del class="critic">Bluetooth Allowed</del></p>
+</div>
+<div class="tabbed-block">
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This Diagram only show a very small subset of our xAPI. We have thousands of xAPI to explore <img alt="😃" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f603.svg" title=":smiley:"></p>
+</div>
+<pre class="mermaid"><code>flowchart TD
+  xAPI --&gt; |Highest Common Node| A
+  A[xConfiguration] --&gt;|Next Node| B(Audio)
+  B --&gt; bb(Default Volume)
+  B --&gt; bc(Input)
+  B --&gt; ba(...)
+  bc --&gt; bd(...)
+  A --&gt; |Next Node| C(Network)
+  C --&gt; CC(IPv4)
+  CC --&gt; CCC(Address)
+  CC --&gt; CCD(Gateway)
+  CC --&gt; CCE(...)
+  A --&gt; |Next Node| D(UserInterface)
+  D --&gt; DD(Message)
+  D --&gt; DF(Extensions)
+  D --&gt; DG(...)
+  DD --&gt; DDE(...)
+  DF --&gt; DDF(...)
+  C --&gt; CD(...) 
+  A --&gt; |Next Node| E(Video)
+  E --&gt; EE(Input)
+  EE --&gt; EEE(...)
+  E --&gt; EF(Output)
+  EF --&gt; EEF(...)
+  E --&gt; EG(...)
+  A --&gt; |Nodes Continued| F(...)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xConfiguration Audio</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xConfiguration<span class="w"> </span>Audio
+</code></pre></div>
+<ul>
+<li>Observe your terminal output and review the response</li>
+</ul>
+</li>
+</ul>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>*c xConfiguration Audio Input Value: 75
+*c xConfiguration Audio Input HDMI 1 Level: -5
+*c xConfiguration Audio Input HDMI 1 Mode: On
+*c xConfiguration Audio Input HDMI 1 VideoAssociation MuteOnInactiveVideo: On
+*c xConfiguration Audio Input Microphone 1 Mode: On
+*c xConfiguration Audio Input MicrophoneMode: Focused
+*c xConfiguration Audio Input USBC 1 Level: -5
+*c xConfiguration Audio Input USBC 1 Mode: On
+*c xConfiguration Audio Input USBC 1 VideoAssociation MuteOnInactiveVideo: On
+*c xConfiguration Audio Input USBMicrophone 1 EchoControl Mode: On
+*c xConfiguration Audio Input USBMicrophone 1 Level: 5
+*c xConfiguration Audio Input USBMicrophone 1 Zone: 1
+*c xConfiguration Audio Microphones Mute Enabled: True
+*c xConfiguration Audio Microphones NoiseRemoval Mode: Enabled
+*c xConfiguration Audio Microphones UsbPassthrough MuteButton: Inactive
+*c xConfiguration Audio Microphones VoiceActivityDetector Mode: Off
+*c xConfiguration Audio Output InternalSpeaker Mode: On
+*c xConfiguration Audio Panning HeadsetAnalog BinauralProcessing: True
+*c xConfiguration Audio Panning HeadsetAnalog Mode: Auto
+*c xConfiguration Audio Panning HeadsetUSB BinauralProcessing: False
+*c xConfiguration Audio Panning HeadsetUSB Mode: Auto
+*c xConfiguration Audio Panning Mode: Auto
+*c xConfiguration Audio SoundsAndAlerts RingTone: "Sunrise"
+*c xConfiguration Audio SoundsAndAlerts RingVolume: 0
+*c xConfiguration Audio USB Mode: SpeakerAndMicrophone
+*c xConfiguration Audio USB VolumeControl Capture Mode: Bypass
+*c xConfiguration Audio USB VolumeControl Capture Value: 0
+*c xConfiguration Audio USB VolumeControl Playback Mode: Bypass
+*c xConfiguration Audio USB VolumeControl Playback Value: 0
+*c xConfiguration Audio Ultrasound MaxVolume: 70
+** end
+</code></pre></div>
+<p>By simply removing <hl_7><code>DefaultVolume</code></hl_7> from <hl_1>xConfiguration Audio</hl_1>, we get all of the Configurations listed under the Audio Node of the Codec</p>
+</details>
+<p><roomosfind>xConfiguration Audio</roomosfind></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Subscribing to an xConfiguration  <sub>(rxp-1.4.4)</sub></summary>
+<details class="curious">
+<summary><img alt="🤔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f914.svg" title=":thinking:"> What do we mean by Subscribe?</summary>
+<p>A <hl_6>subscription</hl_6>, also called a <hl_4>feedback registration</hl_4> in an <abbr title="Secure Shell">SSH</abbr> terminal session, is a way to monitor changes to any xConfigurations, xStatuses, or xEvents using xAPI.</p>
+<ul>
+<li>
+<p>This lets you automatically watch for changes as they happen, and react to them—for example, to automate a process—without needing to keep checking the value yourself.</p>
+</li>
+<li>
+<p>When you start a subscription, you won’t see any results right away. You’ll only see something printed to the console <em>after</em> a change happens in that xAPI branch.</p>
+</li>
+<li>
+<p>If you need to know the current value as soon as your script starts, you should perform a Get request against the same branch to retrieve it, then subscribe to monitor for any future changes.</p>
+</li>
+</ul>
+</details>
+<ul>
+<li>
+<p><strong>xAPI:</strong> xConfiguration Audio DefaultVolume</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback<span class="w"> </span>Register<span class="w"> </span>Configuration/Audio/DefaultVolume
+</code></pre></div>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface<ul>
+<li>Under the xConfigurations Page, move the Slider labeled <hl_0>Audio DefaultVolume</hl_0> to a new position and release</li>
+<li>Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6> as that value changes<ul>
+<li><hl_3>Optional</hl_3>: Move the slider a few more times to see more changes come in</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="gif">
+<summary>Click to Compare your Terminal Output</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-2-4_xConfig-Subscribe-DefaultVolume.gif" data-title="Official API Doc" data-desc-position="top"><img alt="Official API Doc" src="../images/2-2-4_xConfig-Subscribe-DefaultVolume.gif" width="600"></a>
+</figure><p></p>
+</details>
+<details class="gif">
+<summary>View Subscription Assistant Operation</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/SubscriptionAssitantMacro-Operation.gif" data-title="SubAssist Operation" data-desc-position="top"><img alt="SubAssist Operation" src="../images/SubscriptionAssitantMacro-Operation.gif" width="600"></a>
+</figure><p></p>
+</details>
+</li>
+</ul>
+<p><roomosdoc>xConfiguration Audio DefaultVolume</roomosdoc></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Unsubscribing from an xConfiguration  <sub>(rxp-1.4.5)</sub></summary>
+<p>Just as we can subscribe to information, we can unsubscribe from that same information</p>
+<details class="curious">
+<summary><img alt="🤔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f914.svg" title=":thinking:"> Why bother with Unsubscribing?</summary>
+<p>Today, we have a limit of 50 unique subscriptions (or feedback registrations) that can be enabled on a device at any given time.</p>
+<p>Documented in the <a href="https://www.cisco.com/c/dam/en/us/td/docs/telepresence/endpoint/roomos-2602/api-reference-guide-roomos-2602.pdf" target="_blank">Official xAPI Guide</a></p>
+<p>So as your solutions grow, managing your subscriptions can become increasingly more important.</p>
+</details>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xConfiguration Audio DefaultVolume</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback<span class="w"> </span>Deregister<span class="w"> </span>Configuration/Audio/DefaultVolume
+</code></pre></div>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface<ul>
+<li>Under the xConfigurations Page, move the Slider labeled <mark>Audio DefaultVolume</mark> to a new position and release</li>
+<li>Observe your <hl_6>Terminal Window's</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>Terminal Window</hl_6><ul>
+<li><hl_3>Optional</hl_3>: Move the slider a few more times to verify</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><roomosdoc>xConfiguration Audio DefaultVolume</roomosdoc></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Subscribe to Multiple xConfigurations under a Common Node  <sub>(rxp-1.4.6)</sub></summary>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Just as we can Get multiple xConfiguration values, we can also subscribe to multiple xConfiguration values under a Higher Common Node</p>
+<p>Subscribing to a Higher Common Node doesn't consume multiple subscriptions, in fact it only consumes 1 of the 50 alloted to you. This can allow you to subscribe to a larger dataset while consuming less subscriptions in your automation.</p>
+<div class="admonition example">
+<p>Click on the tabs below, to see how we'll change our requests by accessing a <code>Higher Common Node</code> on each level of an xAPI Path</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"><input id="__tabbed_5_2" name="__tabbed_5" type="radio"><input id="__tabbed_5_3" name="__tabbed_5" type="radio"><div class="tabbed-labels"><label for="__tabbed_5_1">Full xAPI Path</label><label for="__tabbed_5_2">Next Higher Common Node</label><label for="__tabbed_5_3">Highest Common Node</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>xFeedback Register <hl_1>Configuration/Bluetooth/Allowed</hl_1></p>
+</div>
+<div class="tabbed-block">
+<p>xFeedback Register <hl_1>Configuration/Bluetooth</hl_1><del class="critic">/Allowed</del></p>
+</div>
+<div class="tabbed-block">
+<p>xFeedback Register <hl_1>Configuration</hl_1><del class="critic">/Bluetooth/Allowed</del></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xConfiguration Video Input Airplay</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback<span class="w"> </span>Register<span class="w"> </span>Configuration/Video/Input/AirPlay
+</code></pre></div>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface<ul>
+<li>Under the xConfigurations Page, press the toggles and buttons in the <hl_0>Airplay</hl_0> row</li>
+<li>Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6><ul>
+<li><hl_3>Optional</hl_3>: Press those buttons and switches a few times to see more changes come in</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="gif">
+<summary>Click to Compare your Terminal Output</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-2-4_xConfig-Subscribe-Airplay.gif" data-title="Official API Doc" data-desc-position="top"><img alt="Official API Doc" src="../images/2-2-4_xConfig-Subscribe-Airplay.gif" width="600"></a>
+</figure><p></p>
+</details>
+<details class="gif">
+<summary>View Subscription Assistant Operation</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/SubscriptionAssitantMacro-Operation.gif" data-title="SubAssist Operation" data-desc-position="top"><img alt="SubAssist Operation" src="../images/SubscriptionAssitantMacro-Operation.gif" width="600"></a>
+</figure><p></p>
+</details>
+</li>
+</ul>
+<p><roomosfind>xConfiguration Video Input Airplay</roomosfind></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Unsubscribe to Multiple xConfigurations under a Higher Common Node  <sub>(rxp-1.4.7)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xConfiguration Video Input Airplay</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback<span class="w"> </span>Deregister<span class="w"> </span>Configuration/Video/Input/AirPlay
+</code></pre></div>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface<ul>
+<li>Under the xConfigurations Page, press the toggles and buttons in the <hl_0>Airplay<hl_0> row</hl_0></hl_0></li>
+<li>Observe your <hl_6>Terminal Window's</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>Terminal Window</hl_6><ul>
+<li><hl_3>Optional</hl_3>: Press those buttons and switches a few times to see more changes come in</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>In cases where you have multiple subscriptions, you can unsubscribe from all by running</p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback<span class="w"> </span>DeregisterAll
+</code></pre></div>
+</div>
+</details>
+<h2 id="getting-and-subscribing-to-status-rxp-15"><strong>Getting and Subscribing to Status</strong> <sub>(rxp-1.5)</sub></h2>
+<div class="admonition abstract">
+<p class="admonition-title">xStatuses</p>
+<p>xStatuses contain information about the current state of the device, such as connected calls, the status of the gatekeeper registration, connected input/output sources and much more. This status information will fire a callback when that particular status occurs. The xStatus's last known state is stored and can be retrieved later on.</p>
+<p>Many of the same techniques we reviewed under the section section <strong>Getting, Setting and Subscribing to xConfigurations</strong> <sub>(rxp-1.4)</sub> will apply to xStatuses</p>
+<p>Be sure to complete <strong>Getting, Setting and Subscribing to xConfigurations</strong> <sub>(rxp-1.4)</sub> prior to continuing in this section, as many pieces of additional context was covered there, and won't be repeated moving forward</p>
+<p>Click to expand each xStatus Lesson below, execute them in your terminal session and observe the responses in the terminal window</p>
+</div>
+<details class="lesson" open="open">
+<summary>Lesson: Getting an xStatus Value <sub>(rxp-1.5.1)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xStatus Audio Volume</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xStatus<span class="w"> </span>Audio<span class="w"> </span>Volume
+</code></pre></div>
+<ul>
+<li>Observe your terminal output and review the response</li>
+</ul>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>*s Audio Volume: 65
+** end
+</code></pre></div>
+</details>
+</li>
+</ul>
+<p><roomosdoc>xStatus Audio Volume</roomosdoc></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Get multiple xStatus Values under a Common Node <sub>(rxp-1.5.2)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xStatus Audio Input</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xStatus<span class="w"> </span>Audio<span class="w"> </span>Input
+</code></pre></div>
+<ul>
+<li>Observe your terminal output and review the response</li>
+</ul>
+</li>
+</ul>
+<details class="info">
+<summary>Click to Compare your Terminal Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>*s Audio Input Connectors HDMI 1 Mute: On
+*s Audio Input Connectors USBC 1 Mute: Off
+** end
+
+OK
+</code></pre></div>
+</details>
+<p><roomosfind>xStatus Audio Input</roomosfind></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Subscribing to an xStatus <sub>(rxp-1.5.3)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xStatus Audio Volume</p>
+</li>
+<li>
+<p><strong>Task</strong>:</p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback<span class="w"> </span>Register<span class="w"> </span>Status/Audio/Volume
+</code></pre></div>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface<ul>
+<li>Under the xStatuses Page, move the Slider labeled <hl_0>Adjust Volume</hl_0> to a new position and release<ul>
+<li>Alternatively, you can adjust the volume with the Codec's native volume control buttons</li>
+</ul>
+</li>
+<li>Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6><ul>
+<li><hl_3>Optional</hl_3>: Move the slider a few more times to see more changes come in</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="gif">
+<summary>Click to Compare your Terminal Output</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-2-4_xStatus-Subscribe-Volume.gif" data-title="xStatus Audio Volume Subscription Output Gif" data-desc-position="top"><img alt="xStatus Audio Volume Subscription Output Gif" src="../images/2-2-4_xStatus-Subscribe-Volume.gif" width="600"></a>
+</figure><p></p>
+</details>
+<details class="gif">
+<summary>View Subscription Assistant Operation</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/SubscriptionAssitantMacro-Operation.gif" data-title="SubAssist Operation" data-desc-position="top"><img alt="SubAssist Operation" src="../images/SubscriptionAssitantMacro-Operation.gif" width="600"></a>
+</figure><p></p>
+</details>
+</li>
+</ul>
+<p><roomosdoc>xStatus Audio Volume<roomosdoc></roomosdoc></roomosdoc></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Unsubscribing to an xStatus  <sub>(rxp-1.5.4)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xStatus Audio Input</p>
+</li>
+<li>
+<p><strong>Task</strong>:</p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback<span class="w"> </span>Deregister<span class="w"> </span>Status/Audio/Volume
+</code></pre></div>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface<ul>
+<li>Under the xStatuses Page, move the Slider labeled <hl_0>Adjust Volume</hl_0> to a new position and release<ul>
+<li>Alternatively, you can adjust the volume with the Codec's native volume control buttons</li>
+</ul>
+</li>
+<li>Observe your <hl_6>Terminal Window's</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>Terminal Window</hl_6><ul>
+<li><hl_3>Optional</hl_3>: Move the slider a few more times to see more changes come in</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<details class="lesson">
+<summary>Lesson: Subscribe to Multiple xStatuses under a Common Node <sub>(rxp-1.5.5)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xStatus Cameras Camera[n] Position</p>
+</li>
+<li>
+<p><strong>Task</strong>:</p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback Register Status/Cameras/Camera/Position
+</code></pre></div>
+<details class="curious">
+<summary>What happened to the <hl_6>[n]</hl_6> in the xAPI Path?</summary>
+<p>You may have noticed we never declared <hl_6>[n]</hl_6> in the xAPI Path for the command we ran. This was left out on purpose. <hl_6>[n]</hl_6>, for this particular xAPI path, corresponds to the <hl_1>CameraId</hl_1> you want to target. Some Cisco Codecs can let you control up to 15 cameras, so these xAPI paths branch per connected Camera at the <hl_6>[n]</hl_6>.</p>
+<p>Whereas you could be running this lab on a variety of RoomOS Devices, it's better to leave [n] out of the path for Lab Purposes. Not declaring [n] also adds new value to us as developers working on a multi-camera system; it allows us to subscribe to ALL camera's positions as they change rather than having to specify each camera individually <img alt="😃" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f603.svg" title=":smiley:"></p>
+</details>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface<ul>
+<li>Under the xStatuses Page, click the button in the <hl_1>Camera Control Wheel</hl_1> row<ul>
+<li>Alternatively, you can adjust your cameras position through the native camera control interface</li>
+</ul>
+</li>
+<li>Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6><ul>
+<li><hl_3>Optional</hl_3>: Continue pressing buttons to see more changes come in</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="gif" open="open">
+<summary>Click on the tabs below to</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"><input id="__tabbed_6_2" name="__tabbed_6" type="radio"><input id="__tabbed_6_3" name="__tabbed_6" type="radio"><div class="tabbed-labels"><label for="__tabbed_6_1">Compare Terminal</label><label for="__tabbed_6_2">View Subscription Assistant</label><label for="__tabbed_6_3">View Native Camera Control Interface</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-2-4_xStatus-Subscribe-CameraPosition.gif" data-title="xStatus Cameras Camera[n] Position Output Gif" data-desc-position="top"><img alt="xStatus Cameras Camera[n] Position Output Gif" src="../images/2-2-4_xStatus-Subscribe-CameraPosition.gif" width="600"></a>
+</figure><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/SubscriptionAssitantMacro-Operation.gif" data-title="SubAssist Operation" data-desc-position="top"><img alt="SubAssist Operation" src="../images/SubscriptionAssitantMacro-Operation.gif" width="600"></a>
+</figure><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-2-4_CameraMenuAccess.gif" data-title="Navigate to Camera Control Menu GIF" data-desc-position="top"><img alt="Navigate to Camera Control Menu GIF" src="../images/2-2-4_CameraMenuAccess.gif" width="600"></a>
+</figure><p></p>
+</div>
+</div>
+</div>
+</details>
+</li>
+</ul>
+<p><roomosfind>xStatus Cameras Camera[n] Position</roomosfind></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Unsubscribe from all xStatuses <sub>(rxp-1.5.6)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: N/A</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback<span class="w"> </span>DeregisterAll
+</code></pre></div>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface<ul>
+<li>Under the xStatuses Page, click the button in the <hl_1>Camera Control Wheel</hl_1> row<ul>
+<li>Alternatively, you can adjust your cameras position through the native camera control interface</li>
+</ul>
+</li>
+<li>Observe your <hl_6>Terminal Window's</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>Terminal Window</hl_6><ul>
+<li><hl_3>Optional</hl_3>: Continue pressing buttons to see more changes come in</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<h2 id="subscribing-to-events-rxp-16"><strong>Subscribing to Events</strong> <sub>(rxp-1.6)</sub></h2>
+<div class="admonition abstract">
+<p class="admonition-title">xEvents</p>
+<p>Similar to xStatuses, xEvents will fire a callback when that particular event occurs; however, xEvents contain simpler information that's not necessary to store on the device itself. So you will not be able to retrieve the value of the event after it fires.</p>
+<details class="curious">
+<summary>Why not store xEvent Data?</summary>
+<p>As noted above, xEvents are much simpler callbacks. </p>
+<p>For example, <hl_0>xStatus Call</hl_0> contains information about the call such as the Display Name, CallBack Number, CallId and more. This information is very useful for building something like a Favorites List or Troubleshooting that call after the fact. </p>
+<p>When compared to <hl_0>xEvent UserInterface Extensions Widget Action</hl_0>, this event fires whenever a widget is interacted with by a user. We simply want to know when the widget has an interaction in order for use to run an automation, but storing this event offers little to no value outside the general log collection on the device, and is not stored for future retrieval.</p>
+</details>
+<p>Click to expand each xEvent Lesson below, execute them in your terminal session and observe the responses in the terminal window.</p>
+</div>
+<details class="lesson" open="open">
+<summary>Lesson: Subscribing to an xEvent <sub>(rxp-1.6.1)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xEvent UserInterface Message Prompt Response</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback<span class="w"> </span>Register<span class="w"> </span>Event/UserInterface/Message/Prompt/Response
+</code></pre></div>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface<ul>
+<li>Under the xEvents Page, click the <hl_1>Prompt Button</hl_1> in the <hl_0>UserInterface Message</hl_0> row<ul>
+<li>This will create a Pop Up with 5 options</li>
+<li>Click on any one of these 5 Options</li>
+</ul>
+</li>
+<li>Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6><ul>
+<li><hl_3>Optional</hl_3>: Feel free to try each of the options under that <code>Prompt</code> and continue to observe your <hl_6>Terminal Window's</hl_6> to understand how each one of them differs</li>
+</ul>
+</li>
+<li>Now click either the <code>TextInput</code>, the <code>Rating</code> or the <code>Alert</code> button and follow any instructions those interfaces offer</li>
+<li>Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6><ul>
+<li>Responses for <code>TextInput</code>, <code>Rating</code> or <code>Alert</code> shouldn't show since you're currently only subscribed to the <code>Prompt</code> branch</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="gif">
+<summary>Click to Compare your Terminal Output</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-2-4_xEvent-Subscribe-Prompt.gif" data-title="xEvent UserInterface ScreenShotRequest RequestId Output Gif" data-desc-position="top"><img alt="xEvent UserInterface ScreenShotRequest RequestId Output Gif" src="../images/2-2-4_xEvent-Subscribe-Prompt.gif" width="600"></a>
+</figure><p></p>
+</details>
+<details class="gif">
+<summary>View Subscription Assistant Operation</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/SubscriptionAssitantMacro-Operation.gif" data-title="SubAssist Operation" data-desc-position="top"><img alt="SubAssist Operation" src="../images/SubscriptionAssitantMacro-Operation.gif" width="600"></a>
+</figure><p></p>
+</details>
+</li>
+</ul>
+<p><roomosdoc>xEvent UserInterface Message Prompt Response</roomosdoc></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Unsubscribing to an xEvent <sub>(rxp-1.6.2)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: xEvent UserInterface Message Prompt Response</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback<span class="w"> </span>Deregister<span class="w"> </span>Event/UserInterface/Message/Prompt/Response
+</code></pre></div>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface<ul>
+<li>Under the xEvents Page, click either the <code>Prompt</code>, the <code>TextInput</code>, the <code>Rating</code> or the <code>Alert</code> button in the <hl_0>UserInterface Message</hl_0> row and submit any accompanying actions in that interface</li>
+<li>Observe your <hl_6>Terminal Window's</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>Terminal Window</hl_6></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><roomosdoc>xEvent UserInterface Message Prompt Response</roomosdoc></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Subscribe to Multiple xEvents under a Common Node <sub>(rxp-1.6.3)</sub></summary>
+<ul>
+<li><strong>xAPI</strong>: xEvent UserInterface</li>
+</ul>
+<div class="admonition note inline end">
+<p class="admonition-title">Note</p>
+<p>By Subscribing to a Higher Common Node, such as xEvent UserInterface, we can see all <abbr title="User Interface">UI</abbr> related Events available in that xAPI Node</p>
+</div>
+<ul>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback<span class="w"> </span>Register<span class="w"> </span>Event/UserInterface
+</code></pre></div>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface<ul>
+<li>Under the xEvents Page, try any of the <code>Widgets</code> on this page, and submit any accompanying actions in that interface if any</li>
+<li>Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6><ul>
+<li><hl_3>Optional</hl_3>: Try all of the <code>Widgets</code> on that page <img alt="😃" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f603.svg" title=":smiley:"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="gif">
+<summary>Click to Compare your Terminal Output</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/2-2-4_xEvent-Subscribe-UserInterface.gif" data-title="xEvent UserInterface Output Gif" data-desc-position="top"><img alt="xEvent UserInterface Output Gif" src="../images/2-2-4_xEvent-Subscribe-UserInterface.gif" width="600"></a>
+</figure><p></p>
+</details>
+<details class="gif">
+<summary>View Subscription Assistant Operation</summary>
+<p></p><figure markdown="">
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/SubscriptionAssitantMacro-Operation.gif" data-title="SubAssist Operation" data-desc-position="top"><img alt="SubAssist Operation" src="../images/SubscriptionAssitantMacro-Operation.gif" width="600"></a>
+</figure><p></p>
+</details>
+</li>
+</ul>
+<p><roomosfind>xEvent UserInterface</roomosfind></p>
+</details>
+<details class="lesson">
+<summary>Lesson: Unsubscribe from all xEvents <sub>(rxp-1.6.4)</sub></summary>
+<ul>
+<li>
+<p><strong>xAPI</strong>: N/A</p>
+</li>
+<li>
+<p><strong>Task</strong>: </p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code><span class="w">    </span>xFeedback<span class="w"> </span>DeregisterAll
+</code></pre></div>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface<ul>
+<li>Under the xEvents Page, try any of the <code>Widgets</code> on this page, and submit any accompanying actions in that interface if any</li>
+<li>Observe your <hl_6>Terminal Window's</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>Terminal Window</hl_6><ul>
+<li><hl_3>Optional</hl_3>: Continue pressing buttons to see more changes come in</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<h2 id="tagging-your-xapi-calls-rxp-17"><strong>Tagging your xAPI Calls</strong> <sub>(rxp-1.7)</sub></h2>
+<p>As you work to build your automation in a <abbr title="Secure Shell">SSH</abbr> terminal session, you may find yourself making multiple calls against the same path and the timing of that output may be critical for your solution.</p>
+<p>To help simplify which data belongs where, you can tag your xAPI paths with a custom value to better track your work.</p>
+<p>By appending <hl_6>|resultId="<code>myValue</code>"</hl_6> to the end of any xAPI Call, the response from that xAPI will include that resultId you assign</p>
+<div class="admonition example">
+<p class="admonition-title">Review Tagging examples below</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:4"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio"><input id="__tabbed_7_2" name="__tabbed_7" type="radio"><input id="__tabbed_7_3" name="__tabbed_7" type="radio"><input id="__tabbed_7_4" name="__tabbed_7" type="radio"><div class="tabbed-labels"><label for="__tabbed_7_1">xStatus Audio Volume</label><label for="__tabbed_7_2">xCommand Video SelfView Set</label><label for="__tabbed_7_3">xConfiguration SystemUnit Name</label><label for="__tabbed_7_4">xFeedback Register Event/CallSuccessful</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">xAPI</span><pre><span></span><code>xStatus<span class="w"> </span>Audio<span class="w"> </span>Volume<span class="w"> </span><span class="p">|</span><span class="nv">resultId</span><span class="o">=</span><span class="s2">"Custom Value 1"</span>
+</code></pre></div>
+<div class="no-copy, highlight"><span class="filename">Response</span><pre><span></span><code>*s Audio Volume: 50
+** resultId: "Custom Value 1"
+** end
+
+OK
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">xAPI</span><pre><span></span><code>xCommand<span class="w"> </span>Video<span class="w"> </span>SelfView<span class="w"> </span>Set<span class="w"> </span>Mode:<span class="w"> </span>On<span class="w"> </span><span class="p">|</span><span class="nv">resultId</span><span class="o">=</span><span class="s2">"Custom Value 2"</span>
+</code></pre></div>
+<div class="no-copy, highlight"><span class="filename">Response</span><pre><span></span><code>OK
+*r SelfViewSetResult (status=OK): 
+** resultId: "Custom Value 2"
+** end
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">xAPI</span><pre><span></span><code>xConfiguration<span class="w"> </span>SystemUnit<span class="w"> </span>Name<span class="w"> </span><span class="p">|</span><span class="nv">resultId</span><span class="o">=</span><span class="s2">"Custom Value 3"</span>
+</code></pre></div>
+<div class="no-copy, highlight"><span class="filename">Response</span><pre><span></span><code>*c xConfiguration SystemUnit Name: " "
+** resultId: "Custom Value 3"
+** end
+
+OK
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When declaring xFeedback, or subscribing to any xAPI, the resultId will only print when you execute the command, but will not print with the subsequent data coming in from the subscription</p>
+</div>
+<div class="highlight"><span class="filename">xAPI</span><pre><span></span><code>xFeedback<span class="w"> </span>Register<span class="w"> </span>Event/CallSuccessful<span class="w"> </span><span class="p">|</span><span class="nv">resultId</span><span class="o">=</span><span class="s2">"Custom Value 4"</span>
+</code></pre></div>
+<div class="no-copy, highlight"><span class="filename">Response</span><pre><span></span><code>xFeedback Register Event/CallSuccessful |resultId="Custom Value 4"
+** resultId: "Custom Value 4"
+** end
+
+OK
+</code></pre></div>
+<div class="no-copy, highlight"><span class="filename">Feedback</span><pre><span></span><code>*e CallSuccessful Protocol: "Spark"
+*e CallSuccessful Direction: "outgoing"
+*e CallSuccessful RemoteURI: "spark:XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+*e CallSuccessful EncryptionIn: "On"
+*e CallSuccessful EncryptionOut: "On"
+*e CallSuccessful CallRate: 20000
+*e CallSuccessful CallId: 3
+** end
+*e CallSuccessful Protocol: "Spark"
+*e CallSuccessful Direction: "outgoing"
+*e CallSuccessful RemoteURI: "spark:XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+*e CallSuccessful EncryptionIn: "On"
+*e CallSuccessful EncryptionOut: "On"
+*e CallSuccessful CallRate: 20000
+*e CallSuccessful CallId: 4
+** end  
+</code></pre></div>
+</div>
+</div>
+</div>
+</div>
+<h2 id="section-rxp-1-cleanup-rxp-18"><strong>Section rxp-1 Cleanup</strong> <sub>(rxp-1.8)</sub></h2>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<ul>
+<li>Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface</li>
+<li>Under the <hl_3>Section Cleanup</hl_3> Page, select the <hl_0>Run Section Cleanup?</hl_0> button</li>
+<li>Select <hl_7>Yes, Run the Cleanup Script</hl_7></li>
+</ul>
+<p></p><figure markdown="span">
+    <!-- docs/Main-Lab/RoomOS/rxp_xapi/ -->
+  <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../images/SubscriptionAssitantMacro-ConfirmCleanup.png" data-title="Section cleanup" data-desc-position="top"><img alt="Section cleanup" src="../images/SubscriptionAssitantMacro-ConfirmCleanup.png" width="400"></a>
+  <figcaption>Section Cleanup Confirmation</figcaption>
+</figure><p></p>
+<p>This will reverse the changes we've made to the endpoint, and leave us ready for the next section</p>
+<details class="question">
+<summary>You can run the cleanup via the terminal as well</summary>
+<p>Copy the contents below into your terminal window and run them all at once</p>
+<div class="highlight"><span class="filename">Type into terminal and press Enter</span><pre><span></span><code>xFeedback<span class="w"> </span>DeregisterAll
+xCommand<span class="w"> </span>HttpFeedback<span class="w"> </span>Deregister<span class="w"> </span>FeedbackSlot:<span class="w"> </span><span class="m">1</span>
+xCommand<span class="w"> </span>HttpFeedback<span class="w"> </span>Deregister<span class="w"> </span>FeedbackSlot:<span class="w"> </span><span class="m">2</span>
+xCommand<span class="w"> </span>HttpFeedback<span class="w"> </span>Deregister<span class="w"> </span>FeedbackSlot:<span class="w"> </span><span class="m">3</span>
+xCommand<span class="w"> </span>HttpFeedback<span class="w"> </span>Deregister<span class="w"> </span>FeedbackSlot:<span class="w"> </span><span class="m">4</span>
+xConfiguration<span class="w"> </span>Audio<span class="w"> </span>DefaultVolume:<span class="w"> </span><span class="m">50</span>
+xCommand<span class="w"> </span>UserInterface<span class="w"> </span>Extensions<span class="w"> </span>Panel<span class="w"> </span>Remove<span class="w"> </span>PanelId:<span class="w"> </span>wx1_lab_multilineCommand
+xCommand<span class="w"> </span>Video<span class="w"> </span>SelfView<span class="w"> </span>Set<span class="w"> </span>Mode:<span class="w"> </span>Off<span class="w"> </span>FullscreenMode:<span class="w"> </span>Off
+xCommand<span class="w"> </span>Video<span class="w"> </span>Input<span class="w"> </span>SetMainVideoSource<span class="w"> </span>ConnectorId:<span class="w"> </span><span class="m">1</span>
+xCommand<span class="w"> </span>Audio<span class="w"> </span>Volume<span class="w"> </span>SetToDefault<span class="w"> </span>Device:<span class="w"> </span>Internal
+</code></pre></div>
+</details>
+<p>Feel free to close your Terminal Window</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../rxp_xapi_intro/" class="md-footer__link md-footer__link--prev" aria-label="Previous: What are RoomOS xAPI">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                What are RoomOS xAPI
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../rxp_xapi_http/" class="md-footer__link md-footer__link--next" aria-label="Next: HTTP &lt;sup&gt;&lt;sup&gt;rxp-3&lt;/sup&gt;&lt;/sup&gt;">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                HTTP <sup><sup>rxp-3</sup></sup>
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Cisco
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.indexes", "navigation.instant", "navigation.top", "navigation.footer", "search.suggest", "content.code.copy", "toc.integrate", "content.tooltips", "content.footnote.tooltips"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../../template_assets/js/newLoad.js"></script>
+      
+        <script src="../../../../template_assets/js/setInfo.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": false, "openEffect": "fade", "closeEffect": "fade", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
