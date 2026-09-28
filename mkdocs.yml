@@ -154,6 +154,7 @@ nav:
 cProps:
   labId: LAB-11197
   xAPI_PDF: https://www.cisco.com/c/dam/en/us/td/docs/telepresence/endpoint/roomos-2602/api-reference-guide-roomos-2602.pdf
+  apiClientApplication: Bruno
   auth: 
     roomosIp: <w class="ipAddress">[ROOMOS_HOST_ADDRESS]</w>
     roomosUser: <w class="username">[ROOMOS_USERNAME]</w>

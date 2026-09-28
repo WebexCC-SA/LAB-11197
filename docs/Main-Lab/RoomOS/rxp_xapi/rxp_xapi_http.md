@@ -182,6 +182,57 @@
             <br>
             <br>
 
+    !!! tip "Leverage Your Language’s Built-In Tools"
+
+        Many languages include built-in functions or standard-library tools for manipulating data. For example, Python and JavaScript can encode and decode text using Base64 for you
+
+        !!! example ""
+
+            === "JavaScript"
+
+                ``` JavaScript
+                const response = await fetch("https://example.com/api", {
+                  method: "POST",
+                  headers: {
+                    Authorization: `Basic ${btoa("admin:admin1234")}`,
+                  },
+                  body: "hello",
+                });
+
+                console.log(response.status);
+                ```
+
+            === "Python"
+
+                ``` Python
+                import requests
+
+                response = requests.post(
+                    "https://example.com/api",
+                    auth=("admin", "admin1234"),
+                    data="hello",
+                )
+
+                print(response.status_code)
+                ```
+
+            === "Rust"
+
+                ``` Rust
+                use reqwest::blocking::Client;
+
+                fn main() -> Result<(), Box<dyn std::error::Error>> {
+                    let response = Client::new()
+                        .post("https://example.com/api")
+                        .basic_auth("admin", Some("admin1234"))
+                        .body("hello")
+                        .send()?;
+
+                    println!("{}", response.status());
+                    Ok(())
+                }
+                ```
+
     - - -
 
     <h4>Request Headers ~({{config.cProps.rxp.sectionIds.http}}.1.3)~</h4>
@@ -292,210 +343,208 @@
 
     - - -
 
-    ??? tip inline end "Take advantage of your Code Language"
+    <h4>Full HTTP Get and Post examples ~({{config.cProps.rxp.sectionIds.http}}.1.6)~</h4>
 
-        Many languages have built in function to help process data
+    !!! important
 
-        For instance, when working in ES6 or newer Javascript Environments, you can leverage the `btoa()` and `atob()` functions that are built into that language to quickly encode and decode strings to/from base64. Ex: `btoa('admin:admin1234')` = ==YWRtaW46YWRtaW4xMjM0\====
+        For reference only — no action is required. These examples show HTTP request patterns for RoomOS. You do not need to copy, run, or deploy them.
 
-    <h4>Full HTTP Get and Post examples ~({{config.cProps.rxp.sectionIds.http}}.1.5)~</h4>
+        ??? info "Click to view a Full Example of each written using the JavaScript Fetch API ~({{config.cProps.rxp.sectionIds.http}}.1.6.a)~"
 
-    ??? success "Click to view a Full Example of each written using the JavaScript Fetch API ~({{config.cProps.rxp.sectionIds.http}}.1.5.a)~"
+            === "Get"
 
-        === "Get"
+                ``` JavaScript
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "text/xml");
+                myHeaders.append("Authorization", "Basic [YOUR_BASE64_ENCODED_AUTH]");
 
-            ``` JavaScript
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "text/xml");
-            myHeaders.append("Authorization", "Basic [YOUR_BASE64_ENCODED_AUTH]");
+                const requestOptions = {
+                  method: "GET",
+                  headers: myHeaders,
+                  redirect: "follow"
+                };
 
-            const requestOptions = {
-              method: "GET",
-              headers: myHeaders,
-              redirect: "follow"
-            };
+                fetch("https://{{config.cProps.auth.roomosIp}}/getxml?location=Configuration/SystemUnit/Name", requestOptions)
+                  .then((response) => response.text())
+                  .then((result) => console.log(result))
+                  .catch((error) => console.error(error));
 
-            fetch("https://{{config.cProps.auth.roomosIp}}/getxml?location=Configuration/SystemUnit/Name", requestOptions)
-              .then((response) => response.text())
-              .then((result) => console.log(result))
-              .catch((error) => console.error(error));
+                /* Below is the Response Body after making a Successful Request
 
-            /* Below is the Response Body after making a Successful Request
+                <?xml version="1.0"?>
+                <Configuration product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="#">
+                    <SystemUnit>
+                        <Name valueSpaceRef="/Valuespace/STR_0_50_NoFilt"> My Room Bar Pro</Name>
+                    </SystemUnit>
+                </Configuration>
+                */
+                ```
 
-            <?xml version="1.0"?>
-            <Configuration product="Cisco Codec" version="ce11.20.1.7.913a6c7c769" apiVersion="4">
-                <SystemUnit>
-                    <Name valueSpaceRef="/Valuespace/STR_0_50_NoFilt"> My Room Bar Pro</Name>
-                </SystemUnit>
-            </Configuration>
-            */
-            ```
+            === "Post"
 
-        === "Post"
+                ``` JavaScript
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "text/xml");
+                myHeaders.append("Authorization", "Basic [YOUR_BASE64_ENCODED_AUTH]");
 
-            ``` JavaScript
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "text/xml");
-            myHeaders.append("Authorization", "Basic [YOUR_BASE64_ENCODED_AUTH]");
+                const raw = "<Configuration><SystemUnit><Name>My New System Name</Name></SystemUnit></Configuration>";
 
-            const raw = "<Configuration><SystemUnit><Name>My New System Name</Name></SystemUnit></Configuration>";
+                const requestOptions = {
+                  method: "POST",
+                  headers: myHeaders,
+                  body: raw,
+                  redirect: "follow"
+                };
 
-            const requestOptions = {
-              method: "POST",
-              headers: myHeaders,
-              body: raw,
-              redirect: "follow"
-            };
+                fetch("https://{{config.cProps.auth.roomosIp}}/putxml", requestOptions)
+                  .then((response) => response.text())
+                  .then((result) => console.log(result))
+                  .catch((error) => console.error(error));
 
-            fetch("https://{{config.cProps.auth.roomosIp}}/putxml", requestOptions)
-              .then((response) => response.text())
-              .then((result) => console.log(result))
-              .catch((error) => console.error(error));
+                /* Below is the Response Body after making a Successful Request
 
-            /* Below is the Response Body after making a Successful Request
+                <?xml version="1.0"?>
+                <Configuration>
+                    <Success/>
+                </Configuration>
+                */
+                ```
+        ??? info "Click to view a Full Example of each written using the Macro Editor [ES6 JS] and your codec's HTTPClient xAPIs ~({{config.cProps.rxp.sectionIds.http}}.1.6.b)~"
 
-            <?xml version="1.0"?>
-            <Configuration>
-                <Success/>
-            </Configuration>
-            */
-            ```
-    ??? success "Click to view a Full Example of each written using the Macro Editor [ES6 JS] and your codec's HTTPClient xAPIs ~({{config.cProps.rxp.sectionIds.http}}.1.5.b)~"
+            === "Get"
 
-        === "Get"
+                ```javascript
+                import xapi from 'xapi';
 
-            ```javascript
-            import xapi from 'xapi';
-
-            const destinationIp = '{{config.cProps.auth.roomosIp}}';
-            const headers = ['Content-Type: text/xml', `Authorization: Basic ${btoa('[YOUR_AUTH]')}`];
+                const destinationIp = '{{config.cProps.auth.roomosIp}}';
+                const headers = ['Content-Type: text/xml', `Authorization: Basic ${btoa('[YOUR_AUTH]')}`];
 
 
-            async function getPath(path){
-              const destinationUrl = `https://${destinationIp}/getxml?location=${path}`;
+                async function getPath(path){
+                  const destinationUrl = `https://${destinationIp}/getxml?location=${path}`;
 
-              try {
-                const request = await xapi.Command.HttpClient.Get({
-                  Url: destinationUrl,
-                  Header: headers,
-                  AllowInsecureHTTPS: 'True'
-                })
-                console.debug(request);
-                return request
-              } catch (e) {
-                let err = {
-                  Context: `Failed Get Request to [${destinationUrl}]`,
-                  ...e
+                  try {
+                    const request = await xapi.Command.HttpClient.Get({
+                      Url: destinationUrl,
+                      Header: headers,
+                      AllowInsecureHTTPS: 'True'
+                    })
+                    console.debug(request);
+                    return request
+                  } catch (e) {
+                    let err = {
+                      Context: `Failed Get Request to [${destinationUrl}]`,
+                      ...e
+                    }
+                    throw new Error(e)
+                  }
                 }
-                throw new Error(e)
-              }
-            }
 
-            getPath('Configuration/SystemUnit/Name');
-            ```
+                getPath('Configuration/SystemUnit/Name');
+                ```
 
-        === "Post"
+            === "Post"
 
-            ```javascript
-            import xapi from 'xapi';
+                ```javascript
+                import xapi from 'xapi';
 
-            const destinationIp = '{{config.cProps.auth.roomosIp}}';
-            const headers = ['Content-Type: text/xml', `Authorization: Basic ${btoa('[YOUR_AUTH]')}`];
+                const destinationIp = '{{config.cProps.auth.roomosIp}}';
+                const headers = ['Content-Type: text/xml', `Authorization: Basic ${btoa('[YOUR_AUTH]')}`];
 
 
-            async function setPath(body){
-              const destinationUrl = `https://${destinationIp}/putxml`;
+                async function setPath(body){
+                  const destinationUrl = `https://${destinationIp}/putxml`;
 
-              try {
-                const request = await xapi.Command.HttpClient.Post({
-                  Url: destinationUrl,
-                  Header: headers,
-                  AllowInsecureHTTPS: 'True'
-                }, body)
-                console.debug(request);
-                return request
-              } catch (e) {
-                let err = {
-                  Context: `Failed Post Request to [${destinationUrl}]`,
-                  ...e
+                  try {
+                    const request = await xapi.Command.HttpClient.Post({
+                      Url: destinationUrl,
+                      Header: headers,
+                      AllowInsecureHTTPS: 'True'
+                    }, body)
+                    console.debug(request);
+                    return request
+                  } catch (e) {
+                    let err = {
+                      Context: `Failed Post Request to [${destinationUrl}]`,
+                      ...e
+                    }
+                    throw new Error(e)
+                  }
                 }
-                throw new Error(e)
-              }
-            }
 
-            setPath('<Configuration><SystemUnit><Name>My New System Name</Name></SystemUnit></Configuration>');
-            ```
+                setPath('<Configuration><SystemUnit><Name>My New System Name</Name></SystemUnit></Configuration>');
+                ```
 
-        <a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpClient.Get/?search=HTTPClient" target="_blank" >
-              Learn more about <strong>Device HTTPClient xAPIs</strong> <i class="fa-solid fa-square-up-right"></i>
-        </a>
-
-        ??? curious ":thinking: Hey, what's up with that `...e` in your caught error?"
-
-            Again, knowing you language has it's benefits
-
-            `...` is called a ==Spread Operator== and it's very useful when playing with data in ES6 JS
-
-            We're using it here to pass the original error the xAPI produced into an ==err== object as well as some context to help us troubleshoot our macro in the future.
-
-            <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax" target="_blank" >
-                  Learn more about <strong>Spread Operators</strong> <i class="fa-solid fa-square-up-right"></i>
+            <a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpClient.Get/?search=HTTPClient" target="_blank" >
+                  Learn more about <strong>Device HTTPClient xAPIs</strong> <i class="fa-solid fa-square-up-right"></i>
             </a>
 
+            ??? curious ":thinking: Hey, what's up with that `...e` in your caught error?"
 
-    ??? success "Click to view a Full Example of each written using the Python Requests API ~({{config.cProps.rxp.sectionIds.http}}.1.5.c)~"
+                Again, knowing you language has it's benefits
 
-        === "Get"
+                `...` is called a ==Spread Operator== and it's very useful when playing with data in ES6 JS
 
-            ``` Python
-            import requests
+                We're using it here to pass the original error the xAPI produced into an ==err== object as well as some context to help us troubleshoot our macro in the future.
 
-            url = "https://{{config.cProps.auth.roomosIp}}/getxml?location=Configuration/SystemUnit/Name"
+                <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax" target="_blank" >
+                      Learn more about <strong>Spread Operators</strong> <i class="fa-solid fa-square-up-right"></i>
+                </a>
 
-            payload = ""
-            headers = {
-              'Content-Type': 'text/xml',
-              'Authorization': 'Basic [YOUR_BASE64_ENCODED_AUTH]'
-            }
 
-            response = requests.request("GET", url, headers=headers, data=payload)
+        ??? info "Click to view a Full Example of each written using the Python Requests API ~({{config.cProps.rxp.sectionIds.http}}.1.6.c)~"
 
-            print(response.text)
+            === "Get"
 
-            # Below is the Response Body after making a Successful Request
+                ``` Python
+                import requests
 
-            # <?xml version="1.0"?>
-            # <Configuration>
-            #     <Success/>
-            # </Configuration>
-            ```
+                url = "https://{{config.cProps.auth.roomosIp}}/getxml?location=Configuration/SystemUnit/Name"
 
-        === "Post"
+                payload = ""
+                headers = {
+                  'Content-Type': 'text/xml',
+                  'Authorization': 'Basic [YOUR_BASE64_ENCODED_AUTH]'
+                }
 
-            ``` Python
-            import requests
+                response = requests.request("GET", url, headers=headers, data=payload)
 
-            url = "https://{{config.cProps.auth.roomosIp}}/putxml"
+                print(response.text)
 
-            payload = "<Configuration><SystemUnit><Name>My New System Name</Name></SystemUnit></Configuration>"
-            headers = {
-              'Content-Type': 'text/xml',
-              'Authorization': 'Basic [YOUR_BASE64_ENCODED_AUTH]'
-            }
+                # Below is the Response Body after making a Successful Request
 
-            response = requests.request("POST", url, headers=headers, data=payload)
+                # <?xml version="1.0"?>
+                # <Configuration>
+                #     <Success/>
+                # </Configuration>
+                ```
 
-            print(response.text)
+            === "Post"
 
-            # Below is the Response Body after making a Successful Request
+                ``` Python
+                import requests
 
-            # <?xml version="1.0"?>
-            # <Configuration product="Cisco Codec" version="ce11.20.1.7.913a6c7c769" apiVersion="4">
-            #     <SystemUnit>
-            #         <Name valueSpaceRef="/Valuespace/STR_0_50_NoFilt"> My Room Bar Pro</Name>
-            #     </SystemUnit>
-            # </Configuration>
-            ```
+                url = "https://{{config.cProps.auth.roomosIp}}/putxml"
+
+                payload = "<Configuration><SystemUnit><Name>My New System Name</Name></SystemUnit></Configuration>"
+                headers = {
+                  'Content-Type': 'text/xml',
+                  'Authorization': 'Basic [YOUR_BASE64_ENCODED_AUTH]'
+                }
+
+                response = requests.request("POST", url, headers=headers, data=payload)
+
+                print(response.text)
+
+                # Below is the Response Body after making a Successful Request
+
+                # <?xml version="1.0"?>
+                # <Configuration product="Cisco Codec" version="ce11.20.1.7.913a6c7c769" apiVersion="4">
+                #     <SystemUnit>
+                #         <Name valueSpaceRef="/Valuespace/STR_0_50_NoFilt"> My Room Bar Pro</Name>
+                #     </SystemUnit>
+                # </Configuration>
+                ```
 
 ## **Import and Configure the section {{config.cProps.rxp.sectionIds.http}}.1 Postman Collection** ~({{config.cProps.rxp.sectionIds.http}}.2)~
 
@@ -542,46 +591,65 @@ This collection has most pieces structured as we'd need it to and will be used t
 
 !!! Abstract
 
-Throughout section {{config.cProps.rxp.sectionIds.http}}.3, you'll learn how to format and execute xCommands via HTTP using Postman.
+    Throughout section {{config.cProps.rxp.sectionIds.http}}.3, you'll learn how to format and execute xCommands via HTTP.
 
-The techniques outlined here will correspond to the methods needed for setting new xConfiguration Values in section {{config.cProps.rxp.sectionIds.http}}.4
+    The techniques outlined here will correspond to methods needed for setting new xConfiguration Values in section {{config.cProps.rxp.sectionIds.http}}.4
 
 ???+ lesson "Lesson: Execute an xCommand ~({{config.cProps.rxp.sectionIds.http}}.3.1)~"
 
     !!! info inline end "XML Body Location"
 
         <figure markdown>
-          ![XML Body Location](./images/2-3-3_Execute-xCommand-BodyLocation.png){ width="400" }
+          ![XML Body Location](./images/bruno/bruno_bodyLocation.png){ width="400" }
         </figure>
 
-    - **xAPI:** xCommand Video Selfview Set
+    - **xAPI(s):**
+        - <hl_0>xCommand Video Selfview Set</hl_0>
 
-    - **Task:** Structure the xAPI command above into an XML format then place this into the Body of the ==Execute an xCommand== request in your Postman collection. Include the following Parameters and Values
-        - Mode: On
-        - FullScreenMode: On
-        - OnMonitorRole: First
-
-    Once the Postman Request has been updated, ==Save== the request, select ==Send== and review the Postman Terminal's response and observe any changes to your device
+    - **Task:** 
+        - Format <hl_4>xCommand Video Selfview Set</hl_4> into XML
+        - Place the newly formatted XML into the Body of the ==Execute an xCommand== request of the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Include the following Parameter(s) and Value(s)
+            - Mode: On
+            - FullScreenMode: On
+            - OnMonitorRole: First
+        - Save the collection
+        - Select Send, review the response and observe any changes on your device 
 
     - - -
 
     ??? success "View properly formatted XML and Successful Response"
 
-        ![Successful HTTP Response](./images/2-3-3_Execute-xCommand-Success.png){ width="600", align=right }
+        <div class="grid cards" markdown>
 
-        ``` { .xml }
-        <Command>
-          <Video>
-            <Selfview>
-              <Set>
-                <Mode>On</Mode>
-                <FullScreenMode>On</FullScreenMode>
-                <OnMonitorRole>First</OnMonitorRole>
-              </Set>
-            </Selfview>
-          </Video>
-        </Command>
-        ```
+        -   **XML Body Format**
+
+            ---
+            ``` { .xml }
+            <Command>
+              <Video>
+                <Selfview>
+                  <Set>
+                    <Mode>On</Mode>
+                    <FullScreenMode>On</FullScreenMode>
+                    <OnMonitorRole>First</OnMonitorRole>
+                  </Set>
+                </Selfview>
+              </Video>
+            </Command>
+            ```
+
+        -   **Response**
+
+            ---
+            ``` { .xml }
+            <?xml version="1.0"?>
+            <Command>
+              <SelfviewSetResult status="OK/>
+            </Command>
+            ```
+
+        </div>
 
 ??? lesson "Lesson: Execute multiple xCommands in a single request ~({{config.cProps.rxp.sectionIds.http}}.3.2)~"
 
@@ -589,19 +657,70 @@ The techniques outlined here will correspond to the methods needed for setting n
 
         You can structure your XML to allow for multiple xAPI calls under a single Parent Path, in this case the Parent Path is xCommand
 
-        So long as the paths you're running are under their appropriate Common Path Nodes, then they will be considered. Should those Common Path Nodes deviate, then you must structure the XML to match
+        So long as the paths you're running are placed within their appropriate Common Path Nodes, then they will be considered. Should those Common Path Nodes deviate, then you must structure the XML to match
+
+        ??? example "View Single vs Multiple Command Structure"
+
+            === "Single Command Structure"
+
+                ``` xml
+                <Command>
+                  <Macros>
+                    <Macro>
+                      <Save>
+                        <Name>value</Name>
+                        <Overwrite>False</Overwrite>
+                        <Transpile>False</Transpile>
+                        <body>Raw data here...</body>
+                      </Save>
+                    </Macro>
+                  </Macros>
+                </Command>
+                ```
+            === "Multiple Command Structure"
+
+                ``` xml
+                <Command>
+                  <Macros>
+                    <Macro>
+                      <Save>
+                        <Name>value</Name>
+                        <Overwrite>False</Overwrite>
+                        <Transpile>False</Transpile>
+                        <body>Raw data here...</body>
+                      </Save>
+                      <Activate>
+                        <Name>value</Name>
+                      </Activate>
+                    </Macro>
+                    <Runtime>
+                      <Restart>
+                      </Restart>
+                    </Runtime>
+                  </Macros>
+                </Command>
+                ```
+
+    !!! note inline end
+        The following xAPIs come pre-formatted in the request body. You must find the correct position for the final xAPI
+
+        - <hl_0>xCommand UserInterface WebView Display</hl_0>
+        - <hl_0>xCommand UserInterface Message Rating Display</hl_0> 
 
     - **xAPI(s):**
-        - ==xCommand== Video Selfview Set
-        - ==xCommand UserInterface== WebView Display
-        - ==xCommand UserInterface== Message Rating Display
+        - <hl_0>xCommand</hl_0> Video Selfview Set
+        - <hl_0>xCommand UserInterface</hl_0> WebView Display
+        - <hl_0>xCommand UserInterface</hl_0> Message Rating Display
 
-    - **Task:** `xCommand Video Selfview Set` and `xCommand UserInterface WebView Display` have already be set in your collection under their appropriate Common Node Path. We've highlighted the Common Node Paths above for you to see. Structure the XML for {++xCommand UserInterface Message Rating Display++} and place it as the next xCommand in the XML structure given to you. Include the following Parameters and Values
-        - Title: Rate this Site
-        - Text: From 0 to 5 stars, rate this Website
-        - Duration: 45
-
-    Once the Postman Request has been updated, ==Save== the request, select ==Send== and review the Postman Terminal's response and observe any changes to your device
+    - **Task:** 
+        - Format <hl_4>xCommand UserInterface Message Rating Display</hl_4> into XML
+        - Place the newly formatted XML into the correct position within the Body of the ==Execute multiple xCommands in a single request== request of the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Include the following Parameter(s) and Value(s)
+            - Title: Rate this Site
+            - Text: From 0 to 5 stars, rate this Website
+            - Duration: 45
+        - Save the collection
+        - Select Send, review the response and observe any changes on your device 
 
     ??? success "View Successful OSD Output"
 
@@ -612,66 +731,124 @@ The techniques outlined here will correspond to the methods needed for setting n
 
     ??? success "View properly formatted XML and Successful Response"
 
-        ![Successful HTTP Response](./images/2-3-3_Execute-xCommand-MultipleCommands-Success.png){ width="500", align=right }
+        <div class="grid cards" markdown>
 
-        === "Message Rating Display XML"
+        -   **XML Body Format**
 
+            ---
+            === "Message Rating Display XML"
+
+                ``` { .xml }
+                <Command>
+                  <UserInterface>
+                    <Message>
+                      <Rating>
+                        <Display>
+                          <Title>Rate this Site</Title>
+                          <Text>From 0 to 5 stars, rate this Website</Text>
+                          <Duration>45</Duration>
+                        </Display>
+                      </Rating>
+                    </Message>
+                  </UserInterface>
+                </Command>
+                ```
+
+            === "Full XML body"
+
+                ``` { .xml }
+                <Command>
+                  <Video>
+                    <Selfview>
+                      <Set>
+                        <Mode>Off</Mode>
+                      </Set>
+                    </Selfview>
+                  </Video>
+                  <UserInterface>
+                    <WebView>
+                      <Display>
+                        <Mode>Modal</Mode>
+                        <Url>https://roomos.cisco.com</Url>
+                      </Display>
+                    </WebView>
+                    <!-- Message Rating Display Should Start Here -->
+                    <Message>
+                      <Rating>
+                        <Display>
+                          <Title>Rate this Site</Title>
+                          <Text>From 0 to 5 stars, rate this Website</Text>
+                          <Duration>45</Duration>
+                        </Display>
+                      </Rating>
+                    </Message>
+                    <!-- Message Rating Display Should End Here -->
+                  </UserInterface>
+                </Command>
+                ```
+
+        -   **Response**
+
+            ---
             ``` { .xml }
+            <?xml version="1.0"?>
             <Command>
-              <UserInterface>
-                <Message>
-                  <Rating>
-                    <Display>
-                      <Title>Rate this Site</Title>
-                      <Text>From 0 to 5 stars, rate this Website</Text>
-                      <Duration>45</Duration>
-                    </Display>
-                  </Rating>
-                </Message>
-              </UserInterface>
+              <SelfviewSetResult status="OK"/>
+              <WebViewDisplayResult status="0k'/>
+              <RatingDisplayResult status="OK"/>
             </Command>
             ```
 
-        === "Full XML body"
+        </div>
 
-            ``` { .xml }
-            <Command>
-              <Video>
-                <Selfview>
-                  <Set>
-                    <Mode>Off</Mode>
-                  </Set>
-                </Selfview>
-              </Video>
-              <UserInterface>
-                <WebView>
-                  <Display>
-                    <Mode>Modal</Mode>
-                    <Url>https://roomos.cisco.com</Url>
-                  </Display>
-                </WebView>
-                <!-- Message Rating Display Should Start Here -->
-                <Message>
-                  <Rating>
-                    <Display>
-                      <Title>Rate this Site</Title>
-                      <Text>From 0 to 5 stars, rate this Website</Text>
-                      <Duration>45</Duration>
-                    </Display>
-                  </Rating>
-                </Message>
-                <!-- Message Rating Display Should End Here -->
-              </UserInterface>
-            </Command>
-            ```
+        
 
 ??? lesson "Lesson: Execute an xCommand with multiple arguments with the same name ~({{config.cProps.rxp.sectionIds.http}}.3.3)~"
 
     !!! info
 
-        We can structure the XML payload for HTTP to include multiple parameters under the same name
 
-        Simply duplicate the Parameter that's capable of being duplicated and add that into your XML body. Be sure to include the Opening and Closing XML tags for that parameter as well
+        Some xCommands offer parameters that can receive multiple arguments with the same name.
+
+        We can structure the XML payload this way by simply duplicating the parameter and add that into your XML body.
+
+        ??? example "View Single vs Multiple Parameter Structure"
+
+            !!! note inline end
+
+                Not all xCommands allows multiple arguments, be sure to review the xAPI's documentation on roomos.cisco.com
+
+            === "Single Parameter Structure"
+
+                ``` xml
+                <Command>
+                  <Presentation>
+                    <Start>
+                      <ConnectorId>1</ConnectorId>
+                    </Start>
+                  </Presentation>
+                </Command>
+                ```
+            === "Multiple Parameter Structure"
+
+                ``` xml
+                <Command>
+                  <Presentation>
+                    <Start>
+                      <ConnectorId>1</ConnectorId>
+                      <ConnectorId>2</ConnectorId>
+                      <ConnectorId>3</ConnectorId>
+                    </Start>
+                  </Presentation>
+                </Command>
+                ```
+
+    !!! note inline end
+        The following xAPIs come pre-formatted in the request body and clean up the previous lesson's work. You must find the correct position for the final xAPI
+
+        - <hl_0>xCommand UserInterface WebView Clear</hl_0>
+        - <hl_0>xCommand UserInterface Message Rating Clear</hl_0>
+        - <hl_0>xCommand Video Selfview Set</hl_0>
 
     - **xAPI(s):**
         - xCommand UserInterface WebView Clear
@@ -679,109 +856,134 @@ The techniques outlined here will correspond to the methods needed for setting n
         - xCommand Video Selfview Set
         - xCommand Video Input SetMainVideoSource
 
-    - **Task:** We'll be running multiple commands in conjunction to having multiple parameters in this lesson.
-        - To clean up from the previous lesson, we'll send an xCommand to clear by replacing the Display Tags for both with Clear and deleting any parameters they had
-            - `xCommand UserInterface WebView {--Display--}{++Clear++}`
-            - `xCommand UserInterface Message Rating {--Display--}{++Clear++}`
-        - Then we'll set selfview back on in Full Screen
-        - The above tasks will come preloaded in the Postman collection, your task is to structure the XML for {++xCommand Video Input SetMainVideoSource++} and place it as the next xCommand in the XML structure given to you and **duplicate** the `ConnectorId` parameter. Include the following Parameters and Values
+    - **Task:** 
+        - Format <hl_4>xCommand Video Input SetMainVideoSource</hl_4> into XML
+        - Place the newly formatted XML into the correct position within the Body of the ==Execute an xCommand with multiple arguments with the same name== request of the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Include the following Parameter(s) and Value(s)
             - ConnectorId: 1
             - Layout: Prominent
-
-    Once the Postman Request has been updated, ==Save== the request, select ==Send== and review the Postman Terminal's response and observe any changes to your device
+        - Duplicate the following Parameter(s) and Value(s) once
+            - ConnectorId: 1
+        - Save the collection
+        - Select Send, review the response and observe any changes on your device
 
     ??? success "View Successful OSD Output"
 
         <figure markdown="span">
-          ![OSD Output](./images/2-3-3_Execute-xCommand-MultipleSameNameParameter-OSD.png){ width="500" }
+          ![Successful HTTP Response](./images/2-3-3_Execute-xCommand-MultipleSameNameParameter-OSD.png)
           <figcaption>What to expect on your OSD on a successful request</figcaption>
         </figure>
 
     ??? success "View properly formatted XML and Successful Response"
 
-        ![Successful HTTP Response](./images/2-3-3_Execute-xCommand-MultipleSameNameParameter-Success.png){ width="500", align=right }
+        <div class="grid cards" markdown>
 
-        === "Video Input SetMainVideoSource XML"
+        -   **XML Body Format**
 
-            ``` { .xml }
-            <Command>
-              <Video>
-                <Input>
-                  <SetMainVideoSource>
-                    <ConnectorId>1</ConnectorId>
-                    <!-- Your Duplicate ConnectorId Parameter Should Start Here  -->
-                    <ConnectorId>1</ConnectorId>
-                    <!-- Your Duplicate ConnectorId Parameter Should End Here  -->
-                    <Layout>Prominent</Layout>
-                  </SetMainVideoSource>
-                </Input>
-              </Video>
-            </Command>
-            ```
+            ---
+            === "Message Rating Display XML"
 
-        === "Full XML body"
+                ``` { .xml }
+                <Command>
+                  <Video>
+                    <Input>
+                      <SetMainVideoSource>
+                        <ConnectorId>1</ConnectorId>
+                        <!-- Your Duplicate ConnectorId Parameter Should Start Here  -->
+                        <ConnectorId>1</ConnectorId>
+                        <!-- Your Duplicate ConnectorId Parameter Should End Here  -->
+                        <Layout>Prominent</Layout>
+                      </SetMainVideoSource>
+                    </Input>
+                  </Video>
+                </Command>
+                ```
 
-            ``` { .xml }
-            <Command>
-              <UserInterface>
-                <WebView>
-                  <Clear></Clear>
-                </WebView>
-                <Message>
-                  <Rating>
-                    <Clear></Clear>
-                  </Rating>
-                </Message>
-              </UserInterface>
-              <Video>
-                <Selfview>
-                  <Set>
-                    <Mode>On</Mode>
-                    <FullScreenMode>On</FullScreenMode>
-                    <OnMonitorRole>First</OnMonitorRole>
-                  </Set>
-                </Selfview>
-                <Input>
-                  <SetMainVideoSource>
-                    <ConnectorId>1</ConnectorId>
-                    <!-- Your Duplicate ConnectorId Parameter Should Start Here  -->
-                    <ConnectorId>1</ConnectorId>
-                    <!-- Your Duplicate ConnectorId Parameter Should End Here  -->
-                    <Layout>Prominent</Layout>
-                  </SetMainVideoSource>
-                </Input>
-              </Video>
-            </Command>
-            ```
+            === "Full XML body"
+
+                ``` { .xml }
+                <Command>
+                  <UserInterface>
+                    <WebView>
+                      <Clear></Clear>
+                    </WebView>
+                    <Message>
+                      <Rating>
+                        <Clear></Clear>
+                      </Rating>
+                    </Message>
+                  </UserInterface>
+                  <Video>
+                    <Selfview>
+                      <Set>
+                        <Mode>On</Mode>
+                        <FullScreenMode>On</FullScreenMode>
+                        <OnMonitorRole>First</OnMonitorRole>
+                      </Set>
+                    </Selfview>
+                    <Input>
+                      <SetMainVideoSource>
+                        <ConnectorId>1</ConnectorId>
+                        <!-- Your Duplicate ConnectorId Parameter Should Start Here  -->
+                        <ConnectorId>1</ConnectorId>
+                        <!-- Your Duplicate ConnectorId Parameter Should End Here  -->
+                        <Layout>Prominent</Layout>
+                      </SetMainVideoSource>
+                    </Input>
+                  </Video>
+                </Command>
+                ```
+
+          -   **Response**
+
+              ---
+              ``` { .xml }
+              <?xml version="1.0"?>
+              <Command>
+                <WebViewClearResult status="0K"/>
+                <RatingClearResult status="OK"/>
+                <SelfviewSetResult status="OK"/>
+                <InputSetMainVideoSourceResult status="OK'/>
+              </Command>
+              ```
+
+        </div>
 
 ??? lesson "Lesson: Execute an xCommand with a multiline argument ~({{config.cProps.rxp.sectionIds.http}}.3.4)~"
 
     !!! info
 
-        Multiline Arguments can be placed into the body of the XML as well. This specifically uses a `<body>` which isn't explicitly highlighted in the path of the API.
+        <hl_5>Multiline Arguments</hl_5> can be placed into the body of the XML as well. Multiline content is placed specifically inside a <hl_3>&lt;body&gt;</hl_3> tag, which isn't explicitly documented in the path of the xAPI.
 
         The structure of a Multiline argument should look similar to the following
 
-        ``` { .xml , .no=copy, title="Example XML Structure with Multiline Argument" }
-        <Parent>
-          <Child>
-            <ChildParameter>Value<ChildParameter>
-            <body>[MY_MULTILINE_ARGUMENT]</body>
-          </Child>
-        <Parent>
-        ```
+        <div class="code-label" data-title="Example XML Structure with Multiline Argument">
+          <pre><code>&lt;Parent&gt;
+          &lt;Child&gt;
+            &lt;ChildParameter&gt;Value&lt;/ChildParameter&gt;
+            <hl_3>&lt;body&gt;</hl_3><hl_5>[MY_MULTILINE_ARGUMENT]</hl_5><hl_3>&lt;/body&gt;</hl_3>
+          &lt;/Child&gt;
+        &lt;/Parent&gt;</code></pre>
+        </div>
+      
+    !!! note inline end
+        The following xAPIs come pre-formatted in the request body. You must find the correct position for the final xAPI
+
+        - <hl_0>xCommand Video Selfview Set</hl_0>
+        - <hl_0>xCommand Video Input SetMainVideoSource</hl_0>
 
     - **xAPI(s):**
         - xCommand Video Selfview Set
         - xCommand Video Input SetMainVideoSource
         - xCommand UserInterface Extensions Panel Save
 
-    - **Task:** We'll be running multiple commands in conjunction to having a multiline argument.
-        - We'll start by correcting our Camera View from the previous lesson, which will come pre-loaded in the Postman Collection
-        - Your task is to structure the XML for {++xCommand UserInterface Extensions Panel Save++} and place it as the next xCommand in the XML structure given. Include the following Parameters and Values
+    - **Task:** 
+        - Format <hl_4>xCommand UserInterface Extensions Panel Save</hl_4> into XML
+        - Place the newly formatted XML into the correct position within the Body of the ==Execute an xCommand with multiple arguments with the same name== request of the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Include the following Parameter(s) and Value(s)
             - PanelId: wx1_lab_multilineCommand
             - body:
-                ```{ .xml , title="Your &lt;body&gt; Value" }
+                ```{ .xml , title="Value for your <body> tag" }
                 <Extensions>
                   <Panel>
                     <Order>1</Order>
@@ -795,23 +997,29 @@ The techniques outlined here will correspond to the methods needed for setting n
                 </Extensions>
                 ```
 
-    Once the Postman Request has been updated, ==Save== the request, select ==Send== and review the Postman Terminal's response and observe any changes to your device
+                ???+ warning "Wrapping XML Around XML"
 
-    ???+ warning "You're Wrapping XML around XML!"
+                    !!! note
 
-        **Note:** Not all multiline arguments are in XML format; for example, {++xCommand UserInterface Extensions Panel Save++} is. It’s important to remember that any data placed within a `<body>` tag should always be written as a `String`. If your integration automatically injects this information, additional processing may be necessary.
+                        Not all multiline arguments use XML. For example, <hl_0>xCommand Bookings Put</hl_0> uses a JSON string, while <hl_1>xCommand UserInterface Branding Upload</hl_1> uses a Base64-encoded string.
 
-        The xAPI will have a hard time deciphering your Body's XML value vs the xAPI XML Payload
+                        Data placed inside a `<body>` tag must be provided as a string. If that string contains XML, escape the inner XML tags before placing them in the body. 
+                        
+                        For example:
+                        - replace `<` with `&lt;`
+                        - replace `>` with `&gt;`
 
-        You'll want to "Stringify" the XML body by replacing all instances of `<` characters with {++&amp;lt;++} and all instances of `>` characters with {++&amp;gt;++} &gt;
+                    If the body argument contains unescaped XML, the endpoint may have trouble distinguishing the body’s XML value from the outer xAPI XML payload in the HTTP POST. This can cause an error.
 
-        - These aren't the only characters that are impacted, and that will largely depend on your XML body value
+                    Escape the XML in the body argument before sending it.
 
-        Luckily, you can use the **Stringify XML Body** on the Tools Page to do this for you
+                    You can use **Stringify XML Body** on the Tools page to do this for you.
 
-        <a class="md-button md-button--primary" href="../../../Resources/res_tools/" target="_blank" >
-          Open **Tools** <i class="fa-solid fa-gear"></i> Page <i class="fa-solid fa-square-up-right"></i>
-        </a>
+                    <a class="md-button md-button--primary" href="../../../Resources/res_tools/" target="_blank">
+                      Open **Tools** <i class="fa-solid fa-gear"></i> Page <i class="fa-solid fa-square-up-right"></i>
+                    </a>
+        - Save the collection
+        - Select Send, review the response and observe any changes on your device
 
     ??? success "View Successful OSD Output"
 
@@ -822,89 +1030,142 @@ The techniques outlined here will correspond to the methods needed for setting n
 
     ??? success "View properly formatted XML and Successful Response"
 
-        ![Successful HTTP Response](./images/2-3-3_Execute-xCommand-MultiLine-Success.png){ width="500", align=right }
+        <div class="grid cards" markdown>
 
-        === "UserInterface Extensions Panel Save XML"
+        -   **XML Body Format**
 
-            ``` { .xml }
-            <Command>
-              <UserInterface>
-                <Extensions>
-                  <Panel>
-                    <Save>
-                      <PanelId>wx1_lab_multilineCommand</PanelId>
-                      <body>&lt;Extensions&gt; &lt;Panel&gt; &lt;Order&gt;1&lt;/Order&gt; &lt;PanelId&gt;wx1_lab_multilineCommand&lt;/PanelId&gt; &lt;Location&gt;HomeScreen&lt;/Location&gt; &lt;Icon&gt;Info&lt;/Icon&gt; &lt;Color&gt;#FF70CF&lt;/Color&gt; &lt;Name&gt;MultiLine Command [Section {{config.cProps.rxp.sectionIds.http}}.3]&lt;/Name&gt; &lt;ActivityType&gt;Custom&lt;/ActivityType&gt; &lt;/Panel&gt; &lt;/Extensions&gt;
-                      </body>
-                    </Save>
-                  </Panel>
-                </Extensions>
-              </UserInterface>
-            </Command>
-            ```
+            ---
+            === "Message Rating Display XML"
 
-        === "Full XML body"
+                ``` { .xml }
+                <Command>
+                  <UserInterface>
+                    <Extensions>
+                      <Panel>
+                        <Save>
+                          <PanelId>wx1_lab_multilineCommand</PanelId>
+                          <body>&lt;Extensions&gt; &lt;Panel&gt; &lt;Order&gt;1&lt;/Order&gt; &lt;PanelId&gt;wx1_lab_multilineCommand&lt;/PanelId&gt; &lt;Location&gt;HomeScreen&lt;/Location&gt; &lt;Icon&gt;Info&lt;/Icon&gt; &lt;Color&gt;#FF70CF&lt;/Color&gt; &lt;Name&gt;MultiLine Command [Section {{config.cProps.rxp.sectionIds.http}}.3]&lt;/Name&gt; &lt;ActivityType&gt;Custom&lt;/ActivityType&gt; &lt;/Panel&gt; &lt;/Extensions&gt;
+                          </body>
+                        </Save>
+                      </Panel>
+                    </Extensions>
+                  </UserInterface>
+                </Command>
+                ```
 
-            ``` { .xml }
-            <Command>
-              <Video>
-                <Selfview>
-                  <Set>
-                    <Mode>Off</Mode>
-                  </Set>
-                </Selfview>
-                <Input>
-                  <SetMainVideoSource>
-                    <ConnectorId>1</ConnectorId>
-                    <Layout>Equal</Layout>
-                  </SetMainVideoSource>
-                </Input>
-              </Video>
-              <!-- Your UserInterface Extensions Panel Save XML Should Start Here  -->
-              <UserInterface>
-                <Extensions>
-                  <Panel>
-                    <Save>
-                      <PanelId>wx1_lab_multilineCommand</PanelId>
-                      <body>&lt;Extensions&gt; &lt;Panel&gt; &lt;Order&gt;1&lt;/Order&gt; &lt;PanelId&gt;wx1_lab_multilineCommand&lt;/PanelId&gt; &lt;Location&gt;HomeScreen&lt;/Location&gt; &lt;Icon&gt;Info&lt;/Icon&gt; &lt;Color&gt;#FF70CF&lt;/Color&gt; &lt;Name&gt;MultiLine Command [Section {{config.cProps.rxp.sectionIds.http}}.3]&lt;/Name&gt; &lt;ActivityType&gt;Custom&lt;/ActivityType&gt; &lt;/Panel&gt; &lt;/Extensions&gt;
-                      </body>
-                    </Save>
-                  </Panel>
-                </Extensions>
-              </UserInterface>
-              <!-- Your UserInterface Extensions Panel Save XML Should Start Here  -->
-            </Command>
-            ```
+            === "Full XML body"
+
+                ``` { .xml }
+                <Command>
+                  <Video>
+                    <Selfview>
+                      <Set>
+                        <Mode>Off</Mode>
+                      </Set>
+                    </Selfview>
+                    <Input>
+                      <SetMainVideoSource>
+                        <ConnectorId>1</ConnectorId>
+                        <Layout>Equal</Layout>
+                      </SetMainVideoSource>
+                    </Input>
+                  </Video>
+                  <!-- Your UserInterface Extensions Panel Save XML Should Start Here  -->
+                  <UserInterface>
+                    <Extensions>
+                      <Panel>
+                        <Save>
+                          <PanelId>wx1_lab_multilineCommand</PanelId>
+                          <body>&lt;Extensions&gt; &lt;Panel&gt; &lt;Order&gt;1&lt;/Order&gt; &lt;PanelId&gt;wx1_lab_multilineCommand&lt;/PanelId&gt; &lt;Location&gt;HomeScreen&lt;/Location&gt; &lt;Icon&gt;Info&lt;/Icon&gt; &lt;Color&gt;#FF70CF&lt;/Color&gt; &lt;Name&gt;MultiLine Command [Section {{config.cProps.rxp.sectionIds.http}}.3]&lt;/Name&gt; &lt;ActivityType&gt;Custom&lt;/ActivityType&gt; &lt;/Panel&gt; &lt;/Extensions&gt;
+                          </body>
+                        </Save>
+                      </Panel>
+                    </Extensions>
+                  </UserInterface>
+                  <!-- Your UserInterface Extensions Panel Save XML Should Start Here  -->
+                </Command>
+                ```
+
+          -   **Response**
+
+              ---
+              ``` { .xml }
+              <?xml version="1.0"?>
+              <Command>
+                <SelfviewSetResult status="OK"/>
+                <InputSetMainVideoSourceResult status="OK"/>
+                <PanelSaveResult status="OK">
+              </Command>
+              ```
+
+        </div>
 
 ??? lesson "Lesson: Execute an xCommand which generates data and responds ~({{config.cProps.rxp.sectionIds.http}}.3.5)~"
 
     !!! info
 
-        Some commands will generate data and output a response of that data. All commands will respond with an "OK" or "Error" but other can provide data.
+        Some commands will generate data and output a response. All commands will respond with an "OK" or "Error" but others can provide additional information.
 
-        Whereas we just made a UI extension with the API, we can now pull a list of our custom extensions using the API
+        Whereas we made a UI extension with xCommand UserInterface Extensions Panel Save, we can now pull a list of our custom extensions using the xAPI
 
-    - **xAPI:** xCommand UserInterface Extensions List
+    !!! note inline end
+        The following xAPI(s) will only produce information in the request response, you should not see a change on your device
 
-    - **Task:** Structure the xAPI command above into an XML format then place this into the Body of the ==Execute an xCommand which generates data and responds== request in your Postman collection. Include the following Parameters and Values
-        - ActivityType: Custom
+    - **xAPI(s):**
+        - <hl_0>xCommand UserInterface Extensions List</hl_0>
 
-    Once the Postman Request has been updated, ==Save== the request, select ==Send== and review the Postman Terminal's response and observe any changes to your device
+    - **Task:** 
+        - Format <hl_4>xCommand UserInterface Extensions List</hl_4> into XML
+        - Place the newly formatted XML into the correct position within the Body of the ==Execute an xCommand which generates data and responds== request of the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Include the following Parameter(s) and Value(s)
+            - ActivityType: Custom
+        - Save the collection
+        - Select Send, review the response and observe any changes on your device
 
     ??? success "View properly formatted XML and Successful Response"
 
-        ![Successful HTTP Response](./images/2-3-3_Execute-xCommandWithResponse-Success.png){ width="700", align=right }
+        <div class="grid cards" markdown>
 
-        ``` { .xml }
-        <Command>
-          <UserInterface>
-            <Extensions>
-              <List>
-                <ActivityType>Custom</ActivityType>
-              </List>
-            </Extensions>
-          </UserInterface>
-        </Command>
-        ```
+        -   **XML Body Format**
+
+            ``` { .xml }
+            <Command>
+              <UserInterface>
+                <Extensions>
+                  <List>
+                    <ActivityType>Custom</ActivityType>
+                  </List>
+                </Extensions>
+              </UserInterface>
+            </Command>
+            ```
+
+          -   **Response**
+
+              ---
+              ``` { .xml }
+              <?xml version="1.0"?>
+              <Command>
+                <ExtensionsListResult status="OK">
+                  <Extensions>
+                    <Version>1.11</Version>
+                    <Panel item="1" maxOccurrence="n">
+                      <Icon>Info</Icon>
+                      <Location>HomeScreen</Location>
+                      <ActivityType>Custom</ActivityType>
+                      <Name>MultiLine Command [Section {{config.cProps.rxp.sectionIds.http}}.3]</Name>
+                      <PanelId>wx1_lab_multilineCommand</PanelId>
+                      <Origin>local</Origin>
+                      <Order>1</Order>
+                      <Color>#FF70CF</Color>
+                      <Visibility>Auto</Visibility>
+                    </Panel>
+                  </Extensions>
+                </ExtensionsListResult>
+              </Command>
+              ```
+
+        </div>
 
 <!-- ??? challenge "Challenge: Open a Text Input Prompt!"
 
@@ -931,17 +1192,17 @@ The techniques outlined here will correspond to the methods needed for setting n
 
 !!! Abstract
 
-Throughout section {{config.cProps.rxp.sectionIds.http}}.4, you'll continue to learn how to format XML payloads as you work to set new xConfigurations against the codec
+    Throughout section {{config.cProps.rxp.sectionIds.http}}.4, you'll continue to learn how to format XML payloads as you work to set new xConfigurations against the codec
 
-Unlike xCommands, you can then pull back the value of xConfigurations using a Get Request.
+    Unlike xCommands, you can then pull back the value of xConfigurations using a Get Request.
 
-The techniques outlined here will correspond to the methods needed for Getting xStatus Values in section {{config.cProps.rxp.sectionIds.http}}.5
+    The techniques outlined here will correspond to the methods needed for Getting xStatus Values in section {{config.cProps.rxp.sectionIds.http}}.5
 
 ???+ lesson "Lesson: Set a new xConfiguration Value ~({{config.cProps.rxp.sectionIds.http}}.4.1)~"
 
     - **xAPI:** xConfiguration Audio DefaultVolume
 
-    - **Task:** Structure the xAPI command above into an XML format then place this into the Body of the ==Set a new xConfiguration Value== request in your Postman collection. Set DefaultVolume to `75`
+    - **Task:** Format the xAPI command above into an XML format then place this into the Body of the ==Set a new xConfiguration Value== request in your Postman collection. Set DefaultVolume to `75`
 
     ??? success "View properly formatted XML and Successful Response"
 
