@@ -72,7 +72,8 @@
     - A Laptop
     - A Cisco Desk, Board or Room Series Device running the most recent On Premise or Cloud Stable software
         - <hl_0>Preferred Device:</hl_0> <hl_4>Cisco Desk Pro</hl_4>
-        - A Touch Controller is required when working on a Room Series Device. Either Room navigator or 3rd part touch display
+        - A Touch Controller is required when working on a Room Series Device. 
+            - Room navigator or 3rd part touch display
     - A minimum of 1 camera (Either Integrated or External)
 
     **Software**
@@ -540,46 +541,9 @@
                 # </Configuration>
                 ```
 
-## **Import and Configure the section {{config.cProps.rxp.sectionIds.http}}.1 Postman Collection** ~({{config.cProps.rxp.sectionIds.http}}.2)~
+## **Import and Configure the section {{config.cProps.rxp.sectionIds.http}}.3 {{config.cProps.apiClientApplication}} Collection** ~({{config.cProps.rxp.sectionIds.http}}.2)~
 
-Whereas we'll be using Postman, this tool will automatically take our basic auth and structure as an with Header for us and convert that string into base64
-
-This collection has most pieces structured as we'd need it to and will be used through sections {{config.cProps.rxp.sectionIds.http}}.3 through {{config.cProps.rxp.sectionIds.http}}.5
-
----
-
-<h4>Import Collection</h4>
-
-- With Postman open, in a new or existing workspace select ==import==
-- Select File
-- Locate the ==WX1-Lab:1451-HTTP-Postman-Collection.Postman_collection.json== and Open it
-- You should now have the Postman Collection installed for this lab
-
-??? gif "View Import Postman Collection"
-
-    <figure markdown>
-      ![Import Lab Postman Collection](./images/2-3-2_Import-PostmanCollection.gif){ width="600" }
-    </figure>
-
----
-
-<h4>Configure Postman Collection for sections {{config.cProps.rxp.sectionIds.http}}.3 through {{config.cProps.rxp.sectionIds.http}}.5</h4>
-
-- Click on the ==WX1-Lab:1451-HTTP-Postman-Collection== root folder
-- Select Variables
-- Add the following information for your codec in both the `Initial Value` and `Current Value` fields
-  - device_username
-  - device_password
-  - device_ipAddress
-- Select Save (or one of the keyboard shortcuts for your computer)
-  - ++control+s++ for Windows
-  - ++command+s++ for Mac
-
-??? gif "View Configure Postman Collection for sections {{config.cProps.rxp.sectionIds.http}}.3 through {{config.cProps.rxp.sectionIds.http}}.5"
-
-    <figure markdown>
-      ![Import Lab Postman Collection](./images/2-3-2_Configure-PostmanCollection.gif){ width="600" }
-    </figure>
+{{ apps.bruno.configure.http }}
 
 ## **Executing xCommands** ~({{config.cProps.rxp.sectionIds.http}}.3)~
 
@@ -1159,29 +1123,7 @@ This collection has most pieces structured as we'd need it to and will be used t
                 </ExtensionsListResult>
               </Command>
               ```
-
         </div>
-
-<!-- ??? challenge "Challenge: Open a Text Input Prompt!"
-
-    - Duplicate the ==Execute an xCommand== request in Postman
-    - Replace the body of this request with a new body that implements <a href="https://roomos.cisco.com/xapi/Command.UserInterface.Message.TextInput.Display/" target="_blank">xCommand UserInterface Message TextInput Display</a>
-    - Set the Following Parameters [Keep them Safe for Work :pray:]
-        - Title
-        - Text
-        - Duration: [Set any value between 15 and 45]
-    - Save and Execute
-    - Look at your Touch Controller, it should have a Text Input field :smiley:
-
-    ??? success "View a Successful Touch Controller ScreenShot"
-
-        <figure markdown>
-          ![Successful Text Input Pop Up](./images/2-3-3_Challenge-TextInput.png){ width="800" }
-        </figure>
-
-        <a class="md-button md-button--primary" href="../challengeAnswers/" target="_blank" >
-          Giving Up? Check out the Challenge Answers Page <i class="fa-solid fa-square-up-right"></i>
-        </a> -->
 
 ## **Setting and Getting xConfigurations** ~({{config.cProps.rxp.sectionIds.http}}.4)~
 
@@ -1541,19 +1483,7 @@ This collection has most pieces structured as we'd need it to and will be used t
 
 ???+ gif "Locate and Configure your Unique URL from Webhook.Site"
 
-    - Go to <a href="https://webhook.site" target="_blank">https://webhook.site</a>
-    - Copy your Unique URL
-    - Open Postman
-        - Click on the ==WX1-Lab:1451-HTTP-Postman-Collection== root folder
-        - Select Variables
-        - Pase your unique URL into `Initial Value` and `Current Value` fields for ==WebhookSite_Unique_Url==
-        - Select Save (or one of the keyboard shortcuts for your computer)
-            - ++control+s++ for Windows
-            - ++command+s++ for Mac
-
-    <figure markdown>
-      ![Locate and Configure your Unique URL from Webhook.Site](./images/2-3-6_ConfigureWebHookPostman.gif){ width="600" }
-    </figure>
+    {{ apps.bruno.configure.webhookSite | indent(4) }}
 
 !!! info
 
@@ -1561,7 +1491,7 @@ This collection has most pieces structured as we'd need it to and will be used t
 
     `xCommand HTTPFeedback Register`
 
-    These have been preformatted for you in the Postman collection
+    These have been preformatted for you in the {{config.cProps.apiClientApplication}} collection
 
     ??? question "View Example WebHook.site output"
 
@@ -1572,7 +1502,7 @@ This collection has most pieces structured as we'd need it to and will be used t
 ??? lesson "Lesson: Subscribe to the full xConfiguration Branch ~({{config.cProps.rxp.sectionIds.http}}.6.1)~"
 
     - **Task:**
-        - In your Postman Collection under HTTP > Section: ({{config.cProps.rxp.sectionIds.http}}.6)
+        - In your {{config.cProps.apiClientApplication}} Collection under HTTP > Section: ({{config.cProps.rxp.sectionIds.http}}.6)
         - Select the ==Subscribe to the full xConfiguration Branch== request
         - View how the body is Structured in the XML body
         - Select Send
@@ -1584,7 +1514,7 @@ This collection has most pieces structured as we'd need it to and will be used t
 ??? lesson "Lesson: Subscribe to the full xStatus Branch ~({{config.cProps.rxp.sectionIds.http}}.6.2)~"
 
     - **Task:**
-        - In your Postman Collection under HTTP > Section: {{config.cProps.rxp.sectionIds.http}}.6
+        - In your {{config.cProps.apiClientApplication}} Collection under HTTP > Section: {{config.cProps.rxp.sectionIds.http}}.6
         - Select the ==Subscribe to the full xStatus Branch== request
         - View how the body is Structured in the XML body
         - Then select Send and Monitor the output on the Webhook.Site terminal
@@ -1596,7 +1526,7 @@ This collection has most pieces structured as we'd need it to and will be used t
 ??? lesson "Lesson: Subscribe to the full xEvent Branch ~({{config.cProps.rxp.sectionIds.http}}.6.3)~"
 
     - **Task:**
-        - In your Postman Collection under HTTP > Section: ({{config.cProps.rxp.sectionIds.http}}.6)
+        - In your {{config.cProps.apiClientApplication}} Collection under HTTP > Section: ({{config.cProps.rxp.sectionIds.http}}.6)
         - Select the ==Subscribe to the full xEvent Branch== request
         - View how the body is Structured in the XML body
         - Then select Send and Monitor the output on the Webhook.Site terminal
@@ -1608,7 +1538,7 @@ This collection has most pieces structured as we'd need it to and will be used t
 ??? lesson "Lesson: Subscribe to Specific Expressions on any Branch ~({{config.cProps.rxp.sectionIds.http}}.6.4)~"
 
     - **Task:**
-        - In your Postman Collection under HTTP > Section: ({{config.cProps.rxp.sectionIds.http}}.6)
+        - In your {{config.cProps.apiClientApplication}} Collection under HTTP > Section: ({{config.cProps.rxp.sectionIds.http}}.6)
         - Select the ==Subscribe to Specific Expressions on any Branch== request
         - View how the body is Structured in the XML body
             - Take Note, we've changed our Expression Parameter

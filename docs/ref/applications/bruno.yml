@@ -39,3 +39,63 @@ bruno:
           </a>
 
       </div>
+  configure: 
+    http: |
+      This collection has been pre-configured to aid you in completing the lab exercises.
+    
+      Bruno will automatically take our basic auth and structure as an with Header for us and convert that string into base64
+
+      ---
+
+      <h4>Importing the collection into Bruno</h4>
+
+      - With Bruno open, in a new or existing workspace select the <hl_4>plus icon <i class="fa-solid fa-plus"></i></hl_4> next to Collections
+      - Select import collection
+      - Locate the <hl_0>RoomOS xAPI - HTTP [rxp-3].zip</hl_0> and drag it into this window
+        - Alternatively, you can click the "Choose File" button and select the file from your computer
+      - Confirm the file and select Import
+
+      ??? gif "View Import Bruno Collection"
+
+          <figure markdown>
+            ![Import Lab Bruno Collection](../../../ref/applications/bruno_images/import_http_collection.gif){ width="600" }
+          </figure>
+
+      ---
+
+      <h4>Configuring the Bruno Collection</h4>
+
+      - Open Bruno
+          - Click on the <hl_0>RoomOS xAPI - HTTP [rxp-3].zip</hl_0> collection
+          - Select Vars^4^
+          - Fill in the following values for your Codec in the Value column
+              - device_hostAddress
+              - device_username
+              - device_password
+          - Select the Save Button
+              - HotKeys are available in Bruno for quick actions
+                  - ++control+s++ for Windows
+                  - ++command+s++ for Mac
+
+      ??? gif "View Configure Codec for Bruno Collection"
+
+          <figure markdown>
+            ![Import Lab Bruno Collection](../../../ref/applications/bruno_images/configure_http_collection.gif){ width="600" }
+          </figure>
+    webhookSite: |
+      - Go to [Webhook.Site](https://webhook.site)
+      - Copy <hl_4>your unique URL</hl_4>
+      - Open Bruno
+          - Click on the <hl_0>RoomOS xAPI - HTTP [rxp-3].zip</hl_0> root folder
+              - Select Vars^4^
+              - Paste <hl_4>your unique URL</hl_4> into in the Value column fields for <hl_2>WebhookSite_Unique_Url</hl_2>
+              - Select the Save Button
+                  - HotKeys are available in Bruno for quick actions
+                      - ++control+s++ for Windows
+                      - ++command+s++ for Mac
+        
+      ??? gif "View Configure Webhook.site for Bruno Collection"
+
+          <figure markdown>
+            ![Locate and Configure your Unique URL from Webhook.Site](../../../ref/applications/bruno_images/configure_http_collection_webhook.gif){ width="600" }
+          </figure>
