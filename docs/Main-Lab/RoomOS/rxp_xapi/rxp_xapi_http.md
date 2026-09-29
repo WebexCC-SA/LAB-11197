@@ -1272,7 +1272,7 @@
     ??? success "View properly formatted URL and Successful Response"
 
         <div class="code-label" data-title="Fully Formatted URL">
-            <pre><code>https://{{device_ipAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Configuration/Audio/DefaultVolume</hl_4></code></pre>
+            <pre><code>https://{{device_hostAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Configuration/Audio/DefaultVolume</hl_4></code></pre>
         </div>
 
         <div class="code-label" data-title="Response">
@@ -1304,7 +1304,7 @@
     ??? success "View properly formatted URL and Successful Response"
 
         <div class="code-label" data-title="Fully Formatted URL">
-            <pre><code>https://{{device_ipAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Configuration/Audio</hl_4></code></pre>
+            <pre><code>https://{{device_hostAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Configuration/Audio</hl_4></code></pre>
         </div>
 
         <div class="code-label" data-title="Response">
@@ -1352,7 +1352,7 @@
     ??? success "View properly formatted URL and Successful Response"
 
         <div class="code-label" data-title="Fully Formatted URL">
-            <pre><code>https://{{device_ipAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Status/Audio/Volume</hl_4></code></pre>
+            <pre><code>https://{{device_hostAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Status/Audio/Volume</hl_4></code></pre>
         </div>
 
         <div class="code-label" data-title="Response">
@@ -1378,7 +1378,7 @@
     ??? success "View properly formatted URL and Successful Response"
 
         <div class="code-label" data-title="Fully Formatted URL">
-            <pre><code>https://{{device_ipAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Status/Audio</hl_4></code></pre>
+            <pre><code>https://{{device_hostAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Status/Audio</hl_4></code></pre>
         </div>
 
         <div class="code-label" data-title="Response">
@@ -1508,7 +1508,7 @@
 ??? lesson "Lesson: Subscribe to the full xConfiguration Branch ~({{config.cProps.rxp.sectionIds.http}}.6.1)~"
 
     - **Task:**
-        - In your {{config.cProps.apiClientApplication}} Collection under HTTP > Section: ({{config.cProps.rxp.sectionIds.http}}.6)
+        - In your {{config.cProps.apiClientApplication}} Collection under ({{config.cProps.rxp.sectionIds.http}}.6) - HTTP Feedback Subscriptions
         - Select the ==Subscribe to the full xConfiguration Branch== request
         - View how the body is Structured in the XML body
         - Select Send
@@ -1520,7 +1520,7 @@
 ??? lesson "Lesson: Subscribe to the full xStatus Branch ~({{config.cProps.rxp.sectionIds.http}}.6.2)~"
 
     - **Task:**
-        - In your {{config.cProps.apiClientApplication}} Collection under HTTP > Section: {{config.cProps.rxp.sectionIds.http}}.6
+        - In your {{config.cProps.apiClientApplication}} Collection under ({{config.cProps.rxp.sectionIds.http}}.6) - HTTP Feedback Subscriptions
         - Select the ==Subscribe to the full xStatus Branch== request
         - View how the body is Structured in the XML body
         - Then select Send and Monitor the output on the Webhook.Site terminal
@@ -1532,7 +1532,7 @@
 ??? lesson "Lesson: Subscribe to the full xEvent Branch ~({{config.cProps.rxp.sectionIds.http}}.6.3)~"
 
     - **Task:**
-        - In your {{config.cProps.apiClientApplication}} Collection under HTTP > Section: ({{config.cProps.rxp.sectionIds.http}}.6)
+        - In your {{config.cProps.apiClientApplication}} Collection under ({{config.cProps.rxp.sectionIds.http}}.6) - HTTP Feedback Subscriptions
         - Select the ==Subscribe to the full xEvent Branch== request
         - View how the body is Structured in the XML body
         - Then select Send and Monitor the output on the Webhook.Site terminal
@@ -1544,7 +1544,7 @@
 ??? lesson "Lesson: Subscribe to Specific Expressions on any Branch ~({{config.cProps.rxp.sectionIds.http}}.6.4)~"
 
     - **Task:**
-        - In your {{config.cProps.apiClientApplication}} Collection under HTTP > Section: ({{config.cProps.rxp.sectionIds.http}}.6)
+        - In your {{config.cProps.apiClientApplication}} Collection under ({{config.cProps.rxp.sectionIds.http}}.6) - HTTP Feedback Subscriptions
         - Select the ==Subscribe to Specific Expressions on any Branch== request
         - View how the body is Structured in the XML body
             - Take Note, we've changed our Expression Parameter

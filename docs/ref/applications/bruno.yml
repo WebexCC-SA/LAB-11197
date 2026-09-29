@@ -51,7 +51,7 @@ bruno:
 
       - With Bruno open, in a new or existing workspace select the <hl_4>plus icon <i class="fa-solid fa-plus"></i></hl_4> next to Collections
       - Select import collection
-      - Locate the <hl_0>RoomOS xAPI - HTTP [rxp-3].zip</hl_0> and drag it into this window
+      - Locate the <hl_0>RoomOS xAPI - HTTP [rxp-3].zip</hl_0> and drag it into this window as directed
         - Alternatively, you can click the "Choose File" button and select the file from your computer
       - Confirm the file and select Import
 
@@ -66,7 +66,7 @@ bruno:
       <h4>Configuring the Bruno Collection</h4>
 
       - Open Bruno
-          - Click on the <hl_0>RoomOS xAPI - HTTP [rxp-3].zip</hl_0> collection
+          - Click on the <hl_0>RoomOS xAPI - HTTP [rxp-3]</hl_0> collection
           - Select Vars^4^
           - Fill in the following values for your Codec in the Value column
               - device_hostAddress
@@ -86,7 +86,7 @@ bruno:
       - Go to [Webhook.Site](https://webhook.site)
       - Copy <hl_4>your unique URL</hl_4>
       - Open Bruno
-          - Click on the <hl_0>RoomOS xAPI - HTTP [rxp-3].zip</hl_0> root folder
+          - Click on the <hl_0>RoomOS xAPI - HTTP [rxp-3]</hl_0> root folder
               - Select Vars^4^
               - Paste <hl_4>your unique URL</hl_4> into in the Value column fields for <hl_2>WebhookSite_Unique_Url</hl_2>
               - Select the Save Button
