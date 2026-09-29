@@ -79,8 +79,8 @@
 
     - Laptop
         - Recommended Browser: Chrome or Firefox
-        - Postman
-        - Section {{config.cProps.rxp.sectionIds.http}} Postman Collection
+        - {{config.cProps.apiClientApplication}}
+        - Section {{config.cProps.rxp.sectionIds.http}} {{config.cProps.apiClientApplication}} Collection
         - Webhook.site
 
     - RoomOS Device
@@ -90,31 +90,31 @@
 
 !!! important ""
 
-    - If joining from a Lab at WebexOne, Postman should be installed on your loaner laptop already, if not, please install the application now using the link below
+    - If joining from a Lab at WebexOne, {{config.cProps.apiClientApplication}} should be installed on your loaner laptop already, if not, please install the application now using the link below
 
-    - In addition to the Postman application, please download the Postman Collection listed below
+    - In addition to the {{config.cProps.apiClientApplication}} application, please download the {{config.cProps.apiClientApplication}} Collection listed below
 
     - We'll also be leveraging a Webhook testing site, click the link below to open this is site in a new tab
 
     <div class="grid cards" markdown>
 
-    -   <i class="fa-solid fa-download"></i> __Click the icon below for the Postman Download Page__
+    -   <i class="fa-solid fa-download"></i> __Click the icon below for the {{config.cProps.apiClientApplication}} Download Page__
 
         ---
 
-        <a href="https://www.Postman.com/downloads/" target="_blank">
+        <a href="https://www.usebruno.com/downloads" target="_blank">
           <figure markdown="span">
-              ![Postman Download](https://voyager.postman.com/logo/postman-logo-icon-orange.svg){ width="75" }
+              ![{{config.cProps.apiClientApplication}} Download](https://www.usebruno.com/bruno-logo.png){ width="75" }
           </figure>
         </a>
 
-    -   <i class="fa-solid fa-download"></i> __Click the icon below for the Section {{config.cProps.rxp.sectionIds.http}} Postman Collection__
+    -   <i class="fa-solid fa-download"></i> __Click the icon below for the Section {{config.cProps.rxp.sectionIds.http}} {{config.cProps.apiClientApplication}} Collection__
 
         ---
 
         <a href="https://github.com/WebexCC-SA/LAB-1451/raw/refs/heads/main/docs/Main-Lab/DownloadContent/PostMan%20Collections/WX1-Lab-1451-HTTP-PostMan-Collection.postman_collection.json.zip" target="_blank">
           <figure markdown="span">
-              ![Postman Collection](https://voyager.postman.com/logo/postman-logo-icon-orange.svg){ width="75" }
+              ![{{config.cProps.apiClientApplication}} Collection](https://www.usebruno.com/bruno-logo.png){ width="75" }
           </figure>
         </a>
 
@@ -281,6 +281,18 @@
             <div class="code-label" data-title="URL with xAPI Path">
               <pre><code>https://<hl_5>{{config.cProps.auth.roomosIp}}</hl_5>/getxml?location\=<hl_1>Status</hl_1><hl_3>/</hl_3><hl_1>Logging</hl_1><hl_3>/</hl_3><hl_1>ExtendedLogging</hl_1><hl_3>/</hl_3><hl_1>Mode</hl_1></code></pre>
             </div>
+    
+    !!! info "Troubleshooting GET Requests"
+
+        GET requests use the `location` parameter to select one xAPI path. If the response is empty or does not contain the value you expected:
+
+        - Check that the path starts with `Configuration` or `Status`, as appropriate. Omit the leading `x` from the shell xAPI syntax.
+        - Check the spelling and `/` separators in the path.
+        - Confirm that the URL contains one `location` path.
+
+        A GET request can return `200 OK` even when the path is wrong or missing. Check the XML response body to confirm the requested value was returned.
+
+        If you do not receive an xAPI XML response, check that the device is reachable, the URL and protocol are correct, and the credentials are valid. An authentication failure returns `401 Unauthorized`.
 
     <h4>POST Request Body Format ~({{config.cProps.rxp.sectionIds.http}}.1.5)~</h4>
 
@@ -305,6 +317,10 @@
         Click the tabs below to see an example xConfiguration and xCommand body structured as XML
 
         !!! important ""
+
+            !!! warning "Keep Commands and Configurations in Separate Requests"
+
+                A <hl_2>/putxml</hl_2> request can contain multiple commands or multiple configuration values, but the request <hl_7>**CANNOT**</hl_7> mix commands and configurations in a single payload. Send each type in its own request: use a <hl_4>Command</hl_4> root for commands or a <hl_5>Configuration</hl_5> root for configuration values.
 
             === "xCommand Example"
 
@@ -340,6 +356,18 @@
                   <hl_3>&lt;/</hl_3><hl_1>Cameras</hl_1><hl_3>&gt;</hl_3>
                 <hl_3>&lt;/</hl_3><hl_1>Configuration</hl_1><hl_3>&gt;</hl_3></code></pre>
                 </div>
+
+    !!! info "Troubleshooting POST Requests"
+
+        POST requests send XML to `/putxml`. If the response indicates an error or the device does not behave as expected:
+
+        - Check that the XML is well formed and uses the correct root element: `Command` for xCommands or `Configuration` for xConfigurations.
+        - Check that the elements follow the xAPI path and that required parameters and values are valid.
+        - Read the XML response. Command results report their status; a configuration response should include `Success`.
+
+        For multiline arguments that contain XML, follow the escaping guidance in the multiline command lesson.
+
+        If you do not receive an xAPI XML response, check that the device is reachable, the URL and protocol are correct, and the credentials are valid. An authentication failure returns `401 Unauthorized`.
 
     - - -
 
@@ -591,7 +619,7 @@ This collection has most pieces structured as we'd need it to and will be used t
 
 !!! Abstract
 
-    Throughout section {{config.cProps.rxp.sectionIds.http}}.3, you'll learn how to format and execute xCommands via HTTP.
+    Throughout section {{config.cProps.rxp.sectionIds.http}}.3, you'll learn how to format and execute xCommands against the codec via HTTP.
 
     The techniques outlined here will correspond to methods needed for setting new xConfiguration Values in section {{config.cProps.rxp.sectionIds.http}}.4
 
@@ -645,7 +673,7 @@ This collection has most pieces structured as we'd need it to and will be used t
             ``` { .xml }
             <?xml version="1.0"?>
             <Command>
-              <SelfviewSetResult status="OK/>
+              <SelfviewSetResult status="OK"/>
             </Command>
             ```
 
@@ -702,7 +730,7 @@ This collection has most pieces structured as we'd need it to and will be used t
                 ```
 
     !!! note inline end
-        The following xAPIs come pre-formatted in the request body. You must find the correct position for the final xAPI
+        The following xAPI(s) come pre-formatted in the request body. You must find the correct position for the final xAPI
 
         - <hl_0>xCommand UserInterface WebView Display</hl_0>
         - <hl_0>xCommand UserInterface Message Rating Display</hl_0> 
@@ -794,7 +822,7 @@ This collection has most pieces structured as we'd need it to and will be used t
             <?xml version="1.0"?>
             <Command>
               <SelfviewSetResult status="OK"/>
-              <WebViewDisplayResult status="0k'/>
+              <WebViewDisplayResult status="OK"/>
               <RatingDisplayResult status="OK"/>
             </Command>
             ```
@@ -844,7 +872,7 @@ This collection has most pieces structured as we'd need it to and will be used t
                 ```
 
     !!! note inline end
-        The following xAPIs come pre-formatted in the request body and clean up the previous lesson's work. You must find the correct position for the final xAPI
+        The following xAPI(s) come pre-formatted in the request body and clean up the previous lesson's work. You must find the correct position for the final xAPI
 
         - <hl_0>xCommand UserInterface WebView Clear</hl_0>
         - <hl_0>xCommand UserInterface Message Rating Clear</hl_0>
@@ -864,6 +892,7 @@ This collection has most pieces structured as we'd need it to and will be used t
             - Layout: Prominent
         - Duplicate the following Parameter(s) and Value(s) once
             - ConnectorId: 1
+            - Note: Typically we would not duplicate the same connector with the xAPI, but for the purposes of this lab, we will and prove out how this structured.
         - Save the collection
         - Select Send, review the response and observe any changes on your device
 
@@ -940,10 +969,10 @@ This collection has most pieces structured as we'd need it to and will be used t
               ``` { .xml }
               <?xml version="1.0"?>
               <Command>
-                <WebViewClearResult status="0K"/>
+                <WebViewClearResult status="OK"/>
                 <RatingClearResult status="OK"/>
                 <SelfviewSetResult status="OK"/>
-                <InputSetMainVideoSourceResult status="OK'/>
+                <InputSetMainVideoSourceResult status="OK"/>
               </Command>
               ```
 
@@ -967,7 +996,7 @@ This collection has most pieces structured as we'd need it to and will be used t
         </div>
       
     !!! note inline end
-        The following xAPIs come pre-formatted in the request body. You must find the correct position for the final xAPI
+        The following xAPI(s) come pre-formatted in the request body. You must find the correct position for the final xAPI
 
         - <hl_0>xCommand Video Selfview Set</hl_0>
         - <hl_0>xCommand Video Input SetMainVideoSource</hl_0>
@@ -979,7 +1008,7 @@ This collection has most pieces structured as we'd need it to and will be used t
 
     - **Task:** 
         - Format <hl_4>xCommand UserInterface Extensions Panel Save</hl_4> into XML
-        - Place the newly formatted XML into the correct position within the Body of the ==Execute an xCommand with multiple arguments with the same name== request of the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Place the newly formatted XML into the correct position within the Body of the ==Execute an xCommand with a multiline argument== request of the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
         - Include the following Parameter(s) and Value(s)
             - PanelId: wx1_lab_multilineCommand
             - body:
@@ -1035,7 +1064,7 @@ This collection has most pieces structured as we'd need it to and will be used t
         -   **XML Body Format**
 
             ---
-            === "Message Rating Display XML"
+            === "UserInterface Extensions Panel Save XML"
 
                 ``` { .xml }
                 <Command>
@@ -1082,7 +1111,7 @@ This collection has most pieces structured as we'd need it to and will be used t
                       </Panel>
                     </Extensions>
                   </UserInterface>
-                  <!-- Your UserInterface Extensions Panel Save XML Should Start Here  -->
+                  <!-- Your UserInterface Extensions Panel Save XML Should End Here  -->
                 </Command>
                 ```
 
@@ -1094,7 +1123,7 @@ This collection has most pieces structured as we'd need it to and will be used t
               <Command>
                 <SelfviewSetResult status="OK"/>
                 <InputSetMainVideoSourceResult status="OK"/>
-                <PanelSaveResult status="OK">
+                <PanelSaveResult status="OK"/>
               </Command>
               ```
 
@@ -1192,90 +1221,160 @@ This collection has most pieces structured as we'd need it to and will be used t
 
 !!! Abstract
 
-    Throughout section {{config.cProps.rxp.sectionIds.http}}.4, you'll continue to learn how to format XML payloads as you work to set new xConfigurations against the codec
-
-    Unlike xCommands, you can then pull back the value of xConfigurations using a Get Request.
+    Throughout section {{config.cProps.rxp.sectionIds.http}}.4, you'll learn how to format, set and get xConfigurations against the codec via HTTP.
 
     The techniques outlined here will correspond to the methods needed for Getting xStatus Values in section {{config.cProps.rxp.sectionIds.http}}.5
 
 ???+ lesson "Lesson: Set a new xConfiguration Value ~({{config.cProps.rxp.sectionIds.http}}.4.1)~"
 
-    - **xAPI:** xConfiguration Audio DefaultVolume
+    !!! info inline end "XML Body Location"
 
-    - **Task:** Format the xAPI command above into an XML format then place this into the Body of the ==Set a new xConfiguration Value== request in your Postman collection. Set DefaultVolume to `75`
-
-    ??? success "View properly formatted XML and Successful Response"
-
-        ![Successful HTTP Response](./images/2-3-4_Set-xConfig_Single-Success.png){ width="700", align=right }
-
-        ``` { .xml }
-        <Configuration>
-          <Audio>
-            <DefaultVolume>75</DefaultVolume>
-          </Audio>
-        </Configuration>
-        ```
-
-??? lesson "Lesson: Set multiple xConfiguration Values in a single Request ~({{config.cProps.rxp.sectionIds.http}}.4.2)~"
+        <figure markdown>
+          ![XML Body Location](./images/bruno/bruno_bodyLocation.png){ width="400" }
+        </figure>
 
     - **xAPI(s):**
-        - xConfiguration Audio DefaultVolume
-        - xConfiguration SystemUnit Name
+        - <hl_0>xConfiguration Audio DefaultVolume</hl_0>
 
     - **Task:**
-        - We'll set the DefaultVolume back to 50, which will be preloaded into the Postman collection
-        - Your task is to structure the XML for {++xConfiguration SystemUnit Name++} and place it as the next xCommand in the XML structure given. Set the Name to `Codec_X` where X is the # of your workstation pod or your name
+        - Format <hl_4>xConfiguration Audio DefaultVolume</hl_4> into XML
+        - Place the newly formatted XML into the Body of the ==Set a new xConfiguration Value== request of the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Include the following Parameter(s) and Value(s)
+            - DefaultVolume: 75
+        - Save the collection
+        - Select Send and review the response
+
+    - - -
 
     ??? success "View properly formatted XML and Successful Response"
 
-        ![Successful HTTP Response](./images/2-3-4_Set-xConfig_Multi-Success.png){ width="500", align=right }
+        <div class="grid cards" markdown>
 
-        === "SystemUnit Name XML"
+        -   **XML Body Format**
 
-            ``` { .xml }
-            <Configuration>
-              <SystemUnit>
-                <Name>Pod_X</Name>
-              </SystemUnit>
-            </Configuration>
-            ```
-
-        === "Full XML Body"
-
+            ---
             ``` { .xml }
             <Configuration>
               <Audio>
-                <DefaultVolume>50</DefaultVolume>
+                <DefaultVolume>75</DefaultVolume>
               </Audio>
-              <!-- SystemUnit Name Should Start Here -->
-              <SystemUnit>
-                <Name>Pod_X</Name>
-              </SystemUnit>
-              <!-- SystemUnit Name Should End Here -->
             </Configuration>
             ```
 
+        -   **Response**
+
+            ---
+            ``` { .xml }
+            <?xml version="1.0"?>
+            <Configuration>
+              <Success/>
+            </Configuration>
+            ```
+
+        </div>
+
+??? lesson "Lesson: Set multiple xConfiguration Values in a single Request ~({{config.cProps.rxp.sectionIds.http}}.4.2)~"
+
+    !!! note inline end
+
+        The following xAPI(s) come pre-formatted in the request body. You must find the correct position for the final xAPI
+
+        - <hl_0>xConfiguration Audio DefaultVolume</hl_0>
+
+    - **xAPI(s):**
+        - <hl_0>xConfiguration Audio DefaultVolume</hl_0>
+        - <hl_0>xConfiguration SystemUnit Name</hl_0>
+
+    - **Task:**
+        - Format <hl_4>xConfiguration SystemUnit Name</hl_4> into XML
+        - Place the newly formatted XML in the correct position within the Body of the ==Set multiple xConfiguration Values in a single Request== request of the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Include the following Parameter(s) and Value(s)
+            - Name: Codec_<hl_3>X</hl_3>
+                - Replace <hl_3>X</hl_3> with your workstation pod number or your name
+        - Save the collection
+        - Select Send and review the response
+
+    ??? success "View properly formatted XML and Successful Response"
+
+        <div class="grid cards" markdown>
+
+        -   **XML Body Format**
+
+            ---
+            === "SystemUnit Name XML"
+
+                ```xml
+                <Configuration>
+                  <SystemUnit>
+                    <Name>Codec_X</Name>
+                  </SystemUnit>
+                </Configuration>
+                ```
+
+            === "Full XML body"
+
+                ```xml
+                <Configuration>
+                  <Audio>
+                    <DefaultVolume>50</DefaultVolume>
+                  </Audio>
+                  <!-- SystemUnit Name Should Start Here -->
+                  <SystemUnit>
+                    <Name>Codec_X</Name>
+                  </SystemUnit>
+                  <!-- SystemUnit Name Should End Here -->
+                </Configuration>
+                ```
+
+        -   **Response**
+
+            ---
+            ```xml
+            <?xml version="1.0"?>
+            <Configuration>
+              <Success/>
+            </Configuration>
+            ```
+
+        </div>
+
 ??? lesson "Lesson: Getting an xConfiguration Value ~({{config.cProps.rxp.sectionIds.http}}.4.3)~"
 
-    !!! info
+    !!! info        
 
-        Up until this point, you've been making Post requests with an xAPI path provided as a part of the Post body written in XML format
+        In the previous lesson, you set the <hl_0>DefaultVolume</hl_0>. To retrieve that value, we'll use an HTTP GET request and put its xAPI path in the URL's <hl_5>location</hl_5> parameter. 
+        
+        As shown in section {{config.cProps.rxp.sectionIds.http}}.1.4, omit the <hl_7>x</hl_7> prefix from the shell syntax from the top-level node.
 
-        Whereas, we're pivoting to a Get rest, the format of the request changes. We no longer need a body, but we need to define the xAPI path as apart of the URL under it's location tag
+        ??? curious ":thinking: Can I used the `location` parameter more than once?"
 
-        Refer to section {{config.cProps.rxp.sectionIds.http}}.2 for a refresher on this syntax
+            Unfortunately no, the location parameter will only be caught once in the URL. Duplicates after the fact will be ignored
 
-    - **xAPI:** xConfiguration Audio DefaultVolume
+            You can only define 1 path per GET request
 
-    - Structure the xAPI command above into the URL under the ==Getting an xConfiguration Value== request in your Postman collection. This path should rest behind the ==?location== and separated by a `/`
+    - **xAPI(s):**
+        - <hl_0>xConfiguration Audio DefaultVolume</hl_0>
+
+    - **Task:**
+        - Format <hl_4>xConfiguration Audio DefaultVolume</hl_4> for the GET URL path
+        - Place the path after <hl_5>?location=</hl_5> in the URL of the ==Getting an xConfiguration Value== request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Save the collection
+        - Select Send and review the response
 
     ??? success "View properly formatted URL and Successful Response"
 
-        ![Successful HTTP Response](./images/2-3-4_Get-xConfig_Single-Success.png){ width="500", align=right }
+        <div class="code-label" data-title="Fully Formatted URL">
+            <pre><code>https://{{device_ipAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Configuration/Audio/DefaultVolume</hl_4></code></pre>
+        </div>
 
-        === "Audio DefaultVolume URL"
-
-            https://{{device_ipAddress}}/getxml?location\===Configuration/Audio/DefaultVolume==
+        <div class="code-label" data-title="Response">
+          <pre><code>&lt;?xml version="1.0"?&gt;
+        &lt;Configuration product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="#"&gt;
+          &lt;Audio&gt;
+            &lt;<hl_4>DefaultVolume</hl_4> valueSpaceRef="/Valuespace/INT_0_100"&gt;<hl_6>50</hl_6>&lt;/<hl_4>DefaultVolume</hl_4>&gt;
+          &lt;/Audio&gt;
+        &lt;/Configuration&gt;</code></pre>
+        </div>
 
 ??? lesson "Lesson: Get multiple xConfiguration Values under a Common Node ~({{config.cProps.rxp.sectionIds.http}}.4.4)~"
 
@@ -1283,93 +1382,119 @@ This collection has most pieces structured as we'd need it to and will be used t
 
         You can pull more information if you move up to a Common Node
 
-        By dropping `DefaultVolume` from xConfiguration Audio {--DefaultVolume--} we can grab all the Configuration Setting under the Audio Branch from the codec
+        By removing <hl_7>DefaultVolume</hl_7> from the path of <hl_0>xConfiguration Audio </hl_0><hl_7>DefaultVolume</hl_7>, we can retrieve all xConfiguration values under the Audio Branch from the codec
 
-    - **xAPI:** xConfiguration Audio
+    - **xAPI(s):**
+        - <hl_0>xConfiguration Audio</hl_0>
 
-    - Structure the xAPI command above into the URL under the ==Getting multiple xConfiguration Values under a Common Node== request in your Postman collection.
+    - **Task:**
+        - Format <hl_4>xConfiguration Audio</hl_4> for the GET URL path
+        - Place the path after <hl_5>?location=</hl_5> in the URL of the ==Getting multiple xConfiguration Values under a Common Node== request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Save the collection
+        - Select Send and review the response
 
     ??? success "View properly formatted URL and Successful Response"
 
-        === "Audio DefaultVolume URL"
+        <div class="code-label" data-title="Fully Formatted URL">
+            <pre><code>https://{{device_ipAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Configuration/Audio</hl_4></code></pre>
+        </div>
 
-            https://{{device_ipAddress}}/getxml?location\===Configuration/Audio==
+        <div class="code-label" data-title="Response">
+          <pre><code>&lt;?xml version="1.0"?&gt;
+        &lt;<hl_4>Configuration</hl_4> product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="4"&gt;
+          &lt;<hl_4>Audio</hl_4>&gt;
+            &lt;<hl_4>DefaultVolume</hl_4> valueSpaceRef="/Valuespace/INT_0_100"&gt;<hl_6>50</hl_6>&lt;/<hl_4>DefaultVolume</hl_4>&gt;
+            &lt;<hl_4>Ethernet</hl_4>&gt;
+              &lt;<hl_4>Encryption</hl_4> valueSpaceRef="/Valuespace/TTPAR_RequiredOptional"&gt;<hl_6>Required</hl_6>&lt;/<hl_4>Encryption</hl_4>&gt;
+              &lt;<hl_4>SAPDiscovery</hl_4>&gt;
+                &lt;<hl_4>Address</hl_4> valueSpaceRef="/Valuespace/STR_0_64_IPv4AdminMcast"&gt;<hl_6>239.255.255.255</hl_6>&lt;/<hl_4>Address</hl_4>&gt;
+                &lt;<hl_4>Mode</hl_4> valueSpaceRef="/Valuespace/TTPAR_OnOff"&gt;<hl_6>Off</hl_6>&lt;/<hl_4>Mode</hl_4>&gt;
+              &lt;/<hl_4>SAPDiscovery</hl_4>&gt;
+            &lt;/<hl_4>Ethernet</hl_4>&gt;
+            <hl_1>&lt;!-- Additional configuration values omitted for brevity --&gt;</hl_1>
+          &lt;/<hl_4>Audio</hl_4>&gt;
+        &lt;/<hl_4>Configuration</hl_4>&gt;</code></pre>
+        </div>
 
-        ??? info "View Successful HTTP Response"
+??? curious ":thinking: What about subscribing to an xConfiguration, like with SSH?"
 
-            ``` { .xml }
-            <?xml version="1.0"?>
-            <Configuration product="Cisco Codec" version="ce11.20.1.7.913a6c7c769" apiVersion="4">
-              <Audio>
-                <DefaultVolume valueSpaceRef="/Valuespace/INT_0_100">75</DefaultVolume>
-                <Ethernet>
-                  <Encryption valueSpaceRef="/Valuespace/TTPAR_RequiredOptional">Required</Encryption>
-                  <SAPDiscovery>
-                    <Address valueSpaceRef="/Valuespace/STR_0_64_IPv4AdminMcast">239.255.255.255</Address>
-                    <Mode valueSpaceRef="/Valuespace/TTPAR_OnOff">Off</Mode>
-                  </SAPDiscovery>
-                </Ethernet>
-                <!-- And the List Goes On... -->
-              </Audio>
-            </Configuration>
-            ```
-
-??? curious ":thinking: What about Subscribing to an xConfiguration?"
-
-    Subscriptions via HTTP are possible, but require a process outside of using HTTP Post/Get commands. We'll need to leverage the HTTPFeedback feature of the codec and a tool that can receive a WebHook
+    Subscriptions via HTTP are possible, but require a process outside of using HTTP POST/GET commands. We'll need to leverage the HTTPFeedback feature of the codec and a tool that can receive a WebHook event
 
     So we'll save HTTPFeedback for the end of section {{config.cProps.rxp.sectionIds.http}} and handle all HTTP based subscriptions there
 
 ## **Getting xStatuses** ~({{config.cProps.rxp.sectionIds.http}}.5)~
 
+!!! Abstract
+
+    Throughout section {{config.cProps.rxp.sectionIds.http}}.5, you'll learn how to retrieve current xStatus values from the codec via HTTP.
+
+    The GET request patterns from section {{config.cProps.rxp.sectionIds.http}}.4 apply here as well.
+
 ???+ lesson "Lesson: Getting an xStatus Value ~({{config.cProps.rxp.sectionIds.http}}.5.1)~"
 
-    - **xAPI:** xStatus Audio Volume
+    - **xAPI(s):**
+        - <hl_0>xStatus Audio Volume</hl_0>
 
-    - Structure the xAPI command above into the URL under the ==Getting an xStatus== request in your Postman collection.
+    - **Task:**
+        - Format <hl_4>xStatus Audio Volume</hl_4> for the GET URL path
+        - Place the path after <hl_5>?location=</hl_5> in the URL of the ==Getting an xStatus== request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Save the collection
+        - Select Send and review the response
 
     ??? success "View properly formatted URL and Successful Response"
 
-        ![Successful HTTP Response](./images/2-3-5_Get-xStatus_Single-Success.png){ width="500", align=right }
+        <div class="code-label" data-title="Fully Formatted URL">
+            <pre><code>https://{{device_ipAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Status/Audio/Volume</hl_4></code></pre>
+        </div>
 
-        === "Audio DefaultVolume URL"
-
-            https://{{device_ipAddress}}/getxml?location\===Status/Audio/Volume==
+        <div class="code-label" data-title="Response">
+          <pre><code>&lt;?xml version="1.0"?&gt;
+        &lt;<hl_4>Status</hl_4> product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="4"&gt;
+          &lt;<hl_4>Audio</hl_4>&gt;
+            &lt;<hl_4>Volume</hl_4>&gt;<hl_6>65</hl_6>&lt;/<hl_4>Volume</hl_4>&gt;
+          &lt;/<hl_4>Audio</hl_4>&gt;
+        &lt;/<hl_4>Status</hl_4>&gt;</code></pre>
+        </div>
 
 ??? lesson "Lesson: Get multiple xStatus Values under a Common Node ~({{config.cProps.rxp.sectionIds.http}}.5.2)~"
 
-    - **xAPI:** xStatus Audio
+    - **xAPI(s):**
+        - <hl_0>xStatus Audio</hl_0>
 
-    - Structure the xAPI command above into the URL under the ==Getting multiple xStatus Values under a Common Node== request in your Postman collection.
+    - **Task:**
+        - Format <hl_4>xStatus Audio</hl_4> for the GET URL path
+        - Place the path after <hl_5>?location=</hl_5> in the URL of the ==Getting multiple xStatus Values under a Common Node== request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Save the collection
+        - Select Send and review the response
 
     ??? success "View properly formatted URL and Successful Response"
 
-        === "Audio DefaultVolume URL"
+        <div class="code-label" data-title="Fully Formatted URL">
+            <pre><code>https://{{device_ipAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Status/Audio</hl_4></code></pre>
+        </div>
 
-            https://{{device_ipAddress}}/getxml?location\===Status/Audio==
-
-        ??? info "View Successful HTTP Response"
-
-            ``` { .xml }
-            <?xml version="1.0"?>
-            <Status product="Cisco Codec" version="ce11.20.1.7.913a6c7c769" apiVersion="4">
-              <Audio>
-                <Devices>
-                  <Bluetooth>
-                    <ActiveProfile>None</ActiveProfile>
-                  </Bluetooth>
-                  <HandsetUSB>
-                    <ConnectionStatus>NotConnected</ConnectionStatus>
-                    <Cradle>OnHook</Cradle>
-                  </HandsetUSB>
-                  <HeadsetUSB>
-                    <ConnectionStatus>NotConnected</ConnectionStatus>
-                    <Description></Description>
-                    <Manufacturer></Manufacturer>
-                  <!-- And the List Goes On... -->
-              </Audio>
-            </Status>
-            ```
+        <div class="code-label" data-title="Response">
+          <pre><code>&lt;?xml version="1.0"?&gt;
+        &lt;<hl_4>Status</hl_4> product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="4"&gt;
+          &lt;<hl_4>Audio</hl_4>&gt;
+            &lt;<hl_4>Devices</hl_4>&gt;
+              &lt;<hl_4>Bluetooth</hl_4>&gt;
+                &lt;<hl_4>ActiveProfile</hl_4>&gt;<hl_6>None</hl_6>&lt;/<hl_4>ActiveProfile</hl_4>&gt;
+              &lt;/<hl_4>Bluetooth</hl_4>&gt;
+              &lt;<hl_4>HandsetUSB</hl_4>&gt;
+                &lt;<hl_4>ConnectionStatus</hl_4>&gt;<hl_6>NotConnected</hl_6>&lt;/<hl_4>ConnectionStatus</hl_4>&gt;
+                &lt;<hl_4>Cradle</hl_4>&gt;<hl_6>OnHook</hl_6>&lt;/<hl_4>Cradle</hl_4>&gt;
+              &lt;/<hl_4>HandsetUSB</hl_4>&gt;
+              &lt;<hl_4>HeadsetUSB</hl_4>&gt;
+                &lt;<hl_4>ConnectionStatus</hl_4>&gt;<hl_6>NotConnected</hl_6>&lt;/<hl_4>ConnectionStatus</hl_4>&gt;
+                &lt;<hl_4>Description</hl_4>&gt;&lt;/<hl_4>Description</hl_4>&gt;
+                &lt;<hl_4>Manufacturer</hl_4>&gt;&lt;/<hl_4>Manufacturer</hl_4>&gt;
+              &lt;/<hl_4>HeadsetUSB</hl_4>&gt;
+              <hl_1>&lt;!-- Additional status values omitted for brevity --&gt;</hl_1>
+            &lt;/<hl_4>Devices</hl_4>&gt;
+          &lt;/<hl_4>Audio</hl_4>&gt;
+        &lt;/<hl_4>Status</hl_4>&gt;</code></pre>
+        </div>
 
 ## **Using WebHooks to subscribe to xConfigurations, xStatuses and xEvents** ~({{config.cProps.rxp.sectionIds.http}}.6)~
 

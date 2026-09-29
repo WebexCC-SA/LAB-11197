@@ -49,6 +49,7 @@ extra_javascript:
 plugins:
   - search
   - macros
+  - open-in-new-tab
   # - with-pdf:
   #     cover_title: LABXXX-1234
   #     cover_subtitle: My famous WebexOne Lab
@@ -200,8 +201,7 @@ cProps:
 
           This will reverse the changes we've made to the endpoint, and leave us ready for the next section
 
-
-          ??? question "You can run the cleanup via the terminal as well"
+          ??? info "You can run the cleanup process via terminal as well"
 
               Copy the contents below into your terminal window and run them all at once
 
@@ -217,8 +217,6 @@ cProps:
               xCommand Video Input SetMainVideoSource ConnectorId: 1
               xCommand Audio Volume SetToDefault Device: Internal
               ```
-          
-          Feel free to close your Terminal Window
     sectionIds:
       ssh: rxp-1
       serial: rxp-2

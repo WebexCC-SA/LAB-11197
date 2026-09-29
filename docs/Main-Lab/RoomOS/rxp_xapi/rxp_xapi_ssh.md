@@ -5,7 +5,7 @@
 
     In this section, we'll dive into the various pieces of the RoomOS Device xAPI stack and how to make use of them in various ways over a Secure Shell (SSH) Session to a Cisco RoomOS Device.
 
-    Understanding how to navigate a terminal session with a Cisco RoomOS Device will be instrumental in your device management and customization journey, but it's also a key integration pillar for many services on the market, such as a room control processors (Crestron, Extron, Etc)
+    Understanding how to navigate a terminal session with a Cisco RoomOS Device will be instrumental in your device management and customization journey, but it's also a key integration pillar for many services on the market, such as room control processors (Crestron, Extron, Etc)
 
 ## Section {{config.cProps.rxp.sectionIds.ssh}} Requirements
 
@@ -13,16 +13,16 @@
 
     !!! note inline end
 
-        This lab assumes you have access to a Cisco RoomOS Device that is already setup and ready for use. If your device is not registered and online, please do so before beginning
+        This lab assumes you have access to a Cisco RoomOS Device that is already set up and ready for use. If your device is not registered and online, please do so before beginning.
 
     **Hardware**
 
     - A Laptop
     - A Cisco Desk, Board or Room Series Device running the most recent On Premise or Cloud Stable software
-        - A Touch Controller is required when working on a Room Series Device. Either Room navigator or 3rd part touch display
+        - A Touch Controller is required when working on a Room Series Device. Either Room Navigator or third-party touch display
         - Preferred Device: Cisco Desk Series devices
-    - A minimum of 1 camera (Either Integrated or External)
-        - For systems using external cameras, such as a Quad Camera, this lab assumes your cameras is connected to ConnectorId 1 and configured for Camera ControlId 1
+    - At least one camera, integrated or external
+        - For systems with external cameras, this lab assumes the camera is connected to ConnectorId 1 and configured with Camera ControlId 1.
 
     **Software**
 
@@ -30,11 +30,12 @@
         - Recommended Browser: Chrome or Firefox
         - Recommended Terminal Software:
             - Command Prompt (Windows)
-            - Terminal (MAC)
-            - [Putty](https://apps.microsoft.com/detail/xpfnzksklbp7rj?hl=en-US&gl=US) (Windows)
+            - Terminal (macOS)
+            - [PuTTy](https://apps.microsoft.com/detail/xpfnzksklbp7rj?hl=en-US&gl=US) (Windows)
             - [Termius](https://termius.com/) (Windows, MAC, Linux)
     - RoomOS Device
-        - Either the current On Premise or Cloud Stable release
+        - Either the current On Premise or Cloud stable release RoomOS software
+        - Ensure the [Subscription Assistant Macro](https://webexcc-sa.github.io/LAB-11197/Main-Lab/RoomOS/rxp_intro/) is installed
 
     **Network**
 
@@ -44,18 +45,18 @@
 ## **Establish SSH Connection to Device** ~({{config.cProps.rxp.sectionIds.ssh}}.1)~
 
 - Open the Terminal application on your device
-- Connect to the Device via SSH using the built in OpenSSH platform in your terminal window
+- Connect to the Device via SSH using the built-in OpenSSH platform in your Terminal Window
 
 !!! note inline end
 
-    Replace <hl_3>[USERNAME]</hl_3> with your Codec's Username and <hl_5>[HOST_ADDRESS]</hl_5> with your Codec's Host address (IPv4, IPv6, or FQDN)
+    Replace <hl_3>[USERNAME]</hl_3> with your Codec's username and <hl_5>[HOST_ADDRESS]</hl_5> with your Codec's host address (IPv4, IPv6, or FQDN)
 
 <div class="code-label" data-title="Type into terminal and press Enter">
     <pre><code>ssh {{config.cProps.auth.roomosUser}}@{{config.cProps.auth.roomosIp}}</code></pre> 
 </div>
     
 
-??? warning "If you encountered an warning running the command above, click here"
+??? warning "If you encounter a warning running the command above, click here"
     
     If you encounter the following warning
 
@@ -76,9 +77,9 @@
     Host key verification failed.
     ``` 
 
-    Double Check your device information and try again, if the information you entered is correct, try the following
+    Double-Check your device information and try again, if the information you entered is correct, try the following
 
-    Then run the following command to clear an old SSH Sha Key
+    Then run the following command to clear an old SSH host key
     Be sure to replace <hl_5>[HOST_ADDRESS]</hl_5> with your Codec's Host address (IPv4, IPv6, or FQDN)
 
     <div class="code-label no-copy-code-button" data-title="Type into terminal and press Enter">
@@ -90,8 +91,8 @@
 <br>
 
 - The OpenSSH platform will ask for you to confirm the device before connecting
-    - Type <hl_1>yes</hl_1> when prompted into the terminal, then hit enter  
-    - Type the <hl_7>password</hl_7> for the <hl_3>{{config.cProps.auth.roomosUser}}</hl_3> account into the terminal when prompted, then hit enter
+    - Type <hl_1>yes</hl_1> when prompted into the terminal, then press Enter  
+    - Type the <hl_7>password</hl_7> for the <hl_3>{{config.cProps.auth.roomosUser}}</hl_3> account into the terminal when prompted, then press Enter
         - Password: <hl_3><copy>{{config.cProps.auth.roomosPass}}</copy></hl_3>
 
 !!! success "Successfully connecting to the Codec should prompt the following information and is now awaiting your input"
@@ -108,11 +109,11 @@
 
 !!! abstract
 
-    In a terminal session with a Cisco Codec, you can execute commands, get, set or subscribe to configs, get or subscribe to status information as well as subscribe to events.
+    In a terminal session with a Cisco Codec, you can execute commands, get, set or subscribe to configurations, get or subscribe to status information as well as subscribe to events.
 
-    These are especially useful when developing a customization or troubleshooting a system.
+    These operations are useful when developing customizations or troubleshooting a system.
 
-    Click to expand each lesson below, execute the contents as directed in your terminal session and observe the responses in the terminal window.
+    Click to expand each lesson below, execute the contents as directed in your terminal session and observe the responses in the Terminal Window.
     
 
 ???+ lesson "Lesson: Lists All User Command Nodes ~({{config.cProps.rxp.sectionIds.ssh}}.2.1)~"
@@ -129,14 +130,14 @@
         OK
         </code></pre>
 
-        We won't cover every shell command above, we'll only focus on <hl_2>xConfigurations</hl_2>, <hl_1>xCommands</hl_1>, <hl_5>xStatuses</hl_5>, <hl_3>xEvents</hl_3> and <hl_4>xFeedback</hl_4> as those contain all the Device xAPI references we need to develop a custom solution. But we'll also take a brief stop at <hl_7>xPreferences</hl_7> as it's important for SSH and Serial based integrations.
+        We won't cover every shell command above, we'll only focus on <hl_2>xConfigurations</hl_2>, <hl_1>xCommands</hl_1>, <hl_5>xStatuses</hl_5>, <hl_3>xEvents</hl_3> and <hl_4>xFeedback</hl_4>. These contain all the Device xAPI references we need to develop a custom solution. But we'll also take a brief stop at <hl_7>xPreferences</hl_7> as it's important for SSH and Serial based integrations.
 
-        For more information on the rest of those paths, check out the [Offical xAPI Guide](https://www.cisco.com/c/dam/en/us/td/docs/telepresence/endpoint/roomos-1114/api-reference-guide-roomos-1114.pdf).Page 33 defines all nodes
+        For more information on the rest of those paths, check out the [Official xAPI Guide](https://www.cisco.com/c/dam/en/us/td/docs/telepresence/endpoint/roomos-1114/api-reference-guide-roomos-1114.pdf).Page 33 defines all nodes
 
 
-??? lesson "Lesson: Lists Terminal Preference Option ~({{config.cProps.rxp.sectionIds.ssh}}.2.2)~"
+??? lesson "Lesson: List Terminal Preference Option ~({{config.cProps.rxp.sectionIds.ssh}}.2.2)~"
 
-    - Lists Terminal Preference Options
+    - List Terminal Preference Options
         - The xPreferences command is used to set preferences for the RS-232 and SSH sessions. 
 
     ``` shell title="Type into terminal and press Enter"
@@ -151,12 +152,12 @@
         OK
         ```
 
-        Setting ``` xpreferences outputmode``` to JSON will change the terminal response output into a JSON format and likewise with XML
+        Setting ``` xpreferences outputmode``` to JSON will change the terminal response output into a JSON format and similarly for XML output.
 
         Why might you consider JSON or XML? 
         
-        - Your customization environment may be able to handle responses from the xAPI more efficiently if it's in an output format that easier for your environment to ingest
-        - For testing, we'd recommend the terminal format, but when interfacing via a Room Control Processor or another service, you may have tools available to you to parse either JSON or XML to optimize you solution
+        - Your customization environment may be able to handle responses from the xAPI more efficiently if it's in an output format that is easier for your environment to ingest
+        - For testing, we recommend the terminal format, but when interfacing via a Room Control Processor or another service, you may have tools available to you to parse either JSON or XML to optimize your solution
 
         ??? example "Click Here to review different Output Mode responses"
 
@@ -205,7 +206,7 @@
 
 ??? lesson "Lesson: List Device Command Node References ~({{config.cProps.rxp.sectionIds.ssh}}.2.3)~"
 
-    - Lists all first level nodes of for xCommands
+    - Lists all first-level nodes for xCommands
 
     ``` shell title="Type into terminal and press Enter"
     xCommand ?
@@ -231,7 +232,7 @@
 
 ??? lesson "Lesson: List Device Config Node References ~({{config.cProps.rxp.sectionIds.ssh}}.2.4)~"
 
-    - Lists all first level nodes of for xConfigurations
+    - Lists all first-level nodes for xConfigurations
 
     ``` shell title="Type into terminal and press Enter"
     xConfiguration ?
@@ -258,7 +259,7 @@
 
 ??? lesson "Lesson: List Device Status Node References ~({{config.cProps.rxp.sectionIds.ssh}}.2.5)~"
 
-    - Lists all first level nodes of for xStatuses
+    - Lists all first-level nodes for xStatuses
 
     ``` shell title="Type into terminal and press Enter"
     xStatus ?
@@ -296,7 +297,7 @@
 
     ??? curious ":thinking: The output of `xEvent ?` was not what you expected?"
 
-          Try Removing the `?` from `xEvent` and re-run the command
+          Try removing the `?` from `xEvent` and rerun the command
 
           ``` shell title="Type into terminal and press Enter"
           xEvent
@@ -315,7 +316,7 @@
             *es Event Audio Input Connectors HDMI Right VuMeter
             *es Event Audio Input Connectors Line PPMeter
             *es Event Audio Input Connectors Line VuMeter
-            [... And the list goes on]
+            [... and the list goes on]
             OK
             ```
         
@@ -376,9 +377,9 @@
 
 !!! abstract "xCommands"
 
-    Commands instruct the device to execute actions. Examples include dialing a number or to search the phone book. All commands executed via SSH or RS232 start with the prefix <hl_2>xCommand</hl_2> followed by a command path
+    Commands instruct the device to execute actions. Examples include dialing a number or searching the phone book. All commands executed via SSH or RS232 start with the prefix <hl_2>xCommand</hl_2> followed by the command path
 
-    Click to expand each xCommand Lesson below, execute each task in your terminal session as instructed and observe the responses in your terminal window as well as observe what happens to your Cisco RoomOS Device after each command is run
+    Click to expand each xCommand Lesson below, execute each task in your terminal session as instructed and observe the responses in your Terminal Window as well as observe what happens to your Cisco RoomOS Device after each command is run
 
 
 ???+ lesson "Lesson: Execute an xCommand ~({{config.cProps.rxp.sectionIds.ssh}}.3.1)~"
@@ -409,7 +410,7 @@
 
         Notice when we set the Mode parameter to <hl_1>On</hl_1> we included the FullScreenMode and OnMonitorRole parameters, but when we decided to set FullScreenMode <hl_7>Off</hl_7>, we left out OnMonitorRole.
         
-        These are what's known as <hl_3>Optional Parameters</hl_3>, which are parameter's that are not required to be added in order to execute a command. These optional parameters have a default value that may or may not be applied and this is largely determined by the independent xAPI itself. You may also have <hl_5>Required Parameters</hl_5>. Required parameters must be run or else the xCommand will error out in the console and these required parameters are specifically called out in the documentation for the API.
+        These are what's known as <hl_3>Optional Parameters</hl_3>, which are parameters that are not required to be added in order to execute a command. These optional parameters have a default value that may or may not be applied and this is largely determined by the independent xAPI itself. You may also have <hl_5>Required Parameters</hl_5>. Required parameters must be supplied or else the command will return an error. Required parameters are specifically called out in the documentation for the xAPI.
 
     As you explore the API, feel free to click on the <hl_0>xAPI</hl_0> link at the bottom of each lesson to Learn more about the xAPI you're working with.
 
@@ -435,9 +436,9 @@
 
         ??? tip "Additional Info"
 
-            - xCommand Video Input SetMainVideoSource, and other xAPIs like it offer some parameters that allow you to enter them in multiple times. Notice how we used <hl_6>ConnectorId: 1</hl_6> twice. This will create a 2x1 composition of your first video input connector and set this as your MainSource by default. This will effect SelfView and what you output on the far end of the Video Call.
+            - xCommand Video Input SetMainVideoSource, and other xAPIs like it offer some parameters that allow you to enter them in multiple times. Notice how we used <hl_6>ConnectorId: 1</hl_6> twice. This will create a 2x1 composition of your first video input connector and set this as your MainSource by default. This will affect SelfView and what you output on the far end of the Video Call.
 
-            - Even though it's <hl_7>NOT</hl_7> practical to send a duplicate camera source into a call as we are now, it allows us a chance to interact with this xAPI and understand how it operates. This xAPI in particular was built to handle multiple video source inputs. For instance, if you had a Room Kit EQ with 4 cameras connected, you can compose all 4 cameras as apart of your MainSource, giving you an opportunity to visually communicate to the Far End in new ways
+            - Even though it's <hl_7>NOT</hl_7> practical to send a duplicate camera source into a call as we are now, it allows us a chance to interact with this xAPI and understand how it operates. This xAPI in particular was built to handle multiple video source inputs. For instance, if you had a Room Kit EQ with 4 cameras connected, you can compose all 4 cameras as part of your MainSource, giving you an opportunity to visually communicate to the Far End in new ways
 
         ??? success "View Successful OSD Output"
 
@@ -463,7 +464,7 @@
               ![Official API Doc](./images/2-2-3_SetMain-2xPIP.png){ width="400" }
             </figure>
 
-        - Lets wrap this lesson up by setting your MainSource back to a single connector and disabling SelfView
+        - Let's wrap this lesson up by setting your MainSource back to a single connector and disabling SelfView
 
         ``` shell title="Type into terminal and press Enter"
         xCommand Video Input SetMainVideoSource ConnectorId: 1
@@ -475,12 +476,11 @@
     <roomosdoc>xCommand Video SelfView Set</roomosdoc>
     <roomosdoc>xCommand Video Input SetMainVideoSource</roomosdoc>
 
-??? lesson "Lesson: Execute an xCommand with a multiline argument  ~({{config.cProps.rxp.sectionIds.ssh}}.3.3)~"
+??? lesson "Lesson: Execute an xCommand with a MultiLine argument  ~({{config.cProps.rxp.sectionIds.ssh}}.3.3)~"
 
     !!! info
-        Some commands require a larger body of data. This data is written as a large string; some written in a variety of formats and this format is outlined by the individual xAPI's documentation
-
-        When working in a terminal window, multiline commands are formatted as follows:
+        Some commands require a larger body of data. The body is sent as a MultiLine string; its required format is described in the xAPI documentation.
+        When working in a Terminal Window, MultiLine commands are formatted as follows:
 
         !!! example ""
 
@@ -488,35 +488,35 @@
 
                 ``` {.shell, .no-copy}
                 [Command Path]          # Your xCommand Path to run
-                [Multi Line Content]    # Your Multi Line content (Body)
-                .                       # Terminate your Multi Line content with a dot .
+                [MultiLine Content]     # Your MultiLine content (Body)
+                .                       # Terminate your MultiLine content with a dot .
                 ```
             
             === "Full xAPI Example"
 
                 ``` {.shell, .no-copy}
                 xCommand Macros Macro Save Name: Test   # Your xCommand Path to run
-                import xapi from 'xapi';                # Your Multi Line content (Body)
+                import xapi from 'xapi';                # Your MultiLine content (Body)
 
                 console.log('Hello World');
-                .                                       # Terminate your Multi Line content with a dot .
+                .                                       # Terminate your MultiLine content with a dot .
                 ```
 
             !!! Note
 
-                The command must be terminated with a dot <hl_0>.</hl_0> on the last line to indicate the command is complete
+                The command must be terminated with a dot <hl_0>.</hl_0> on the last line to indicate that the command is complete.
 
     - **xAPI**: xCommand UserInterface Extensions Panel Save
 
     - **Task**:
 
         ```shell title="Type into terminal and press Enter"
-        xCommand UserInterface Extensions Panel Save PanelId: wx1_lab_multilineCommand
-        <Extensions><Panel><Order>1</Order><PanelId>wx1_lab_multilineCommand</PanelId><Location>HomeScreen</Location><Icon>Info</Icon><Color>#1170CF</Color><Name>MultiLine Command [Section ({{config.cProps.rxp.sectionIds.ssh}}.3)]</Name><ActivityType>Custom</ActivityType></Panel></Extensions>
+        xCommand UserInterface Extensions Panel Save PanelId: wx1_lab_MultiLineCommand
+        <Extensions><Panel><Order>1</Order><PanelId>wx1_lab_MultiLineCommand</PanelId><Location>HomeScreen</Location><Icon>Info</Icon><Color>#1170CF</Color><Name>MultiLine Command [Section ({{config.cProps.rxp.sectionIds.ssh}}.3)]</Name><ActivityType>Custom</ActivityType></Panel></Extensions>
         .
         ```
     
-    - Observe the change to your Codec's Display, you should see a new Panel Button labeled `MultiLine Command [Section ({{config.cProps.rxp.sectionIds.ssh}}.3)]` on your Touch Control interface
+    - Observe the change to your Codec's Display, you should see a new Panel Button labeled `MultiLine Command [Section ({{config.cProps.rxp.sectionIds.ssh}}.3)]` on your Touch Interface
 
     ??? success "View Successful OSD output"
         <figure markdown>
@@ -528,7 +528,7 @@
 ??? lesson "Lesson: Execute an xCommand which generates data and responds  ~({{config.cProps.rxp.sectionIds.ssh}}.3.4)~"
 
     !!! info
-        Some commands will generate data and output a response of that data. All commands will respond with either "OK" or "Error" but other commands can provide additional information.
+        Some commands return additional data along with their status All commands will respond with either "OK" or "Error" but other commands can provide additional information.
 
 
     - **xAPI**: xCommand Extensions List
@@ -539,7 +539,7 @@
         xCommand UserInterface Extensions List ActivityType: Custom
         ```
       
-      - Observe your Terminal Window's output, you should see details of both the `MultiLine Command [Section ({{config.cProps.rxp.sectionIds.ssh}}.3)]` panel you loaded in previously as well as the `Subscription Assistant` panel details
+      - Observe your Terminal Window's output, you should see details of both the `MultiLine Command [Section ({{config.cProps.rxp.sectionIds.ssh}}.3)]` panel you loaded in previously as well as the `Subscription Assistant` panel.
 
     ??? success "Click to Compare your Terminal Output"
         ``` {.shell, .no-copy}
@@ -558,7 +558,7 @@
         *r ExtensionsListResult Extensions Panel 2 Location: HomeScreen
         *r ExtensionsListResult Extensions Panel 2 ActivityType: Custom
         *r ExtensionsListResult Extensions Panel 2 Name: "MultiLine Command [Section ({{config.cProps.rxp.sectionIds.ssh}}.3)]"
-        *r ExtensionsListResult Extensions Panel 2 PanelId: "wx1_lab_multilineCommand"
+        *r ExtensionsListResult Extensions Panel 2 PanelId: "wx1_lab_MultiLineCommand"
         *r ExtensionsListResult Extensions Panel 2 Origin: local
         *r ExtensionsListResult Extensions Panel 2 Order: 1
         *r ExtensionsListResult Extensions Panel 2 Color: "#1170CF"
@@ -569,9 +569,10 @@
 ## **Getting, Setting and Subscribing to xConfigurations** ~({{config.cProps.rxp.sectionIds.ssh}}.4)~
 
 !!! abstract "xConfigurations"
-    Configurations are device settings that persistent across device boots.
 
-    Click to expand each xConfiguration Lesson below, execute them in your terminal session and observe the responses in the terminal window
+    Configurations are device settings that persist across device boots.
+
+    Click to expand each xConfiguration Lesson below, run each xConfiguration in your terminal session and observe the responses in the Terminal Window
 
 ???+ lesson "Lesson: Getting an xConfiguration Value ~({{config.cProps.rxp.sectionIds.ssh}}.4.1)~"
 
@@ -630,7 +631,7 @@
     
     !!! note
 
-        The <hl_0>getting</hl_0> and <hl_0>setting</hl_0> of an xConfiguration only differs slightly when accessing via a terminal.
+        <hl_0>Getting</hl_0> and <hl_0>Setting</hl_0> an xConfiguration differ only slightly in the terminal.
 
         Click on the tabs below to see the differences side by side
 
@@ -644,9 +645,9 @@
 
                 xConfiguration Audio DefaultVolume<hl_3>: 75</hl_3>
         
-        ??? curious ":thinking: Do xConfigurations offer Multiple Parameters or have Multiline execution?"
+        ??? curious ":thinking: Do xConfigurations offer Multiple Parameters or have MultiLine execution?"
 
-            No, that's solely related to xCommands. xConfigurations only ever contain 1 value and though some of those values can be quite long, they are set as a single line string in the terminal window
+            No, that's solely related to xCommands. xConfigurations contain only one value and though some of those values can be quite long, they are set as a single-line string in the Terminal Window
 
     <roomosdoc>xConfiguration Audio DefaultVolume</roomosdoc>
 
@@ -654,7 +655,7 @@
 
     !!! info
 
-        In many cases, you may want to pull information in bulk. We can do this easily by running an xConfiguration Get request on a <hl_0>Higher Common Node</hl_0> in the xAPI path
+        In many cases, you may want to pull information in bulk. You can retrieve multiple values by getting a <hl_0>higher common node</hl_0> in the xConfiguration path.
 
         !!! curious "What do we mean by `Higher Common Node`"
 
@@ -676,7 +677,7 @@
 
                 !!! Note
 
-                    This Diagram only show a very small subset of our xAPI. We have thousands of xAPI to explore :smiley:
+                    This diagram only shows a very small subset of our xAPI. We have thousands of xAPI to explore :smiley:
 
 
                 ``` mermaid
@@ -753,7 +754,7 @@
         ** end
         ```
 
-        By simply removing <hl_7>`DefaultVolume`</hl_7> from <hl_1>xConfiguration Audio</hl_1>, we get all of the Configurations listed under the Audio Node of the Codec
+        By simply removing <hl_7>`DefaultVolume`</hl_7> from <hl_1>xConfiguration Audio</hl_1>, we get all configurations under the Codec’s Audio node.
     
     <roomosfind>xConfiguration Audio</roomosfind>
 
@@ -761,7 +762,7 @@
     
     ??? curious ":thinking: What do we mean by Subscribe?"
 
-        A <hl_6>subscription</hl_6>, also called a <hl_4>feedback registration</hl_4> in an SSH terminal session, is a way to monitor changes to any xConfigurations, xStatuses, or xEvents using xAPI.
+        A <hl_6>subscription</hl_6>, also called a <hl_4>feedback registration</hl_4> in an SSH session, monitors changes to xConfiguration, xStatus, or xEvent paths.
 
         - This lets you automatically watch for changes as they happen, and react to them—for example, to automate a process—without needing to keep checking the value yourself.
 
@@ -779,7 +780,7 @@
 
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Under the xConfigurations Page, move the Slider labeled <hl_0>Audio DefaultVolume</hl_0> to a new position and release
-            - Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6> as that value changes
+            - Observe your <hl_6>Terminal Window's</hl_6> output, events for your Subscription should appear in the <hl_6>terminal</hl_6>
                 - <hl_3>Optional</hl_3>: Move the slider a few more times to see more changes come in
 
 
@@ -799,15 +800,15 @@
 
 ??? lesson "Lesson: Unsubscribing from an xConfiguration  ~({{config.cProps.rxp.sectionIds.ssh}}.4.5)~"
 
-    Just as we can subscribe to information, we can unsubscribe from that same information
+    Just as we can subscribe to information, we can unsubscribe from that same information.
 
-    ??? curious ":thinking: Why bother with Unsubscribing?"
+    ??? curious ":thinking: Why unsubscribe?"
 
-        Today, we have a limit of 50 unique subscriptions (or feedback registrations) that can be enabled on a device at any given time.
+        A device can have up to 50 unique subscriptions enabled at a time during a terminal session.
 
         Documented in the <a href="{{ config.cProps.xAPI_PDF }}" target="_blank">Official xAPI Guide</a>
 
-        So as your solutions grow, managing your subscriptions can become increasingly more important.
+        As your solutions grow, managing your subscriptions can become increasingly more important.
 
     - **xAPI**: xConfiguration Audio DefaultVolume
 
@@ -819,7 +820,7 @@
 
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Under the xConfigurations Page, move the Slider labeled ==Audio DefaultVolume== to a new position and release
-            - Observe your <hl_6>Terminal Window's</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>Terminal Window</hl_6>
+            - Observe your <hl_6>Terminal Window's</hl_6> output, responses should no longer appear in your <hl_6>terminal</hl_6>
                 - <hl_3>Optional</hl_3>: Move the slider a few more times to verify
 
     <roomosdoc>xConfiguration Audio DefaultVolume</roomosdoc>
@@ -830,7 +831,7 @@
 
         Just as we can Get multiple xConfiguration values, we can also subscribe to multiple xConfiguration values under a Higher Common Node
 
-        Subscribing to a Higher Common Node doesn't consume multiple subscriptions, in fact it only consumes 1 of the 50 alloted to you. This can allow you to subscribe to a larger dataset while consuming less subscriptions in your automation.
+        Subscribing to a higher common node uses one subscription slot, even when it includes multiple values. This can allow you to subscribe to a larger dataset while consuming less subscriptions in your automation.
 
         !!! example ""
 
@@ -848,7 +849,7 @@
 
                 xFeedback Register <hl_1>Configuration</hl_1>{--/Bluetooth/Allowed--}
 
-    - **xAPI**: xConfiguration Video Input Airplay
+    - **xAPI**: xConfiguration Video Input AirPlay
 
     - **Task**: 
 
@@ -857,14 +858,14 @@
         ```
 
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
-            - Under the xConfigurations Page, press the toggles and buttons in the <hl_0>Airplay</hl_0> row
-            - Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6>
+            - Under the xConfigurations Page, press the toggles and buttons in the <hl_0>AirPlay</hl_0> row
+            - Observe your <hl_6>Terminal Window's</hl_6> output, events for your Subscription should appear in the <hl_6>terminal</hl_6>
                 - <hl_3>Optional</hl_3>: Press those buttons and switches a few times to see more changes come in
 
         ??? gif "Click to Compare your Terminal Output"
 
             <figure markdown>
-              ![Official API Doc](./images/2-2-4_xConfig-Subscribe-Airplay.gif){ width="600" }
+              ![Official API Doc](./images/2-2-4_xConfig-Subscribe-AirPlay.gif){ width="600" }
             </figure>
 
         ??? gif "View Subscription Assistant Operation"
@@ -873,11 +874,11 @@
               ![SubAssist Operation](./images/SubscriptionAssitantMacro-Operation.gif){ width="600" }
             </figure>
 
-    <roomosfind>xConfiguration Video Input Airplay</roomosfind>
+    <roomosfind>xConfiguration Video Input AirPlay</roomosfind>
 
-??? lesson "Lesson: Unsubscribe to Multiple xConfigurations under a Higher Common Node  ~({{config.cProps.rxp.sectionIds.ssh}}.4.7)~"
+??? lesson "Lesson: Unsubscribe from Multiple xConfigurations under a Higher Common Node  ~({{config.cProps.rxp.sectionIds.ssh}}.4.7)~"
 
-    - **xAPI**: xConfiguration Video Input Airplay
+    - **xAPI**: xConfiguration Video Input AirPlay
 
     - **Task**: 
 
@@ -886,13 +887,13 @@
         ```
 
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
-            - Under the xConfigurations Page, press the toggles and buttons in the <hl_0>Airplay<hl_0> row
-            - Observe your <hl_6>Terminal Window's</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>Terminal Window</hl_6>
+            - Under the xConfigurations Page, press the toggles and buttons in the <hl_0>AirPlay</hl_0> row
+            - Observe your <hl_6>Terminal Window's</hl_6> output, responses should no longer appear in your <hl_6>terminal</hl_6>
                 - <hl_3>Optional</hl_3>: Press those buttons and switches a few times to see more changes come in
 
     !!! Tip
 
-        In cases where you have multiple subscriptions, you can unsubscribe from all by running
+        In cases where you have multiple subscriptions, you can unsubscribe from all by running.
 
         ```shell title="Type into terminal and press Enter"
         xFeedback DeregisterAll
@@ -901,13 +902,14 @@
 ## **Getting and Subscribing to Status** ~({{config.cProps.rxp.sectionIds.ssh}}.5)~
 
 !!! abstract "xStatuses"
-    xStatuses contain information about the current state of the device, such as connected calls, the status of the gatekeeper registration, connected input/output sources and much more. This status information will fire a callback when that particular status occurs. The xStatus's last known state is stored and can be retrieved later on.
 
-    Many of the same techniques we reviewed under the section section **Getting, Setting and Subscribing to xConfigurations** ~({{config.cProps.rxp.sectionIds.ssh}}.4)~ will apply to xStatuses
+    xStatuses contain information about the current state of the device, such as connected calls, the status of the gatekeeper registration, connected input/output sources and much more. This status information will fire a callback when that particular status occurs. The device stores the last-known xStatus state.
 
-    Be sure to complete **Getting, Setting and Subscribing to xConfigurations** ~({{config.cProps.rxp.sectionIds.ssh}}.4)~ prior to continuing in this section, as many pieces of additional context was covered there, and won't be repeated moving forward
+    Many of the same techniques we reviewed under the section **Getting, Setting and Subscribing to xConfigurations** ~({{config.cProps.rxp.sectionIds.ssh}}.4)~ will apply to xStatuses
 
-    Click to expand each xStatus Lesson below, execute them in your terminal session and observe the responses in the terminal window
+    Be sure to complete **Getting, Setting and Subscribing to xConfigurations** ~({{config.cProps.rxp.sectionIds.ssh}}.4)~ prior to continuing in this section, as many pieces of additional context were covered there, and won't be repeated moving forward
+
+    Click to expand each xStatus Lesson below, execute them in your terminal session and observe the responses in the Terminal Window
 
 ???+ lesson "Lesson: Getting an xStatus Value ~({{config.cProps.rxp.sectionIds.ssh}}.5.1)~"
 
@@ -965,7 +967,7 @@
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Under the xStatuses Page, move the Slider labeled <hl_0>Adjust Volume</hl_0> to a new position and release
                 - Alternatively, you can adjust the volume with the Codec's native volume control buttons
-            - Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6>
+            - Observe your <hl_6>Terminal Window's</hl_6> output, events for your Subscription should appear in the <hl_6>terminal</hl_6>
                 - <hl_3>Optional</hl_3>: Move the slider a few more times to see more changes come in
 
         ??? gif "Click to Compare your Terminal Output"
@@ -980,11 +982,11 @@
               ![SubAssist Operation](./images/SubscriptionAssitantMacro-Operation.gif){ width="600" }
             </figure>
 
-    <roomosdoc>xStatus Audio Volume<roomosdoc>
+    <roomosdoc>xStatus Audio Volume</roomosdoc>
 
 ??? lesson "Lesson: Unsubscribing to an xStatus  ~({{config.cProps.rxp.sectionIds.ssh}}.5.4)~"
 
-    - **xAPI**: xStatus Audio Input
+    - **xAPI**: xStatus Audio Volume
 
     - **Task**:
 
@@ -995,7 +997,7 @@
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Under the xStatuses Page, move the Slider labeled <hl_0>Adjust Volume</hl_0> to a new position and release
                 - Alternatively, you can adjust the volume with the Codec's native volume control buttons
-            - Observe your <hl_6>Terminal Window's</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>Terminal Window</hl_6>
+            - Observe your <hl_6>Terminal Window's</hl_6> output, responses should no longer appear in your <hl_6>terminal</hl_6>
                 - <hl_3>Optional</hl_3>: Move the slider a few more times to see more changes come in
 
 ??? lesson "Lesson: Subscribe to Multiple xStatuses under a Common Node ~({{config.cProps.rxp.sectionIds.ssh}}.5.5)~"
@@ -1010,17 +1012,17 @@
 
         ??? curious "What happened to the <hl_6>[n]</hl_6> in the xAPI Path?"
 
-            You may have noticed we never declared <hl_6>[n]</hl_6> in the xAPI Path for the command we ran. This was left out on purpose. <hl_6>[n]</hl_6>, for this particular xAPI path, corresponds to the <hl_1>CameraId</hl_1> you want to target. Some Cisco Codecs can let you control up to 15 cameras, so these xAPI paths branch per connected Camera at the <hl_6>[n]</hl_6>.
+            You may have noticed we never declared <hl_6>[n]</hl_6> in the xAPI Path for the command we ran. This was left out on purpose. <hl_6>[n]</hl_6>, for this particular xAPI path, corresponds to the <hl_1>CameraId</hl_1> you want to target. Some Cisco Codecs support control of up to 15 cameras, so these xAPI paths branch per connected Camera at the <hl_6>[n]</hl_6>.
 
-            Whereas you could be running this lab on a variety of RoomOS Devices, it's better to leave [n] out of the path for Lab Purposes. Not declaring [n] also adds new value to us as developers working on a multi-camera system; it allows us to subscribe to ALL camera's positions as they change rather than having to specify each camera individually :smiley:
+            Since you could be running this lab on a variety of RoomOS Devices, it's better to leave [n] out of the path for lab purposes. Not declaring [n] also adds new value to us as developers working on a multi-camera system; it allows us to subscribe to ALL camera's positions as they change rather than having to specify each camera individually :smiley:
 
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Under the xStatuses Page, click the button in the <hl_1>Camera Control Wheel</hl_1> row
                 - Alternatively, you can adjust your cameras position through the native camera control interface
-            - Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6>
+            - Observe your <hl_6>Terminal Window's</hl_6> output, events for your Subscription should appear in the <hl_6>terminal</hl_6>
                 - <hl_3>Optional</hl_3>: Continue pressing buttons to see more changes come in
 
-        ???+ gif "Click on the tabs below to"
+        ???+ gif "Compare the terminal output and interface."
 
             === "Compare Terminal"
 
@@ -1054,17 +1056,17 @@
 
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Under the xStatuses Page, click the button in the <hl_1>Camera Control Wheel</hl_1> row
-                - Alternatively, you can adjust your cameras position through the native camera control interface
-            - Observe your <hl_6>Terminal Window's</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>Terminal Window</hl_6>
+                - Alternatively, you can adjust your camera's position through the native camera control interface
+            - Observe your <hl_6>Terminal Window's</hl_6> output, responses should no longer appear in your <hl_6>terminal</hl_6>
                 - <hl_3>Optional</hl_3>: Continue pressing buttons to see more changes come in
 
 ## **Subscribing to Events** ~({{config.cProps.rxp.sectionIds.ssh}}.6)~
 
-!!! Abstract "xEvents"
+!!! abstract "xEvents"
 
-    Similar to xStatuses, xEvents will fire a callback when that particular event occurs; however, xEvents contain simpler information that's not necessary to store on the device itself. So you will not be able to retrieve the value of the event after it fires.
+    Unlike xStatuses, xEvents aren’t stored as retrievable device state. xEvents contain simpler information that's not necessary to store on the device itself. So you will not be able to retrieve the value of the event after it fires.
 
-    ??? curious "Why not store xEvent Data?"
+    ??? curious "Why isn’t xEvent data stored?"
 
         As noted above, xEvents are much simpler callbacks. 
         
@@ -1072,7 +1074,7 @@
         
         When compared to <hl_0>xEvent UserInterface Extensions Widget Action</hl_0>, this event fires whenever a widget is interacted with by a user. We simply want to know when the widget has an interaction in order for use to run an automation, but storing this event offers little to no value outside the general log collection on the device, and is not stored for future retrieval.
 
-    Click to expand each xEvent Lesson below, execute them in your terminal session and observe the responses in the terminal window.
+    Click to expand each xEvent Lesson below, execute them in your terminal session and observe the responses in the Terminal Window.
 
 ???+ lesson "Lesson: Subscribing to an xEvent ~({{config.cProps.rxp.sectionIds.ssh}}.6.1)~"
 
@@ -1088,10 +1090,10 @@
             - Under the xEvents Page, click the <hl_1>Prompt Button</hl_1> in the <hl_0>UserInterface Message</hl_0> row
                 - This will create a Pop Up with 5 options
                 - Click on any one of these 5 Options
-            - Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6>
+            - Observe your <hl_6>Terminal Window's</hl_6> output, events for your Subscription should appear in the <hl_6>terminal</hl_6>
                 - <hl_3>Optional</hl_3>: Feel free to try each of the options under that `Prompt` and continue to observe your <hl_6>Terminal Window's</hl_6> to understand how each one of them differs
             - Now click either the `TextInput`, the `Rating` or the `Alert` button and follow any instructions those interfaces offer
-            - Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6>
+            - Observe your <hl_6>Terminal Window's</hl_6> output, events for your Subscription should appear in the <hl_6>terminal</hl_6>
                 - Responses for `TextInput`, `Rating` or `Alert` shouldn't show since you're currently only subscribed to the `Prompt` branch
     
         ??? gif "Click to Compare your Terminal Output"
@@ -1119,8 +1121,8 @@
         ```
 
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
-            - Under the xEvents Page, click either the `Prompt`, the `TextInput`, the `Rating` or the `Alert` button in the <hl_0>UserInterface Message</hl_0> row and submit any accompanying actions in that interface
-            - Observe your <hl_6>Terminal Window's</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>Terminal Window</hl_6>
+            - Under the xEvents Page, Select a `Prompt`, `TextInput`, `Rating`, or `Alert` button in the <hl_0>UserInterface Message</hl_0> row and submit any accompanying actions in that interface
+            - Observe your <hl_6>Terminal Window's</hl_6> output, responses should no longer appear in your <hl_6>terminal</hl_6>
 
     <roomosdoc>xEvent UserInterface Message Prompt Response</roomosdoc>
 
@@ -1130,7 +1132,7 @@
 
     !!! note inline end
 
-        By Subscribing to a Higher Common Node, such as xEvent UserInterface, we can see all UI related Events available in that xAPI Node
+        By Subscribing to a Higher Common Node, such as xEvent UserInterface, we can see all UI-related Events available in that xAPI Node
 
     - **Task**: 
 
@@ -1139,8 +1141,8 @@
         ```
 
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
-            - Under the xEvents Page, try any of the `Widgets` on this page, and submit any accompanying actions in that interface if any
-            - Observe your <hl_6>Terminal Window's</hl_6> output, you should see events for your Subscription fill the <hl_6>Terminal Window</hl_6>
+            - Under the xEvents Page, try any of the `Widgets` on this page, and submit any accompanying actions in that interface
+            - Observe your <hl_6>Terminal Window's</hl_6> output, events for your Subscription should appear in the <hl_6>terminal</hl_6>
                 - <hl_3>Optional</hl_3>: Try all of the `Widgets` on that page :smiley:
     
         ??? gif "Click to Compare your Terminal Output"
@@ -1169,16 +1171,16 @@
 
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Under the xEvents Page, try any of the `Widgets` on this page, and submit any accompanying actions in that interface if any
-            - Observe your <hl_6>Terminal Window's</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>Terminal Window</hl_6>
+            - Observe your <hl_6>Terminal Window's</hl_6> output, responses should no longer appear in your <hl_6>terminal</hl_6>
                 - <hl_3>Optional</hl_3>: Continue pressing buttons to see more changes come in
 
 ## **Tagging your xAPI Calls** ~({{config.cProps.rxp.sectionIds.ssh}}.7)~
 
-As you work to build your automation in a SSH terminal session, you may find yourself making multiple calls against the same path and the timing of that output may be critical for your solution.
+As you work to build your automation in an SSH terminal session, you may find yourself making multiple calls to the same path and the timing of that output may be critical for your solution.
 
 To help simplify which data belongs where, you can tag your xAPI paths with a custom value to better track your work.
 
-By appending <hl_6>|resultId="`myValue`"</hl_6> to the end of any xAPI Call, the response from that xAPI will include that resultId you assign
+By appending <hl_6>|resultId="`myValue`"</hl_6> to the end of any xAPI call, the response from that xAPI will include the resultId you assign
 
 !!! example "Review Tagging examples below"
 
@@ -1227,7 +1229,7 @@ By appending <hl_6>|resultId="`myValue`"</hl_6> to the end of any xAPI Call, the
 
         !!! note
 
-            When declaring xFeedback, or subscribing to any xAPI, the resultId will only print when you execute the command, but will not print with the subsequent data coming in from the subscription
+            When you register xFeedback, or subscribe to any xAPI, the resultId appears in the registration response. It does not appear in subsequent feedback events.
 
         ``` shell title="xAPI"
         xFeedback Register Event/CallSuccessful |resultId="Custom Value 4"
