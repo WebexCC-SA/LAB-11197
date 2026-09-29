@@ -547,15 +547,17 @@
 
 ## **Import and Configure the {{config.cProps.apiClientApplication}} Collection** ~({{config.cProps.rxp.sectionIds.http}}.2)~
 
-{{ apps.bruno.configure.http }}
+{{ apps.bruno.import.http }}
 
-!!! info "Values for the Bruno collection"
+!!! info inline end "Values for the Bruno collection"
 
     Enter these submitted device details in the collection's Vars fields:
 
-    - `device_hostAddress`: <copy>{{config.cProps.auth.roomosIp}}</copy>
-    - `device_username`: <copy>{{config.cProps.auth.roomosUser}}</copy>
-    - `device_password`: <copy>{{config.cProps.auth.roomosPass}}</copy>
+    - Host Address: <hl_1><copy>{{config.cProps.auth.roomosIp}}</copy></hl_1>
+    - Username: <hl_0><copy>{{config.cProps.auth.roomosUser}}</copy></hl_0>
+    - Password: <hl_7><copy>{{config.cProps.auth.roomosPass}}</copy></hl_7>
+
+{{ apps.bruno.configure.http }}
 
 ## **Executing xCommands** ~({{config.cProps.rxp.sectionIds.http}}.3)~
 
@@ -1424,84 +1426,84 @@
     
     You’ll register feedback with an HTTP(S) server, inspect the incoming data with Webhook.site, and see how device events can trigger actions in an external application.
 
-!!! important
-
-    Your codec has a limit of 4 HTTPFeedback Slots with up to 15 xAPI paths expressions in the same command
-
-    ??? tip  "xCommand References for Section: {{config.cProps.rxp.sectionIds.http}}.6"
-
-        <div class="grid cards" markdown>
-
-        -   <i class="fa-solid fa-terminal"> </i> __xCommand HttpFeedback Register__
-
-            ---
-
-            Register the device to an HTTP(S) server to return XML feedback over HTTP(S) to specific URLs.
-
-            ---
-
-            Parameters:
-
-              <table>
-                <tr>
-                    <td>ServerUrl ==[Required]== </td>
-                    <td>FeedbackSlot ==[Required]== </td>
-                </tr>
-                <tr>
-                    <td>Expression</td>
-                    <td>Format</td>
-                </tr>
-              </table>
-
-            <a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpFeedback.Register" target="_blank">
-              Reference for <strong>xCommand HttpFeedback Register</strong> <i class="fa-solid fa-square-up-right"></i>
-            </a>
-
-        -   <i class="fa-solid fa-terminal"></i> __xCommand HttpFeedback Deregister__
-
-            ---
-
-            Deregister the HTTP feedback over HTTP(S).
-
-            ---
-
-            Parameters:
-
-              <table>
-                <tr>
-                    <td>FeedbackSlot ==[Required]== </td>
-                </tr>
-              </table>
-
-            <a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpFeedback.Deregister" target="_blank">
-              Reference for <strong>xCommand HttpFeedback Deregister</strong> <i class="fa-solid fa-square-up-right"></i>
-            </a>
-
-        -   <i class="fa-solid fa-terminal"></i> __xCommand HttpFeedback Enable__
-
-            ---
-
-            Re-enables a previously registered feedback slot after it has failed and become deactivated.
-
-            ---
-
-            Parameters:
-
-              <table>
-                <tr>
-                    <td>FeedbackSlot ==[Required]== </td>
-                </tr>
-              </table>
-
-            <a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpFeedback.Enable" target="_blank">
-              Reference for <strong>xCommand HttpFeedback Enable</strong> <i class="fa-solid fa-square-up-right"></i>
-            </a>
-
-        </div>
-
-???+ gif "Locate and Configure your Unique URL from Webhook.Site"
+!!! important "Configure your Unique URL from Webhook.Site"
 
     {{ apps.bruno.configure.webhookSite | indent(4) }}
+
+    !!! note 
+
+        Your codec has a limit of 4 HTTPFeedback Slots with up to 15 xAPI paths expressions in the same command
+
+        ??? tip  "xCommand References for Section: {{config.cProps.rxp.sectionIds.http}}.6"
+
+            <div class="grid cards" markdown>
+
+            -   <i class="fa-solid fa-terminal"> </i> __xCommand HttpFeedback Register__
+
+                ---
+
+                Register the device to an HTTP(S) server to return XML feedback over HTTP(S) to specific URLs.
+
+                ---
+
+                Parameters:
+
+                  <table>
+                    <tr>
+                        <td>ServerUrl ==[Required]== </td>
+                        <td>FeedbackSlot ==[Required]== </td>
+                    </tr>
+                    <tr>
+                        <td>Expression</td>
+                        <td>Format</td>
+                    </tr>
+                  </table>
+
+                <a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpFeedback.Register" target="_blank">
+                  Reference for <strong>xCommand HttpFeedback Register</strong> <i class="fa-solid fa-square-up-right"></i>
+                </a>
+
+            -   <i class="fa-solid fa-terminal"></i> __xCommand HttpFeedback Deregister__
+
+                ---
+
+                Deregister the HTTP feedback over HTTP(S).
+
+                ---
+
+                Parameters:
+
+                  <table>
+                    <tr>
+                        <td>FeedbackSlot ==[Required]== </td>
+                    </tr>
+                  </table>
+
+                <a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpFeedback.Deregister" target="_blank">
+                  Reference for <strong>xCommand HttpFeedback Deregister</strong> <i class="fa-solid fa-square-up-right"></i>
+                </a>
+
+            -   <i class="fa-solid fa-terminal"></i> __xCommand HttpFeedback Enable__
+
+                ---
+
+                Re-enables a previously registered feedback slot after it has failed and become deactivated.
+
+                ---
+
+                Parameters:
+
+                  <table>
+                    <tr>
+                        <td>FeedbackSlot ==[Required]== </td>
+                    </tr>
+                  </table>
+
+                <a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpFeedback.Enable" target="_blank">
+                  Reference for <strong>xCommand HttpFeedback Enable</strong> <i class="fa-solid fa-square-up-right"></i>
+                </a>
+
+            </div>
 
 !!! info
 

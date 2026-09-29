@@ -39,7 +39,7 @@ bruno:
           </a>
 
       </div>
-  configure: 
+  import: 
     http: |
       This collection has been pre-configured to aid you in completing the lab exercises.
     
@@ -55,14 +55,13 @@ bruno:
         - Alternatively, you can click the "Choose File" button and select the file from your computer
       - Confirm the file and select Import
 
-      ??? gif "View Import Bruno Collection"
+      ??? gif "View how to Import Bruno Collection"
 
           <figure markdown>
             ![Import Lab Bruno Collection](../../../ref/applications/bruno_images/import_http_collection.gif){ width="600" }
           </figure>
-
-      ---
-
+  configure: 
+    http: |
       <h4>Configuring the Bruno Collection</h4>
 
       - Open Bruno
@@ -77,7 +76,7 @@ bruno:
                   - ++control+s++ for Windows
                   - ++command+s++ for Mac
 
-      ??? gif "View Configure Codec for Bruno Collection"
+      ??? gif "View how to Configure Codec for Bruno Collection"
 
           <figure markdown>
             ![Import Lab Bruno Collection](../../../ref/applications/bruno_images/configure_http_collection.gif){ width="600" }
@@ -94,7 +93,7 @@ bruno:
                       - ++control+s++ for Windows
                       - ++command+s++ for Mac
         
-      ??? gif "View Configure Webhook.site for Bruno Collection"
+      ??? gif "View how to Configure Webhook.site for Bruno Collection"
 
           <figure markdown>
             ![Locate and Configure your Unique URL from Webhook.Site](../../../ref/applications/bruno_images/configure_http_collection_webhook.gif){ width="600" }
