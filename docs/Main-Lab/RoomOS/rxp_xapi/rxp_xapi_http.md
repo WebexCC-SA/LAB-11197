@@ -71,63 +71,29 @@
 
     - A Laptop
     - A Cisco Desk, Board or Room Series Device running the most recent On Premise or Cloud Stable software
+        - <hl_0>Preferred Device:</hl_0> <hl_4>Cisco Desk Pro</hl_4>
         - A Touch Controller is required when working on a Room Series Device. Either Room navigator or 3rd part touch display
-        - Preferred Device: Cisco Desk Pro
     - A minimum of 1 camera (Either Integrated or External)
 
     **Software**
 
     - Laptop
-        - Recommended Browser: Chrome or Firefox
-        - {{config.cProps.apiClientApplication}}
+        - Applications: 
+            - {{config.cProps.apiClientApplication}}
+            - Chrome or Firefox
         - Section {{config.cProps.rxp.sectionIds.http}} {{config.cProps.apiClientApplication}} Collection
-        - Webhook.site
+        - Site:
+            - Webhook.site
 
     - RoomOS Device
-        - Either the current On Premise or Cloud Stable release
+        - RoomOS Version: Current On Premise or Cloud Stable release
+        - Install [Subscription Assistant Macro](https://webexcc-sa.github.io/LAB-11197/Main-Lab/RoomOS/rxp_intro/)
 
 ## Section {{config.cProps.rxp.sectionIds.http}} Setup
 
-!!! important ""
+!!! important "Bruno and WebHook Site"
 
-    - If joining from a Lab at WebexOne, {{config.cProps.apiClientApplication}} should be installed on your loaner laptop already, if not, please install the application now using the link below
-
-    - In addition to the {{config.cProps.apiClientApplication}} application, please download the {{config.cProps.apiClientApplication}} Collection listed below
-
-    - We'll also be leveraging a Webhook testing site, click the link below to open this is site in a new tab
-
-    <div class="grid cards" markdown>
-
-    -   <i class="fa-solid fa-download"></i> __Click the icon below for the {{config.cProps.apiClientApplication}} Download Page__
-
-        ---
-
-        <a href="https://www.usebruno.com/downloads" target="_blank">
-          <figure markdown="span">
-              ![{{config.cProps.apiClientApplication}} Download](https://www.usebruno.com/bruno-logo.png){ width="75" }
-          </figure>
-        </a>
-
-    -   <i class="fa-solid fa-download"></i> __Click the icon below for the Section {{config.cProps.rxp.sectionIds.http}} {{config.cProps.apiClientApplication}} Collection__
-
-        ---
-
-        <a href="https://github.com/WebexCC-SA/LAB-1451/raw/refs/heads/main/docs/Main-Lab/DownloadContent/PostMan%20Collections/WX1-Lab-1451-HTTP-PostMan-Collection.postman_collection.json.zip" target="_blank">
-          <figure markdown="span">
-              ![{{config.cProps.apiClientApplication}} Collection](https://www.usebruno.com/bruno-logo.png){ width="75" }
-          </figure>
-        </a>
-
-    -   <i class="fa-solid fa-globe"></i> __Click the icon below for the WebHook Site__ <br><br>
-
-        ---
-        <a href="https://webhook.site/" target="_blank">
-          <figure markdown="span">
-            ![Webhook.site](https://cdn.webhook.site/icon.png){ width="75" }
-          </figure>
-        </a>
-
-    </div>
+    {{ apps.bruno.installation.http | indent(4) }}
 
 ## **HTTP Authentication and Format** ~({{config.cProps.rxp.sectionIds.http}}.1)~
 

@@ -1,0 +1,41 @@
+bruno:
+  installation: 
+    http: |
+      - If joining from a Lab at WebexOne, Bruno should be installed on your loaner laptop already, if not, please install the application now using the link below
+
+      - In addition to the Bruno application, please download the Bruno Collection listed below
+
+      - We'll also be leveraging a Webhook testing site, click the link below to open this is site in a new tab
+
+      <div class="grid cards" markdown>
+
+      -   <i class="fa-solid fa-download"></i> __Click the icon below for the Bruno Download Page__
+
+          ---
+
+          <a href="https://www.usebruno.com/downloads" target="_blank">
+            <figure markdown="span">
+                ![Bruno Download](https://www.usebruno.com/bruno-logo.png){ width="75" }
+            </figure>
+          </a>
+
+      -   <i class="fa-solid fa-download"></i> __Click the icon below for the HTTP Bruno Collection__
+
+          ---
+
+          <a href="https://github.com/WebexCC-SA/LAB-11197/raw/refs/heads/main/docs/Main-Lab/DownloadContent/Bruno%20Collections/RoomOS%20xAPI%20-%20HTTP%20%5Brxp-3%5D.zip" target="_blank">
+            <figure markdown="span">
+                ![Bruno Collection](https://www.usebruno.com/bruno-logo.png){ width="75" }
+            </figure>
+          </a>
+
+      -   <i class="fa-solid fa-globe"></i> __Click the icon below for the WebHook Site__ <br><br>
+
+          ---
+          <a href="https://webhook.site/" target="_blank">
+            <figure markdown="span">
+              ![Webhook.site](https://cdn.webhook.site/icon.png){ width="75" }
+            </figure>
+          </a>
+
+      </div>

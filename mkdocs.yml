@@ -48,7 +48,9 @@ extra_javascript:
   - template_assets/js/setInfo.js
 plugins:
   - search
-  - macros
+  - macros:
+      include_yaml:
+        - apps: docs/ref/applications/bruno.yml
   - open-in-new-tab
   # - with-pdf:
   #     cover_title: LABXXX-1234
