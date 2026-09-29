@@ -25,8 +25,8 @@
 
         <form id="info">
 
-          <label for="ipAddress">RoomOS Device HOST Address:</label>
-          <input type="text" id="ipAddress" name="ipAddress"><br>
+          <label for="hostAddress">RoomOS Device HOST Address:</label>
+          <input type="text" id="hostAddress" name="hostAddress"><br>
           
 
           <label for="username">RoomOS Device Username:</label>

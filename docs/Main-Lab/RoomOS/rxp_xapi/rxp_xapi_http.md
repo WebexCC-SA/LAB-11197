@@ -96,6 +96,10 @@
 
     {{ apps.bruno.installation.http | indent(4) }}
 
+    !!! tip "Before making HTTP requests"
+
+        If you haven't entered your device host, username, and password in [Setup: Cache your lab credentials](../../Setup/stp_intro.md), then click **Update Lab Guide**. The host is inserted into the URL examples below. The Basic Authentication examples show sample values; use your device's credentials in your HTTP client.
+
 ## **HTTP Authentication and Format** ~({{config.cProps.rxp.sectionIds.http}}.1)~
 
 !!! blank ""
@@ -544,6 +548,14 @@
 ## **Import and Configure the {{config.cProps.apiClientApplication}} Collection** ~({{config.cProps.rxp.sectionIds.http}}.2)~
 
 {{ apps.bruno.configure.http }}
+
+!!! info "Values for the Bruno collection"
+
+    Enter these submitted device details in the collection's Vars fields:
+
+    - `device_hostAddress`: <copy>{{config.cProps.auth.roomosIp}}</copy>
+    - `device_username`: <copy>{{config.cProps.auth.roomosUser}}</copy>
+    - `device_password`: <copy>{{config.cProps.auth.roomosPass}}</copy>
 
 ## **Executing xCommands** ~({{config.cProps.rxp.sectionIds.http}}.3)~
 

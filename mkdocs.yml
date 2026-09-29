@@ -159,10 +159,10 @@ cProps:
   xAPI_PDF: https://www.cisco.com/c/dam/en/us/td/docs/telepresence/endpoint/roomos-2602/api-reference-guide-roomos-2602.pdf
   apiClientApplication: Bruno
   auth: 
-    roomosIp: <w class="ipAddress">[ROOMOS_HOST_ADDRESS]</w>
-    roomosUser: <w class="username">[ROOMOS_USERNAME]</w>
-    roomosPass: <w class="password">[ROOMOS_PASSWORD]</w>
-    devToken: <w class="webexToken">[WEBEX_TOKEN]</w>
+    roomosIp: <w class="hostAddress">[ROOMOS_DEVICE_HOST_ADDRESS]</w>
+    roomosUser: <w class="username">[ROOMOS_DEVICE_USERNAME]</w>
+    roomosPass: <w class="password">[ROOMOS_DEVICE_PASSWORD]</w>
+    devToken: <w class="webexToken">[WEBEX_DEVELOPER_TOKEN]</w>
   devNotice: | 
   commentedDevNotice: |
     !!! important "Under Construction"

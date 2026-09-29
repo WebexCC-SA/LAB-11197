@@ -47,7 +47,11 @@
 - Open the Terminal application on your device
 - Connect to the Device via SSH using the built-in OpenSSH platform in your Terminal Window
 
-!!! note inline end
+!!! important inline end
+
+    If you haven't entered your RoomOS device details yet, complete [Setup: Cache your lab credentials](../../Setup/stp_intro.md), click **Update Lab Guide**, and return here. The command below uses the submitted username and host.
+
+!!! info
 
     Replace <hl_3>[USERNAME]</hl_3> with your Codec's username and <hl_5>[HOST_ADDRESS]</hl_5> with your Codec's host address (IPv4, IPv6, or FQDN)
 
