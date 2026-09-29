@@ -366,10 +366,10 @@
 
                 /* Below is the Response Body after making a Successful Request
 
-                <?xml version="1.0"?>
+                <?xml version="#"?>
                 <Configuration product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="#">
                     <SystemUnit>
-                        <Name valueSpaceRef="/Valuespace/STR_0_50_NoFilt"> My Room Bar Pro</Name>
+                        <Name valueSpaceRef="/Valuespace/STR_0_50_NoFilt"> My Device Name</Name>
                     </SystemUnit>
                 </Configuration>
                 */
@@ -398,7 +398,7 @@
 
                 /* Below is the Response Body after making a Successful Request
 
-                <?xml version="1.0"?>
+                <?xml version="#"?>
                 <Configuration>
                     <Success/>
                 </Configuration>
@@ -431,7 +431,7 @@
                       Context: `Failed Get Request to [${destinationUrl}]`,
                       ...e
                     }
-                    throw new Error(e)
+                    throw new Error(err)
                   }
                 }
 
@@ -463,7 +463,7 @@
                       Context: `Failed Post Request to [${destinationUrl}]`,
                       ...e
                     }
-                    throw new Error(e)
+                    throw new Error(err)
                   }
                 }
 
@@ -506,11 +506,13 @@
 
                 print(response.text)
 
-                # Below is the Response Body after making a Successful Request
+                # Below is the response body after a successful request
 
-                # <?xml version="1.0"?>
-                # <Configuration>
-                #     <Success/>
+                # <?xml version="#"?>
+                # <Configuration product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="#">
+                #     <SystemUnit>
+                #         <Name>My Device Name</Name>
+                #     </SystemUnit>
                 # </Configuration>
                 ```
 
@@ -533,15 +535,13 @@
 
                 # Below is the Response Body after making a Successful Request
 
-                # <?xml version="1.0"?>
-                # <Configuration product="Cisco Codec" version="ce11.20.1.7.913a6c7c769" apiVersion="4">
-                #     <SystemUnit>
-                #         <Name valueSpaceRef="/Valuespace/STR_0_50_NoFilt"> My Room Bar Pro</Name>
-                #     </SystemUnit>
+                # <?xml version="#"?>
+                # <Configuration>
+                #     <Success/>
                 # </Configuration>
                 ```
 
-## **Import and Configure the section {{config.cProps.rxp.sectionIds.http}}.3 {{config.cProps.apiClientApplication}} Collection** ~({{config.cProps.rxp.sectionIds.http}}.2)~
+## **Import and Configure the {{config.cProps.apiClientApplication}} Collection** ~({{config.cProps.rxp.sectionIds.http}}.2)~
 
 {{ apps.bruno.configure.http }}
 
@@ -601,7 +601,7 @@
 
             ---
             ``` { .xml }
-            <?xml version="1.0"?>
+            <?xml version="#"?>
             <Command>
               <SelfviewSetResult status="OK"/>
             </Command>
@@ -749,7 +749,7 @@
 
             ---
             ``` { .xml }
-            <?xml version="1.0"?>
+            <?xml version="#"?>
             <Command>
               <SelfviewSetResult status="OK"/>
               <WebViewDisplayResult status="OK"/>
@@ -897,7 +897,7 @@
 
               ---
               ``` { .xml }
-              <?xml version="1.0"?>
+              <?xml version="#"?>
               <Command>
                 <WebViewClearResult status="OK"/>
                 <RatingClearResult status="OK"/>
@@ -1049,7 +1049,7 @@
 
               ---
               ``` { .xml }
-              <?xml version="1.0"?>
+              <?xml version="#"?>
               <Command>
                 <SelfviewSetResult status="OK"/>
                 <InputSetMainVideoSourceResult status="OK"/>
@@ -1103,7 +1103,7 @@
 
               ---
               ``` { .xml }
-              <?xml version="1.0"?>
+              <?xml version="#"?>
               <Command>
                 <ExtensionsListResult status="OK">
                   <Extensions>
@@ -1173,7 +1173,7 @@
 
             ---
             ``` { .xml }
-            <?xml version="1.0"?>
+            <?xml version="#"?>
             <Configuration>
               <Success/>
             </Configuration>
@@ -1238,7 +1238,7 @@
 
             ---
             ```xml
-            <?xml version="1.0"?>
+            <?xml version="#"?>
             <Configuration>
               <Success/>
             </Configuration>
@@ -1276,7 +1276,7 @@
         </div>
 
         <div class="code-label" data-title="Response">
-          <pre><code>&lt;?xml version="1.0"?&gt;
+          <pre><code>&lt;?xml version="#"?&gt;
         &lt;Configuration product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="#"&gt;
           &lt;Audio&gt;
             &lt;<hl_4>DefaultVolume</hl_4> valueSpaceRef="/Valuespace/INT_0_100"&gt;<hl_6>50</hl_6>&lt;/<hl_4>DefaultVolume</hl_4>&gt;
@@ -1308,8 +1308,8 @@
         </div>
 
         <div class="code-label" data-title="Response">
-          <pre><code>&lt;?xml version="1.0"?&gt;
-        &lt;<hl_4>Configuration</hl_4> product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="4"&gt;
+          <pre><code>&lt;?xml version="#"?&gt;
+        &lt;<hl_4>Configuration</hl_4> product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="#"&gt;
           &lt;<hl_4>Audio</hl_4>&gt;
             &lt;<hl_4>DefaultVolume</hl_4> valueSpaceRef="/Valuespace/INT_0_100"&gt;<hl_6>50</hl_6>&lt;/<hl_4>DefaultVolume</hl_4>&gt;
             &lt;<hl_4>Ethernet</hl_4>&gt;
@@ -1356,8 +1356,8 @@
         </div>
 
         <div class="code-label" data-title="Response">
-          <pre><code>&lt;?xml version="1.0"?&gt;
-        &lt;<hl_4>Status</hl_4> product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="4"&gt;
+          <pre><code>&lt;?xml version="#"?&gt;
+        &lt;<hl_4>Status</hl_4> product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="#"&gt;
           &lt;<hl_4>Audio</hl_4>&gt;
             &lt;<hl_4>Volume</hl_4>&gt;<hl_6>65</hl_6>&lt;/<hl_4>Volume</hl_4>&gt;
           &lt;/<hl_4>Audio</hl_4>&gt;
@@ -1382,8 +1382,8 @@
         </div>
 
         <div class="code-label" data-title="Response">
-          <pre><code>&lt;?xml version="1.0"?&gt;
-        &lt;<hl_4>Status</hl_4> product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="4"&gt;
+          <pre><code>&lt;?xml version="#"?&gt;
+        &lt;<hl_4>Status</hl_4> product="Cisco Codec" version="RoomOS #.#.#.#" apiVersion="#"&gt;
           &lt;<hl_4>Audio</hl_4>&gt;
             &lt;<hl_4>Devices</hl_4>&gt;
               &lt;<hl_4>Bluetooth</hl_4>&gt;
@@ -1405,6 +1405,12 @@
         </div>
 
 ## **Using WebHooks to subscribe to xConfigurations, xStatuses and xEvents** ~({{config.cProps.rxp.sectionIds.http}}.6)~
+
+!!! abstract
+
+    Learn how to use RoomOS HTTPFeedback to send selected xConfiguration, xStatus, and xEvent updates from a device to a webhook endpoint.
+    
+    You’ll register feedback with an HTTP(S) server, inspect the incoming data with Webhook.site, and see how device events can trigger actions in an external application.
 
 !!! important
 
