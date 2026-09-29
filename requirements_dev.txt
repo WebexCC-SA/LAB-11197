@@ -6,3 +6,4 @@ pygments-ios @ git+https://github.com/vincentbernat/pygments-ios@d6b79303cd9dda7
 mkdocs-macros-plugin
 mammoth
 markdownify
+mkdocs-open-in-new-tab
