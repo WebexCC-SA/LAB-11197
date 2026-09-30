@@ -158,6 +158,7 @@ cProps:
   labId: LAB-11197
   xAPI_PDF: https://www.cisco.com/c/dam/en/us/td/docs/telepresence/endpoint/roomos-2602/api-reference-guide-roomos-2602.pdf
   apiClientApplication: Bruno
+  webhookClientSite: Svix
   auth: 
     roomosIp: <w class="hostAddress">[ROOMOS_DEVICE_HOST_ADDRESS]</w>
     roomosUser: <w class="username">[ROOMOS_DEVICE_USERNAME]</w>
