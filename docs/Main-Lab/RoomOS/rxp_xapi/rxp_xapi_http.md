@@ -1446,7 +1446,7 @@
         - Status
         - Event
 
-        Depending on your use case, you may want to refine incoming information and make the service less chatty, or you could just listen to it all
+        Depending on your use case, you may want to refine incoming information and make the service less chatty. It's best to only subscribe to what you need
 
     Each register can be sent to a different WebHook URL, or all can be pointed to the same URL
 
@@ -1618,7 +1618,7 @@
 
 ???+ lesson "Lesson: Subscribing to an xConfiguration ~({{config.cProps.rxp.sectionIds.http}}.7.1)~" 
 
-    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
+    - **xAPI(s):** 
         - <hl_0>xConfiguration Audio DefaultVolume</hl_0>
 
     - **Task:**
@@ -1670,7 +1670,7 @@
 
 ??? lesson "Lesson: Subscribe to Multiple xConfigurations under a Common Node ~({{config.cProps.rxp.sectionIds.http}}.7.2)~" 
 
-    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
+    - **xAPI(s):** 
         - <hl_0>xConfiguration Video Input AirPlay</hl_0>
 
     - **Task:**
@@ -1715,7 +1715,7 @@
 
 ??? lesson "Lesson: Subscribing to an xStatus ~({{config.cProps.rxp.sectionIds.http}}.7.3)~"
 
-    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
+    - **xAPI(s):** 
         - <hl_0>xStatus Audio Volume</hl_0>
 
     - **Task:**
@@ -1760,7 +1760,7 @@
 
 ??? lesson "Lesson: Subscribe to Multiple xStatuses under a Common Node ~({{config.cProps.rxp.sectionIds.http}}.7.4)~"
 
-    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
+    - **xAPI(s):** 
         - <hl_0>xStatus Cameras Camera[n] Position</hl_0>
 
     - **Task:**
@@ -1805,8 +1805,14 @@
 
 ??? lesson "Lesson: Subscribing to an xEvent ~({{config.cProps.rxp.sectionIds.http}}.7.5)~"
 
-    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
+    - **xAPI(s):** 
         - <hl_0>xEvent UserInterface Message Prompt Response</hl_0>
+
+    !!! important
+
+        This example is registering against FeedbackSlot 3. If you're running this lab on a device registered to TMS, please update the FeedbackSlot tag value before running your request, else you will break your devices connection to TMS. Use 1, 2 or 4.
+
+        If running this Lab at WebexOne, disregard
 
     - **Task:**
         - Format <hl_4>xEvent UserInterface Message Prompt Response</hl_4> as an HttpFeedback Expression
@@ -1850,8 +1856,14 @@
 
 ??? lesson "Lesson: Subscribe to Multiple xEvents under a Common Node ~({{config.cProps.rxp.sectionIds.http}}.7.6)~"
 
-    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
+    - **xAPI(s):** 
         - <hl_0>xEvent UserInterface</hl_0>
+
+    !!! important
+
+        This example is registering against FeedbackSlot 3. If you're running this lab on a device registered to TMS, please update the FeedbackSlot tag value before running your request, else you will break your devices connection to TMS. Use 1, 2 or 4.
+
+        If running this Lab at WebexOne, disregard.
 
     - **Task:**
         - Format <hl_4>xEvent UserInterface</hl_4> as an HttpFeedback Expression
@@ -1895,7 +1907,7 @@
 
 ??? lesson "Lesson: Register Multiple Feedback Expressions in a single Feedback Slot ~({{config.cProps.rxp.sectionIds.http}}.7.7)~"
 
-    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
+    - **xAPI(s):** 
         - <hl_0>xConfiguration</hl_0>
         - <hl_0>xStatus</hl_0>
         - <hl_0>xEvent</hl_0>
@@ -1906,6 +1918,18 @@
         - Save the collection and select Send
         - You should start to see many events come into the endpoint, but you can also interact with element within the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Observe the output on {{config.cProps.webhookClientSite}}
+
+    !!! warning ""
+
+        From the [RoomOS API Guide](https://www.cisco.com/c/dam/en/us/td/docs/telepresence/endpoint/roomos-2602/api-reference-guide-roomos-2602.pdf):
+
+        A device may give very much feedback, especially when calls are connected and disconnected. Do only subscribe to the feedback you need.
+
+        Never register for all status feedback by issuing xFeedback register /Status. This may give the control application too much data to handle, which may lead to sluggish or unpredictable behavior.
+
+        - - -
+
+        We're registering all subscriptions purely for lab use, it's best only to subscribe for what you need or what your service is capable of.
         
     ??? success "View properly formatted Expression and XML Payload"
 
@@ -1944,116 +1968,13 @@
 
 ??? lesson "Lesson: Deregister FeedbackSlots ~({{config.cProps.rxp.sectionIds.http}}.7.8)~" 
 
-    !!! note inline end <hl_7>**FixHere**</hl_7>
-        These examples are preconfigured in your {{config.cProps.apiClientApplication}} collection. We're simply running an xCommand to register feedback against a Webhook.
-
-    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
+    - **xAPI(s):** 
       - <hl_0>xCommand HttpFeedback Deregister</hl_0>
 
     - **Task:**
         - The XML is pre-structured as the last item in your <hl_0> Deregister FeedbackSlots</hl_0> request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
         - Review the XML
         - Select Send and events should stop coming into {{config.cProps.apiClientApplication}}
-
-    ??? success "View properly formatted Expression and XML Payload"
-
-        <div class="grid cards" markdown>
-
-        -   **Expression Format**
-
-            ---
-
-            ``` { .shell }
-            
-            ```
-
-        -   **Full XML**
-
-            ---
-            ``` { .xml }
-            
-            ```
-
-          </div>
-
-<!-- 
-??? lesson "Lesson: Subscribe to the xConfiguration Assistant configurations ~({{config.cProps.rxp.sectionIds.http}}.7.1)~"
-
-    !!! note inline end
-        These examples are preconfigured in your {{config.cProps.apiClientApplication}} collection. They use an xCommand to register a webhook for feedback. 
-        
-        This example subscribes to xConfiguration events from the Subscription Assistant’s xConfiguration page.
-
-    - **Task:**
-        - In your {{config.cProps.apiClientApplication}} collection under 3.6 - HTTP Feedback Subscriptions
-        - Select the <hl_0>Subscribe to the full xConfiguration Branch</hl_0> request
-        - View how the body is Structured in the XML body
-        - Select Send
-        - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
-            - Under the xConfigurations Page, press any of the buttons on this page
-            - Observe your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6>
-                - <hl_3>Optional</hl_3>: Press those buttons and switches a few times to see more changes come in
-
-??? lesson "Lesson: Subscribe to the xStatus Assistant states ~({{config.cProps.rxp.sectionIds.http}}.7.2)~"
-
-    !!! note inline end
-        These examples are preconfigured in your {{config.cProps.apiClientApplication}} collection. They use an xCommand to register a webhook for feedback. 
-        
-        This example subscribes to xStatus events from the Subscription Assistant’s xStatus page.
-
-    - **Task:**
-        - In your {{config.cProps.apiClientApplication}} collection under 3.6 - HTTP Feedback Subscriptions
-        - Select the <hl_0>Subscribe to the full xStatus Branch</hl_0> request
-        - View how the body is Structured in the XML body
-        - Then select Send and Monitor the output on the {{config.cProps.webhookClientSite}} terminal
-            - Your device will forward an event in the status branch soon
-        - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
-            - Under the xStatuses Page, press any of the buttons on this page
-            - Observe your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6>
-
-??? lesson "Lesson: Subscribe to the xEvent Assistant events ~({{config.cProps.rxp.sectionIds.http}}.7.3)~"
-
-    !!! note inline end
-        These examples are preconfigured in your {{config.cProps.apiClientApplication}} collection. They use an xCommand to register a webhook for feedback. 
-        
-        This example subscribes to xEvent events from the Subscription Assistant’s xEvent page.
-
-    - **Task:**
-        - In your {{config.cProps.apiClientApplication}} collection under 3.6 - HTTP Feedback Subscriptions
-        - Select the <hl_0>Subscribe to the full xEvent Branch</hl_0> request
-        - View how the body is Structured in the XML body
-        - Then select Send and Monitor the output on the {{config.cProps.webhookClientSite}} terminal
-            - Your device will forward an event in the event branch soon
-        - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
-            - Under the xEvents Page, press any of the buttons on this page
-            - Observe your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6>
-
-??? lesson "Lesson: Deregister FeedbackSlots ~({{config.cProps.rxp.sectionIds.http}}.7.4)~"
-
-    !!! note inline end
-        These examples are preconfigured in your {{config.cProps.apiClientApplication}} collection. They use an xCommand to register a webhook for feedback. 
-        
-        This example subscribes to xEvent events from the Subscription Assistant’s xEvent page.
-
-    !!! note inline end
-        These examples are preconfigured in your {{config.cProps.apiClientApplication}} collection. We're simply running an xCommand to register feedback against a Webhook. 
-
-    - **Task:**
-        - In your {{config.cProps.apiClientApplication}} collection under 3.6 - HTTP Feedback Subscriptions
-        - Select the <hl_0>Subscribe to Specific Expressions on any Branch</hl_0> request
-        - View how the body is Structured in the XML body
-            - Take Note, we've changed our Expression Parameter
-            - Rather than subscribing to All States, we instead narrow down what we're interested in
-            - For each expression we want to listen too, we will declare a new Expression Parameter
-            - We can have up to 15 Expressions defined in a single feedback slot
-        - Then select Send and Monitor the output on the {{config.cProps.webhookClientSite}} terminal
-            - You will need to interact with the system Volume and press the MultiLine Command [Section {{config.cProps.rxp.sectionIds.http}}.3] Panel to see events pour into the {{config.cProps.webhookClientSite}} terminal
-        - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
-            - Clicking on the `Subscription Assistant Button` will fire a Panel Event
-            - Under the xStatuses, move the ==Adjust Volume== slider to generate events
-                - Other buttons under xStatus won't take any effect
-            - Under the xEvents Page, press any of the buttons on this page
-            - Observe your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6> -->
 
 ## **Section {{config.cProps.rxp.sectionIds.http}} Cleanup** ~({{config.cProps.rxp.sectionIds.http}}).8)~
 
