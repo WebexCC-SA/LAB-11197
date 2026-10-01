@@ -65,7 +65,7 @@
 
     **Required Learning**
 
-    - SSH Section {{config.cProps.rxp.sectionIds.http}}
+    - SSH Section {{config.cProps.rxp.sectionIds.ssh}}
 
     **Hardware**
 
