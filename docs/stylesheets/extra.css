@@ -149,6 +149,46 @@ roomosfind {
   box-shadow: var(--md-shadow-z2);
 }
 
+roomosdoc::after {
+  content: "\f14c";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin-left: 5px;
+}
+
+roomosdoc {
+  display: inline-block;
+  padding: 0.6em 1.2em;
+  margin: 0.5em 0;
+  border-radius: 0.3em;
+  text-align: center;
+  cursor: pointer;
+  font-family: var(--md-text-font);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s;
+  box-sizing: border-box;
+}
+
+[data-md-color-scheme="default"] roomosdoc,
+[data-md-color-scheme="slate"] roomosdoc {
+  background-color: var(--md-primary-fg-color);
+  color: white;
+  border: 1px solid var(--md-primary-fg-color);
+  box-shadow: var(--md-shadow-z1);
+}
+
+[data-md-color-scheme="default"] roomosdoc:hover,
+[data-md-color-scheme="default"] roomosdoc:focus,
+[data-md-color-scheme="slate"] roomosdoc:hover,
+[data-md-color-scheme="slate"] roomosdoc:focus {
+  background-color: var(--md-accent-fg-color);
+  color: black;
+  border-color: var(--md-accent-fg-color);
+  box-shadow: var(--md-shadow-z2);
+}
+
 .code-label {
   margin: 1em 0;
   overflow: hidden;

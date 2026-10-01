@@ -35,7 +35,7 @@
               Target Codec->>- My Customization: Responds 200 OK
             ```
 
-        === "Subscriptions [HTTPFeedback]"
+        === "Subscriptions [HttpFeedback]"
 
             ``` mermaid
             %%{init: {'theme':'dark'}}%%
@@ -65,7 +65,7 @@
 
     **Required Learning**
 
-    - SSH Section {{config.cProps.rxp.sectionIds.ssh}}
+    - SSH Section {{config.cProps.rxp.sectionIds.http}}
 
     **Hardware**
 
@@ -227,7 +227,7 @@
 
     The xAPI path you want to target is then defined as a URL parameter
 
-    The xAPI path is separated by a <hl_3>/</hl_3> and is placed behind the parameter <hl_6>?location=</hl_6> the prefix <hl_7>x</hl_7> is removed from the top level node of the xAPI Path
+    The xAPI path is separated by a <hl_3>/</hl_3> and is placed behind the parameter <hl_5>?location=</hl_5> the prefix <hl_7>x</hl_7> is removed from the top level node of the xAPI Path
 
     !!! example ""
 
@@ -1340,9 +1340,9 @@
 
 ??? curious ":thinking: What about subscribing to an xConfiguration, like with SSH?"
 
-    Subscriptions via HTTP are possible, but require a process outside of using HTTP POST/GET commands. We'll need to leverage the HTTPFeedback feature of the codec and a tool that can receive a WebHook event
+    Subscriptions via HTTP are possible, but require a process outside of using HTTP POST/GET commands. We'll need to leverage the HttpFeedback feature of the codec and a tool that can receive a WebHook event
 
-    So we'll save HTTPFeedback for the end of section {{config.cProps.rxp.sectionIds.http}} and handle all HTTP based subscriptions there
+    So we'll save HttpFeedback for the end of section {{config.cProps.rxp.sectionIds.http}} and handle all HTTP based subscriptions there
 
 ## **Getting xStatuses** ~({{config.cProps.rxp.sectionIds.http}}.5)~
 
@@ -1418,129 +1418,248 @@
         &lt;/<hl_4>Status</hl_4>&gt;</code></pre>
         </div>
 
-## **Using WebHooks to subscribe to xConfigurations, xStatuses and xEvents** ~({{config.cProps.rxp.sectionIds.http}}.6)~
+## **HTTP Subscriptions using HttpFeedback xAPIs** ~({{config.cProps.rxp.sectionIds.http}}.6)~
 
-!!! abstract
+!!! abstract "Before you begin"
 
-    Learn how to use RoomOS HTTPFeedback to send selected xConfiguration, xStatus, and xEvent updates from a device to a webhook endpoint.
-    
-    You’ll register feedback with an HTTP(S) server, inspect the incoming data with {{config.cProps.webhookClientSite}}, and see how device events can trigger actions in an external application.
+    When using HttpFeedback in your environment, it's good to understand that this is set up per device. It's a tool in which the Codec registers a Webhook, provided by an external service, and allows the Codec to send information to that service.
 
-!!! important "Configure your Unique URL from {{config.cProps.webhookClientSite}} ~({{config.cProps.rxp.sectionIds.http}}.6.1)~"
+    When working at scale, it's best to keep a template of your HttpFeedback commands to easily deploy this to your device when commissioned and for your teams internal documentation
 
-    {{ apps.bruno.configure.webhook.svix | indent(4) }}
+    !!! important "Macros can Help!"
 
+        Later in the lab, you'll work with Macros and they can help standardize unique combinations of xCommands, like HttpFeedback. xCommands are not backed up on the endpoint like xConfigurations are, so a macro can help simplify setup and can monitor your HttpFeedback too, allowing you to self repair in case the service was deregistered by mistake.
 
-!!! example "Understanding Feedback Registrations"
+!!! blank ""
 
-    HTTPFeedback has 4 Registers total. Each can hold up to 15 Expressions, or xAPI paths, including paths using a Higher Common Node
+    <h3> **Understanding Feedback Registrations** ~({{config.cProps.rxp.sectionIds.http}}.6.1)~</h3>
 
-    Each register can be sent to a different WebHook URL, or all can be pointed to the Same URL
+    HttpFeedback has 4 FeedbackSlots total. Each can hold up to 15 Expressions, or xAPI paths.
 
-    Unlike SSH, setting up a HTTPFeedback Registration, or HTTP based subscription, requires you to run another xCommand to set this up
+    ??? curious "`60` expressions total!!! Isn't there `thousands` of xAPIs?!?"
 
-    <roomosdoc>xCommand HTTPFeedback Register</roomosdoc>
+        Yes, across the 4 feedback slots you can create up to 15 expressions per slot, but remember that you can use a Higher Common Node.
 
-    xCommand HTTPFeedback Register helps you point your subscription to the correct endpoint
+        With that, you could subscribe to all information on the Codec with just 3 paths, the highest paths
+
+        - Configuration
+        - Status
+        - Event
+
+        Depending on your use case, you may want to refine incoming information and make the service less chatty, or you could just listen to it all
+
+    Each register can be sent to a different WebHook URL, or all can be pointed to the same URL
+
+    Unlike SSH, setting up an HttpFeedback Registration, or HTTP based subscription, requires you to run another xCommand to apply this to the Codec.
+
+    <roomosdoc>xCommand HttpFeedback Register</roomosdoc>
+
+    xCommand HttpFeedback Register helps you point your subscription to the correct Webhook service
 
     Conversely, unsubscribing also needs an xCommand
 
-    <roomosdoc>xCommand HTTPFeedback Deregister</roomosdoc>
+    <roomosdoc>xCommand HttpFeedback Deregister</roomosdoc>
 
-    These have been preformatted for you in the {{config.cProps.apiClientApplication}} collection
+    - - -
 
-    ??? question "View Example {{config.cProps.webhookClientSite}} output" FixHere
+    <h3> **xCommand HttpFeedback Register Parameters and Expression Format** ~({{config.cProps.rxp.sectionIds.http}}.6.2)~</h3>
+
+    xCommand HttpFeedback Register has 4 Parameters
+
+    ``` { .shell, .no-copy }
+    xCommand HttpFeedback Register 
+        Expression: <String 1 - 255 characters> 
+        FeedbackSlot: <Number 1-4> 
+        Format: <String: XML or JSON> 
+        ServerUrl: <String 1 - 2048 characters>
+    ```
+
+    ??? info "Parameter Definitions"
+
+        - Expression: The XPath expression specifies which parts of the Status, Configuration or Event XML documents are monitored. You can have from 0 to 15 XPath expressions in the same command.
+          - You can declare this argument multiple times up to 15
+        - FeedbackSlot <hl_4>(Required)</hl_4>: Location used to store your Feedback. Note: Avoid using FeedbackSlot 3 in an environment where Cisco TelePresence Management Suite (TMS) is used as TMS uses this feedbackslot to register its expressions.
+        - Format: Set the format for the feedback from the HTTP server to XML or JSON.
+        - ServerUrl <hl_4>(Required)</hl_4>: The URL to the HTTP server where you want the codec to post the HTTP feedback messages to.
+
+    The <hl_0>Expression</hl_0> parameter requires you to format the xAPI similarly to how we structured the <hl_5>?location</hl_5> URL parameter for HTTP GET requests in earlier lessons.
+
+    The xAPI path is separated by a <hl_3>/</hl_3> and is placed as the value for the <hl_0>Expression</hl_0> parameter. The prefix <hl_7>x</hl_7> is removed from the top level node of the xAPI Path.
+
+    !!! example "Click the tabs below to see examples of the base Expression structure"
+
+        === "xConfiguration Example"
+
+            <div class="code-label" data-title="Shell xAPI Path">
+              <pre><code>xFeedback Register Configuration/SystemUnit/Name</code></pre>
+            </div>
+
+            <div class="code-label" data-title="xAPI Integrated into Expression">
+              <pre><code>xCommand HttpFeedback Register <hl_0>Expression</hl_0> : <hl_1>Configuration</hl_1><hl_3>/</hl_3><hl_1>SystemUnit</hl_1><hl_3>/</hl_3><hl_1>Name</hl_1> FeedbackSlot: 1 Format: JSON ServerUrl: [MY_WEBHOOK_ADDRESS]</code></pre>
+            </div>
+
+        === "xStatus Example"
+
+            <div class="code-label" data-title="Shell xAPI Path">
+              <pre><code>xFeedback Register Status/Logging/ExtendedLogging/Mode</code></pre>
+            </div>
+
+            <div class="code-label" data-title="xAPI Integrated into Expression">
+              <pre><code>xCommand HttpFeedback Register <hl_0>Expression</hl_0> : <hl_1>Status</hl_1><hl_3>/</hl_3><hl_1>Logging</hl_1><hl_3>/</hl_3><hl_1>ExtendedLogging</hl_1><hl_3>/</hl_3><hl_1>Mode</hl_1> FeedbackSlot: 1 Format: JSON ServerUrl: [MY_WEBHOOK_ADDRESS]</code></pre>
+            </div>
+
+        === "xEvent Example"
+
+            <div class="code-label" data-title="Shell xAPI Path">
+              <pre><code>xFeedback Register Event/UserInterface/Assistant/Emit</code></pre>
+            </div>
+
+            <div class="code-label" data-title="xAPI Integrated into Expression">
+              <pre><code>xCommand HttpFeedback Register <hl_0>Expression</hl_0> : <hl_1>Event</hl_1><hl_3>/</hl_3><hl_1>UserInterface</hl_1><hl_3>/</hl_3><hl_1>Assistant</hl_1><hl_3>/</hl_3><hl_1>Emit</hl_1> FeedbackSlot: 1 Format: JSON ServerUrl: [MY_WEBHOOK_ADDRESS]</code></pre>
+            </div>
+
+    - - -
+    
+    As noted before, we can register multiple expressions under a single FeedbackSlot as well as register to a Common Higher Node.
+
+    !!! example "Click the tabs below to see more examples"
+
+        === "Multiple Expression Example"
+
+            <div class="code-label" data-title="Shell xAPI Path">
+              <pre><code>xFeedback Register Configuration/Peripherals/InputDevice/Mode
+            xFeedback Register Status/Video/Monitors
+            xFeedback Register Event/WebRTC/ProviderCurrentDiagnosticsSend</code></pre>
+            </div>
+
+            <div class="code-label" data-title="xAPI Integrated into Expression">
+              <pre><code>xCommand HttpFeedback Register <hl_0>Expression</hl_0> : <hl_1>Configuration</hl_1><hl_3>/</hl_3><hl_1>Peripherals</hl_1><hl_3>/</hl_3><hl_1>InputDevice</hl_1><hl_3>/</hl_3><hl_1>Mode</hl_1> <hl_0>Expression</hl_0> : <hl_1>Status</hl_1><hl_3>/</hl_3><hl_1>Video</hl_1><hl_3>/</hl_3><hl_1>Monitors</hl_1> <hl_0>Expression</hl_0> : <hl_1>Event</hl_1><hl_3>/</hl_3><hl_1>WebRTC</hl_1><hl_3>/</hl_3><hl_1>ProviderCurrentDiagnosticsSend</hl_1> FeedbackSlot: 1 Format: JSON ServerUrl: [MY_WEBHOOK_ADDRESS]</code></pre>
+            </div>
+
+        === "Higher Common Node example"
+            
+            <div class="code-label" data-title="Shell xAPI Path">
+              <pre><code>xFeedback Register Configuration/Video</code></pre>
+            </div>
+
+            <div class="code-label" data-title="xAPI Integrated into Expression">
+              <pre><code>xCommand HttpFeedback Register <hl_0>Expression</hl_0> : <hl_1>Configuration</hl_1><hl_3>/</hl_3><hl_1>Video</hl_1> FeedbackSlot: 1 Format: JSON ServerUrl: [MY_WEBHOOK_ADDRESS]</code></pre>
+            </div>
+
+        === "All xAPI Paths example"
+            
+            <div class="code-label" data-title="Shell xAPI Path">
+              <pre><code>xFeedback Register Configuration
+            xFeedback Register Status
+            xFeedback Register Event</code></pre>
+            </div>
+
+            <div class="code-label" data-title="xAPI Integrated into Expression">
+              <pre><code>xCommand HttpFeedback Register <hl_0>Expression</hl_0> : <hl_1>Configuration</hl_1> <hl_0>Expression</hl_0> : <hl_1>Status</hl_1> <hl_0>Expression</hl_0> : <hl_1>Event</hl_1> FeedbackSlot: 1 Format: JSON ServerUrl: [MY_WEBHOOK_ADDRESS]</code></pre>
+            </div>
+
+    When the registrations are complete, you'll start to see information poor into your service at the time your xAPI path generate a subscription event.
+
+    Then your service can respond in kind based on the information received or even reach out to other services
+
+
+      ``` mermaid
+      %%{init: {'theme':'dark'}}%%
+      sequenceDiagram
+        participant Target Codec
+        participant Webhook Service
+        participant External as External Service<br/>[Ex: Email]
+        Note over Target Codec,Webhook Service: Webhook URL is registered on the codec
+        Target Codec-->>Webhook Service: HTTP POST: xEvent, xStatus, or xConfiguration update
+        Webhook Service-->>Target Codec: HTTP 200 OK
+        alt xStatus requires forward to external service
+          Webhook Service->>External: Forward event or trigger action
+          External-->>Webhook Service: External service responds
+        end
+        alt xEvent requires command response to Codec
+          Webhook Service->>Target Codec: HTTP POST /putxml
+        end
+        Target Codec-->>Webhook Service: HTTP 200 OK with response
+      ```
+
+!!! warning 
+
+    1. Re-running xCommand HttpFeedback Register over the  FeedbackSlot same slot, overrides the values in that slot. Be sure to review your existing expressions by running xStatus HttpFeedback before applying your feedback slot. Review it's contents and make sure not to break an active services you may be running for your device.
+
+        <roomosfind>xStatus HttpFeedback</roomosfind>
+
+        - - -
+
+    2. Any malformed feedback expression will be ignored. The device will accept it, but since the path doesn't exist, the subscription won't fire. If you're not seeing your expression com in, then check your xAPI path(s)
+
+## **Subscribing to xConfigurations, xStatuses and xEvents** ~({{config.cProps.rxp.sectionIds.http}}.7)~
+
+!!! abstract
+
+    Learn how to use RoomOS HttpFeedback to send selected xConfiguration, xStatus, and xEvent updates from a device to a webhook endpoint.
+    
+    You’ll register feedback with an HTTP(S) server, inspect the incoming data with {{config.cProps.webhookClientSite}}, and see how device events can trigger actions in an external application.
+
+    !!! note
+
+        In the following lessons, we'll continue to use HTTP to complete this section.
+
+        However, setting up HttpFeedback doesn't require you to use HTTP POST or GET requests to apply them. You can set these feedbacks from any entry point where you can access the xAPI, such as SSH.
+
+!!! important "Configure your Unique URL from {{config.cProps.webhookClientSite}}"
+
+    {{ apps.bruno.configure.webhook.svix | indent(4) }}
+
+    ??? question "View Example {{config.cProps.webhookClientSite}} output"
 
         <figure markdown>
-          ![{{config.cProps.webhookClientSite}} Output Example](./images/2-3-6_WebHookSite_Output.png){ width="600" }
+          ![{{config.cProps.webhookClientSite}} Output Example](./images/svix_output.png){ width="600" }
         </figure>
 
-    ??? tip  "xCommand References for Section: {{config.cProps.rxp.sectionIds.http}}.6"
+???+ lesson "Lesson: Subscribing to an xConfiguration ~({{config.cProps.rxp.sectionIds.http}}.7.1)~" 
 
-        <div class="grid cards" markdown>
-
-        -   <i class="fa-solid fa-terminal"> </i> __xCommand HttpFeedback Register__
-
-            ---
-
-            Register the device to an HTTP(S) server to return XML feedback over HTTP(S) to specific URLs.
-
-            ---
-
-            Parameters:
-
-              <table>
-                <tr>
-                    <td>ServerUrl ==[Required]== </td>
-                    <td>FeedbackSlot ==[Required]== </td>
-                </tr>
-                <tr>
-                    <td>Expression</td>
-                    <td>Format</td>
-                </tr>
-              </table>
-
-            <a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpFeedback.Register" target="_blank">
-              Reference for <strong>xCommand HttpFeedback Register</strong> <i class="fa-solid fa-square-up-right"></i>
-            </a>
-
-        -   <i class="fa-solid fa-terminal"></i> __xCommand HttpFeedback Deregister__
-
-            ---
-
-            Deregister the HTTP feedback over HTTP(S).
-
-            ---
-
-            Parameters:
-
-              <table>
-                <tr>
-                    <td>FeedbackSlot ==[Required]== </td>
-                </tr>
-              </table>
-
-            <a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpFeedback.Deregister" target="_blank">
-              Reference for <strong>xCommand HttpFeedback Deregister</strong> <i class="fa-solid fa-square-up-right"></i>
-            </a>
-
-        -   <i class="fa-solid fa-terminal"></i> __xCommand HttpFeedback Enable__
-
-            ---
-
-            Re-enables a previously registered feedback slot after it has failed and become deactivated.
-
-            ---
-
-            Parameters:
-
-              <table>
-                <tr>
-                    <td>FeedbackSlot ==[Required]== </td>
-                </tr>
-              </table>
-
-            <a class="md-button md-button--primary" href="https://roomos.cisco.com/xapi/Command.HttpFeedback.Enable" target="_blank">
-              Reference for <strong>xCommand HttpFeedback Enable</strong> <i class="fa-solid fa-square-up-right"></i>
-            </a>
-
-        </div>
-
-??? lesson "Lesson: Subscribing to an xConfiguration ~({{config.cProps.rxp.sectionIds.http}}.6.1)~" FixHere
-
-    - **xAPI(s):**
+    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
         - <hl_0>xConfiguration Audio DefaultVolume</hl_0>
 
     - **Task:**
-        - Format <hl_4>xConfiguration Audio DefaultVolume</hl_4> as an HTTPFeedback Expression, omitting the `x` prefix and separating path nodes with `/`
-        - In your {{config.cProps.apiClientApplication}} collection under 3.6 - HTTP Feedback Subscriptions, select the request for specific expressions
-        - Set the Expression to `Configuration/Audio/DefaultVolume`
-        - Confirm the request uses FeedbackSlot `1` and your {{config.cProps.webhookClientSite}} URL
+        - Format <hl_4>xConfiguration Audio DefaultVolume</hl_4> as an HttpFeedback Expression
+        - Place the path within the <hl_6>Expression</hl_6> tags in the body of the <hl_0>Subscribing to an xConfiguration</hl_0> request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
         - Save the collection and select Send
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Under the xConfigurations Page, move the <hl_0>Audio DefaultVolume</hl_0> slider and release it
-            - Observe the callback at {{config.cProps.webhookClientSite}}
+            - Observe the output on {{config.cProps.webhookClientSite}}
             - <hl_3>Optional</hl_3>: Move the slider again to generate more callbacks
+
+    ??? success "View properly formatted Expression and XML Payload"
+
+        <div class="grid cards" markdown>
+
+        -   **Expression Format**
+
+            ---
+
+            ``` { .shell }
+            Configuration/Audio/DefaultVolume
+            ```
+
+        -   **Full XML**
+
+            ---
+            ``` { .xml }
+            <Command>
+                <HttpFeedback>
+                    <Register>
+                        <!-- Place your structured between the <Expression> tags -->
+                        <Expression>Configuration/Audio/DefaultVolume</Expression>
+                        <!-- Do not alter the remaining parameters -->
+                        <FeedbackSlot>1</FeedbackSlot>
+                        <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                    </Register>
+                </HttpFeedback>
+            </Command>
+            ```
+
+          </div>
 
 !!! curious "What about Unsubscribing HTTFeedback?"
 
@@ -1549,124 +1668,316 @@
     Unsubscribing does the same thing, but with a deregister path. For brevity, we'll cover unsubscribing at the end of this section, as the xAPI expression is not needed in the deregistering process at all, so a dedicated lesson path is not needed.
 
 
-??? lesson "Lesson: Subscribe to Multiple xConfigurations under a Common Node ~({{config.cProps.rxp.sectionIds.ssh}}.6.2)~" FixHere
+??? lesson "Lesson: Subscribe to Multiple xConfigurations under a Common Node ~({{config.cProps.rxp.sectionIds.http}}.7.2)~" 
 
-    - **xAPI(s):**
+    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
         - <hl_0>xConfiguration Video Input AirPlay</hl_0>
 
     - **Task:**
-        - Format <hl_4>xConfiguration Video Input AirPlay</hl_4> as an HTTPFeedback Expression, omitting the `x` prefix and separating path nodes with `/`
-        - In your {{config.cProps.apiClientApplication}} collection under 3.6 - HTTP Feedback Subscriptions, select the request for specific expressions
-        - Set the Expression to `Configuration/Video/Input/AirPlay`
-        - Confirm the request uses FeedbackSlot `1` and your {{config.cProps.webhookClientSite}} URL
+        - Format <hl_4>xConfiguration Video Input AirPlay</hl_4> as an HttpFeedback Expression
+        - Place the path within the <hl_6>Expression</hl_6> tags in the body of the <hl_0>Subscribe to Multiple xConfigurations under a Common Node</hl_0> request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
         - Save the collection and select Send
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Under the xConfigurations Page, change the buttons or toggles in the <hl_0>AirPlay</hl_0> row
-            - Observe the callbacks at {{config.cProps.webhookClientSite}}
+            - Observe the output on {{config.cProps.webhookClientSite}}
             - <hl_3>Optional</hl_3>: Change additional AirPlay settings to generate more callbacks
 
-??? lesson "Lesson: Subscribing to an xStatus ~({{config.cProps.rxp.sectionIds.ssh}}.6.3)~" FixHere
+    ??? success "View properly formatted Expression and XML Payload"
 
-    - **xAPI(s):**
+        <div class="grid cards" markdown>
+
+        -   **Expression Format**
+
+            ---
+
+            ``` { .shell }
+            Configuration/Video/Input/AirPlay
+            ```
+
+        -   **Full XML**
+
+            ---
+            ``` { .xml }
+            <Command>
+                <HttpFeedback>
+                    <Register>
+                        <!-- Place your structured between the <Expression> tags -->
+                        <Expression>Configuration/Video/Input/AirPlay</Expression>
+                        <!-- Do not alter the remaining parameters -->
+                        <FeedbackSlot>1</FeedbackSlot>
+                        <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                    </Register>
+                </HttpFeedback>
+            </Command>
+            ```
+
+          </div>
+
+??? lesson "Lesson: Subscribing to an xStatus ~({{config.cProps.rxp.sectionIds.http}}.7.3)~"
+
+    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
         - <hl_0>xStatus Audio Volume</hl_0>
 
     - **Task:**
-        - Format <hl_4>xStatus Audio Volume</hl_4> as an HTTPFeedback Expression, omitting the `x` prefix and separating path nodes with `/`
-        - In your {{config.cProps.apiClientApplication}} collection under 3.6 - HTTP Feedback Subscriptions, select the request for specific expressions
-        - Set the Expression to `Status/Audio/Volume`
-        - Confirm the request uses FeedbackSlot `1` and your {{config.cProps.webhookClientSite}} URL
+        - Format <hl_4>xStatus Audio Volume</hl_4> as an HttpFeedback Expression
+        - Place the path within the <hl_6>Expression</hl_6> tags in the body of the <hl_0>Subscribing to an xStatus</hl_0> request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
         - Save the collection and select Send
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Under the xStatuses Page, move the <hl_0>Adjust Volume</hl_0> slider and release it
             - Alternatively, adjust the volume using the Codec's native volume controls
             - Observe the callback at {{config.cProps.webhookClientSite}}
 
-??? lesson "Lesson: Subscribe to Multiple xStatuses under a Common Node ~({{config.cProps.rxp.sectionIds.ssh}}.6.4)~" FixHere
+    ??? success "View properly formatted Expression and XML Payload"
 
-    - **xAPI(s):**
+        <div class="grid cards" markdown>
+
+        -   **Expression Format**
+
+            ---
+
+            ``` { .shell }
+            Status/Audio/Volume
+            ```
+
+        -   **Full XML**
+
+            ---
+            ``` { .xml }
+            <Command>
+                <HttpFeedback>
+                    <Register>
+                        <!-- Place your structured between the <Expression> tags -->
+                        <Expression>Status/Audio/Volume</Expression>
+                        <!-- Do not alter the remaining parameters -->
+                        <FeedbackSlot>2</FeedbackSlot>
+                        <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                    </Register>
+                </HttpFeedback>
+            </Command>
+            ```
+
+          </div>
+
+??? lesson "Lesson: Subscribe to Multiple xStatuses under a Common Node ~({{config.cProps.rxp.sectionIds.http}}.7.4)~"
+
+    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
         - <hl_0>xStatus Cameras Camera[n] Position</hl_0>
 
     - **Task:**
-        - Format <hl_4>xStatus Cameras Camera[n] Position</hl_4> as an HTTPFeedback Expression, omitting the `x` prefix and separating path nodes with `/`
-        - Leave out `[n]` to subscribe to camera position changes under the Camera node
-        - In your {{config.cProps.apiClientApplication}} collection under 3.6 - HTTP Feedback Subscriptions, select the request for specific expressions
-        - Set the Expression to `Status/Cameras/Camera/Position`
-        - Confirm the request uses FeedbackSlot `1` and your {{config.cProps.webhookClientSite}} URL
+        - Format <hl_4>xStatus Cameras Camera[n] Position</hl_4> as an HttpFeedback Expression
+        - Place the path within the <hl_6>Expression</hl_6> tags in the body of the <hl_0>Subscribe to Multiple xStatuses under a Common Node</hl_0> request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
         - Save the collection and select Send
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Under the xStatuses Page, use the button in the <hl_1>Camera Control Wheel</hl_1> row
-            - Alternatively, move a camera using the native camera control interface
-            - Observe the callbacks at {{config.cProps.webhookClientSite}}
+                - Alternatively, move a camera using the native camera control interface
+            - Observe the output on {{config.cProps.webhookClientSite}}
 
-???+ lesson "Lesson: Subscribing to an xEvent ~({{config.cProps.rxp.sectionIds.ssh}}.6.5)~" FixHere
+    ??? success "View properly formatted Expression and XML Payload"
 
-    - **xAPI(s):**
+        <div class="grid cards" markdown>
+
+        -   **Expression Format**
+
+            ---
+
+            ``` { .shell }
+            Status/Cameras/Camera/Position
+            ```
+
+        -   **Full XML**
+
+            ---
+            ``` { .xml }
+            <Command>
+                <HttpFeedback>
+                    <Register>
+                        <!-- Place your structured between the <Expression> tags -->
+                        <Expression>Status/Cameras/Camera/Position</Expression>
+                        <!-- Do not alter the remaining parameters -->
+                        <FeedbackSlot>2</FeedbackSlot>
+                        <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                    </Register>
+                </HttpFeedback>
+            </Command>
+            ```
+
+          </div>
+
+??? lesson "Lesson: Subscribing to an xEvent ~({{config.cProps.rxp.sectionIds.http}}.7.5)~"
+
+    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
         - <hl_0>xEvent UserInterface Message Prompt Response</hl_0>
 
     - **Task:**
-        - Format <hl_4>xEvent UserInterface Message Prompt Response</hl_4> as an HTTPFeedback Expression, omitting the `x` prefix and separating path nodes with `/`
-        - In your {{config.cProps.apiClientApplication}} collection under 3.6 - HTTP Feedback Subscriptions, select the request for specific expressions
-        - Set the Expression to `Event/UserInterface/Message/Prompt/Response`
-        - Confirm the request uses FeedbackSlot `1` and your {{config.cProps.webhookClientSite}} URL
+        - Format <hl_4>xEvent UserInterface Message Prompt Response</hl_4> as an HttpFeedback Expression
+        - Place the path within the <hl_6>Expression</hl_6> tags in the body of the <hl_0>Subscribing to an xEvent</hl_0> request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
         - Save the collection and select Send
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Under the xEvents Page, press the <hl_1>Prompt</hl_1> button in the <hl_0>UserInterface Message</hl_0> row and choose an option
             - Observe the callback at {{config.cProps.webhookClientSite}}
-            - Try the TextInput, Rating, or Alert buttons; they should not produce callbacks for this Prompt Response expression
+            - <hl_3>Optional</hl_3>: Try the TextInput, Rating, or Alert buttons; Only the Prompt options should produce an event for this Prompt Response expression
 
-??? lesson "Lesson: Subscribe to Multiple xEvents under a Common Node ~({{config.cProps.rxp.sectionIds.ssh}}.6.6)~" FixHere
+    ??? success "View properly formatted Expression and XML Payload"
 
-    - **xAPI(s):**
+        <div class="grid cards" markdown>
+
+        -   **Expression Format**
+
+            ---
+
+            ``` { .shell }
+            Event/UserInterface/Message/Prompt/Response
+            ```
+
+        -   **Full XML**
+
+            ---
+            ``` { .xml }
+            <Command>
+                <HttpFeedback>
+                    <Register>
+                        <!-- Place your structured between the <Expression> tags -->
+                        <Expression>Event/UserInterface/Message/Prompt/Response</Expression>
+                        <!-- Do not alter the remaining parameters -->
+                        <FeedbackSlot>3</FeedbackSlot>
+                        <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                    </Register>
+                </HttpFeedback>
+            </Command>
+            ```
+
+          </div>
+
+??? lesson "Lesson: Subscribe to Multiple xEvents under a Common Node ~({{config.cProps.rxp.sectionIds.http}}.7.6)~"
+
+    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
         - <hl_0>xEvent UserInterface</hl_0>
 
     - **Task:**
-        - Format <hl_4>xEvent UserInterface</hl_4> as an HTTPFeedback Expression, omitting the `x` prefix and separating path nodes with `/`
-        - In your {{config.cProps.apiClientApplication}} collection under 3.6 - HTTP Feedback Subscriptions, select the request for specific expressions
-        - Set the Expression to `Event/UserInterface`
-        - Confirm the request uses FeedbackSlot `1` and your {{config.cProps.webhookClientSite}} URL
+        - Format <hl_4>xEvent UserInterface</hl_4> as an HttpFeedback Expression
+        - Place the path within the <hl_6>Expression</hl_6> tags in the body of the <hl_0>Subscribe to Multiple xEvents under a Common Node</hl_0> request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
         - Save the collection and select Send
         - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
             - Under the xEvents Page, use any widget and complete its action
-            - Observe the callbacks at {{config.cProps.webhookClientSite}}
+            - Observe the output on {{config.cProps.webhookClientSite}}
             - <hl_3>Optional</hl_3>: Try several widgets and compare their callbacks
 
-??? lesson "Lesson: Register Multiple Feedback Expressions in a single Feedback Slot~({{config.cProps.rxp.sectionIds.ssh}}.6.7)~" FixHere
+    ??? success "View properly formatted Expression and XML Payload"
 
-    - **xAPI(s):** FixHere
-        - <hl_0>xEvent UserInterface</hl_0>
-        - <hl_0>xCommand HttpFeedback Deregister</hl_0>
+        <div class="grid cards" markdown>
 
-    - **Task:** FixHere
-        - Send an HTTP POST request to your device's `/putxml` endpoint using your {{config.cProps.apiClientApplication}} collection's device authentication
-        - Use the HTTPFeedback Deregister XML body from the previous lesson to deregister FeedbackSlot `1`
-        - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
-            - Under the xEvents Page, use any widget and complete its action
-            - Confirm that no new callback for this registration appears at {{config.cProps.webhookClientSite}}
+        -   **Expression Format**
 
-??? lesson "Lesson: Deregister FeedbackSlots ~({{config.cProps.rxp.sectionIds.http}}.6.4)~" FixHere
+            ---
 
-    !!! note inline end
-        These examples are preconfigured in your {{config.cProps.apiClientApplication}} collection. We're simply running an xCommand to register feedback against a Webhook. 
+            ``` { .shell }
+            Event/UserInterface
+            ```
+
+        -   **Full XML**
+
+            ---
+            ``` { .xml }
+            <Command>
+                <HttpFeedback>
+                    <Register>
+                        <!-- Place your structured between the <Expression> tags -->
+                        <Expression>Event/UserInterface</Expression>
+                        <!-- Do not alter the remaining parameters -->
+                        <FeedbackSlot>3</FeedbackSlot>
+                        <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                    </Register>
+                </HttpFeedback>
+            </Command>
+            ```
+
+          </div>
+
+??? lesson "Lesson: Register Multiple Feedback Expressions in a single Feedback Slot ~({{config.cProps.rxp.sectionIds.http}}.7.7)~"
+
+    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
+        - <hl_0>xConfiguration</hl_0>
+        - <hl_0>xStatus</hl_0>
+        - <hl_0>xEvent</hl_0>
+
+    - **Task:** 
+        - Format <hl_4>xConfiguration, xStatus and xEvent</hl_4> as an HttpFeedback Expressions each listed as a separate argument
+        - Place each the path within their own <hl_6>Expression</hl_6> tags in the body of the <hl_0>Subscribe to Multiple xEvents under a Common Node</hl_0> request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Save the collection and select Send
+        - You should start to see many events come into the endpoint, but you can also interact with element within the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
+            - Observe the output on {{config.cProps.webhookClientSite}}
+        
+    ??? success "View properly formatted Expression and XML Payload"
+
+        <div class="grid cards" markdown>
+
+        -   **Expression Format**
+
+            ---
+
+            ``` { .shell }
+            Configuration
+            Status
+            Event
+            ```
+
+        -   **Full XML**
+
+            ---
+            ``` { .xml }
+            <Command>
+              <HttpFeedback>
+                <Register>
+                  <!-- Place your structured between the <Expression> tags -->
+                  <Expression>Configuration</Expression>
+                  <Expression>Status</Expression>
+                  <Expression>Event</Expression>
+                  <!-- Do not alter the remaining parameters -->
+                  <FeedbackSlot>4</FeedbackSlot>
+                  <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                </Register>
+              </HttpFeedback>
+            </Command>
+            ```
+
+          </div>
+
+??? lesson "Lesson: Deregister FeedbackSlots ~({{config.cProps.rxp.sectionIds.http}}.7.8)~" 
+
+    !!! note inline end <hl_7>**FixHere**</hl_7>
+        These examples are preconfigured in your {{config.cProps.apiClientApplication}} collection. We're simply running an xCommand to register feedback against a Webhook.
+
+    - **xAPI(s):** <hl_7>**FixHere**</hl_7>
+      - <hl_0>xCommand HttpFeedback Deregister</hl_0>
 
     - **Task:**
-        - In your {{config.cProps.apiClientApplication}} collection under 3.6 - HTTP Feedback Subscriptions
-        - Select the <hl_0>Subscribe to Specific Expressions on any Branch</hl_0> request
-        - View how the body is Structured in the XML body
-            - Take Note, we've changed our Expression Parameter
-            - Rather than subscribing to All States, we instead narrow down what we're interested in
-            - For each expression we want to listen too, we will declare a new Expression Parameter
-            - We can have up to 15 Expressions defined in a single feedback slot
-        - Then select Send and Monitor the output on the {{config.cProps.webhookClientSite}} terminal
-            - You will need to interact with the system Volume and press the MultiLine Command [Section {{config.cProps.rxp.sectionIds.http}}.3] Panel to see events pour into the {{config.cProps.webhookClientSite}} terminal
-        - Press the <hl_5>Subscription Assistant Button</hl_5> on your Touch Interface
-            - Clicking on the `Subscription Assistant Button` will fire a Panel Event
-            - Under the xStatuses, move the ==Adjust Volume== slider to generate events
-                - Other buttons under xStatus won't take any effect
-            - Under the xEvents Page, press any of the buttons on this page
-            - Observe your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6> -->
+        - The XML is pre-structured as the last item in your <hl_0> Deregister FeedbackSlots</hl_0> request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
+        - Review the XML
+        - Select Send and events should stop coming into {{config.cProps.apiClientApplication}}
+
+    ??? success "View properly formatted Expression and XML Payload"
+
+        <div class="grid cards" markdown>
+
+        -   **Expression Format**
+
+            ---
+
+            ``` { .shell }
+            
+            ```
+
+        -   **Full XML**
+
+            ---
+            ``` { .xml }
+            
+            ```
+
+          </div>
 
 <!-- 
-??? lesson "Lesson: Subscribe to the xConfiguration Assistant configurations ~({{config.cProps.rxp.sectionIds.http}}.6.1)~"
+??? lesson "Lesson: Subscribe to the xConfiguration Assistant configurations ~({{config.cProps.rxp.sectionIds.http}}.7.1)~"
 
     !!! note inline end
         These examples are preconfigured in your {{config.cProps.apiClientApplication}} collection. They use an xCommand to register a webhook for feedback. 
@@ -1683,7 +1994,7 @@
             - Observe your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6>
                 - <hl_3>Optional</hl_3>: Press those buttons and switches a few times to see more changes come in
 
-??? lesson "Lesson: Subscribe to the xStatus Assistant states ~({{config.cProps.rxp.sectionIds.http}}.6.2)~"
+??? lesson "Lesson: Subscribe to the xStatus Assistant states ~({{config.cProps.rxp.sectionIds.http}}.7.2)~"
 
     !!! note inline end
         These examples are preconfigured in your {{config.cProps.apiClientApplication}} collection. They use an xCommand to register a webhook for feedback. 
@@ -1700,7 +2011,7 @@
             - Under the xStatuses Page, press any of the buttons on this page
             - Observe your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6>
 
-??? lesson "Lesson: Subscribe to the xEvent Assistant events ~({{config.cProps.rxp.sectionIds.http}}.6.3)~"
+??? lesson "Lesson: Subscribe to the xEvent Assistant events ~({{config.cProps.rxp.sectionIds.http}}.7.3)~"
 
     !!! note inline end
         These examples are preconfigured in your {{config.cProps.apiClientApplication}} collection. They use an xCommand to register a webhook for feedback. 
@@ -1717,7 +2028,7 @@
             - Under the xEvents Page, press any of the buttons on this page
             - Observe your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6>
 
-??? lesson "Lesson: Deregister FeedbackSlots ~({{config.cProps.rxp.sectionIds.http}}.6.4)~"
+??? lesson "Lesson: Deregister FeedbackSlots ~({{config.cProps.rxp.sectionIds.http}}.7.4)~"
 
     !!! note inline end
         These examples are preconfigured in your {{config.cProps.apiClientApplication}} collection. They use an xCommand to register a webhook for feedback. 
@@ -1744,6 +2055,6 @@
             - Under the xEvents Page, press any of the buttons on this page
             - Observe your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6> output, those responses you saw in the previous lesson should have stopped outputting in your <hl_6>{{config.cProps.webhookClientSite}} Terminal</hl_6> -->
 
-## **Section {{config.cProps.rxp.sectionIds.http}} Cleanup** ~({{config.cProps.rxp.sectionIds.http}}).7~
+## **Section {{config.cProps.rxp.sectionIds.http}} Cleanup** ~({{config.cProps.rxp.sectionIds.http}}).8)~
 
 {{config.cProps.rxp.sectionCleanup}}
