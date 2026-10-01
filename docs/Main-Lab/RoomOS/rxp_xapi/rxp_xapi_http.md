@@ -1808,12 +1808,6 @@
     - **xAPI(s):** 
         - <hl_0>xEvent UserInterface Message Prompt Response</hl_0>
 
-    !!! important
-
-        This example is registering against FeedbackSlot 3. If you're running this lab on a device registered to TMS, please update the FeedbackSlot tag value before running your request, else you will break your devices connection to TMS. Use 1, 2 or 4.
-
-        If running this Lab at WebexOne, disregard
-
     - **Task:**
         - Format <hl_4>xEvent UserInterface Message Prompt Response</hl_4> as an HttpFeedback Expression
         - Place the path within the <hl_6>Expression</hl_6> tags in the body of the <hl_0>Subscribing to an xEvent</hl_0> request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
@@ -1858,12 +1852,6 @@
 
     - **xAPI(s):** 
         - <hl_0>xEvent UserInterface</hl_0>
-
-    !!! important
-
-        This example is registering against FeedbackSlot 3. If you're running this lab on a device registered to TMS, please update the FeedbackSlot tag value before running your request, else you will break your devices connection to TMS. Use 1, 2 or 4.
-
-        If running this Lab at WebexOne, disregard.
 
     - **Task:**
         - Format <hl_4>xEvent UserInterface</hl_4> as an HttpFeedback Expression
@@ -1974,7 +1962,7 @@
     - **Task:**
         - The XML is pre-structured as the last item in your <hl_0> Deregister FeedbackSlots</hl_0> request in the {{config.cProps.apiClientApplication}} HTTP {{config.cProps.rxp.sectionIds.http}} collection
         - Review the XML
-        - Select Send and events should stop coming into {{config.cProps.apiClientApplication}}
+        - Select Send and events should stop coming into {{config.cProps.webhookClientSite}}
 
 ## **Section {{config.cProps.rxp.sectionIds.http}} Cleanup** ~({{config.cProps.rxp.sectionIds.http}}).8)~
 
