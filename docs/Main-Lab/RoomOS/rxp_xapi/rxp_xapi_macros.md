@@ -38,7 +38,7 @@
         ---
 
         <figure markdown="span">
-              [![MacroPak](./images/cisco-logo-transparent.png){ width="200" }](https://github.com/WebexCC-SA/LAB-1451/raw/refs/heads/main/docs/Main-Lab/DownloadContent/MacroPak/MacroPak2026.zip)
+              [![MacroPak](./images/cisco-logo-transparent.png){ width="200" }](https://github.com/WebexCC-SA/{{ config.cProps.labId }}/raw/refs/heads/main/docs/Main-Lab/DownloadContent/MacroPak/MacroPak2026.zip)
             <figcaption>MacroPak</figcaption>
         </figure>
     </div>
@@ -309,7 +309,7 @@
         import xapi from 'xapi';
 
         /**
-         * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#263-executing-xcommands
+         * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#263-executing-xcommands
          * 
          * Lesson 2: Execute an xCommand with multiple arguments with the same name
          */
@@ -402,7 +402,7 @@
         import xapi from 'xapi';
 
         /**
-         * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#263-executing-xcommands
+         * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#263-executing-xcommands
          * 
          * Lesson 3: Execute an xCommand with a multiline argument
          */
@@ -532,7 +532,7 @@
             import xapi from 'xapi';
 
             /**
-             * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#263-executing-xcommands
+             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#263-executing-xcommands
              * 
              * Lesson 4: Execute an xCommand which generates data and responds
              */
@@ -550,7 +550,7 @@
             import xapi from 'xapi';
 
             /**
-             * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#263-executing-xcommands
+             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#263-executing-xcommands
              * 
              * Lesson 4: Execute an xCommand which generates data and responds
              */
@@ -618,7 +618,7 @@
             import xapi from 'xapi';
 
             /**
-             * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
+             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
              * 
              * Lesson 1: Getting an xConfiguration Value
              */
@@ -674,7 +674,7 @@
             import xapi from 'xapi';
 
             /**
-             * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
+             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
              * 
              * Lesson 2: Set a new xConfiguration Value
              */
@@ -745,7 +745,7 @@
             import xapi from 'xapi';
 
             /**
-             * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
+             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
              * 
              * Lesson 1: Getting an xConfiguration Value
              */
@@ -842,7 +842,7 @@
             import xapi from 'xapi';
 
             /**
-             * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
+             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
              * 
              * Lesson 4: Subscribe and Unsubscribe to an xConfiguration
             */
@@ -956,7 +956,7 @@
             import xapi from 'xapi';
 
             /**
-             * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
+             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
              * 
              * Lesson 5: Subscribe and Unsubscribe to Multiple xConfigurations under a Common Node
              */
@@ -1095,7 +1095,7 @@
             import xapi from 'xapi';
 
             /**
-             * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#265-getting-and-subscribing-to-xstatuses
+             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#265-getting-and-subscribing-to-xstatuses
              * 
              * Lesson 1: Getting an xStatus Value
              */
@@ -1148,7 +1148,7 @@
             import xapi from 'xapi';
 
             /**
-             * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#265-getting-and-subscribing-to-xstatuses
+             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#265-getting-and-subscribing-to-xstatuses
              * 
              * Lesson 2: Getting an xStatus Value
              */
@@ -1204,7 +1204,7 @@
             import xapi from 'xapi';
 
             /**
-             * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#265-getting-and-subscribing-to-xstatuses
+             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#265-getting-and-subscribing-to-xstatuses
              * 
              * Lesson 3: Subscribe and Unsubscribe to an xStatus
             */
@@ -1316,7 +1316,7 @@
             import xapi from 'xapi';
 
             /**
-             * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#265-getting-and-subscribing-to-xstatuses
+             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#265-getting-and-subscribing-to-xstatuses
              * 
              * Lesson 4: Subscribe and Unsubscribe to Multiple xStatuses under a Common Node
             */
@@ -1428,7 +1428,7 @@
             import xapi from 'xapi';
 
             /**
-             * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#266-subscribing-to-xevents
+             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#266-subscribing-to-xevents
              * 
              * Lesson 1: Subscribe and Unsubscribe to an xEvent
             */
@@ -1646,7 +1646,7 @@
             import xapi from 'xapi';
 
             /**
-             * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#266-subscribing-to-xevents
+             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#266-subscribing-to-xevents
              * 
              * Lesson 2: Subscribe and Unsubscribe to Multiple xEvents under a Common Node
             */

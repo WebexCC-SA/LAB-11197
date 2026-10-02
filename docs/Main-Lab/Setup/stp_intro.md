@@ -8,7 +8,7 @@
     - Download this CSV file, open and locate your Pod Information
 
     <figure markdown="span">
-          [![Lab Pod Details](../GlobalImages/cisco-logo-transparent.png){ width="200" }](https://raw.githubusercontent.com/WebexCC-SA/LAB-1451/main/docs/Main-Lab/DownloadContent/WbxOne2026PodDetails.xlsx)
+          [![Lab Pod Details](../GlobalImages/cisco-logo-transparent.png){ width="200" }](https://raw.githubusercontent.com/WebexCC-SA/{{ config.cProps.labId }}/main/docs/Main-Lab/DownloadContent/WbxOne2026PodDetails.xlsx)
         <figcaption>Device Pod Assignment Sheet</figcaption>
     </figure>
 

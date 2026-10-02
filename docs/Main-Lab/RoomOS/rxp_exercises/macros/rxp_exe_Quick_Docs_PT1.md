@@ -121,11 +121,11 @@
             - Add 2 Buttons to this row
                 - Set the following properties for the left button
                     - Rename Button Text `Button` to: <pre><code>Open Site</code></pre>
-                    - Assign WidgetId: <pre><code>wx1_QrDocs\~OpenSite\~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/</code></pre>
+                    - Assign WidgetId: <pre><code>wx1_QrDocs\~OpenSite\~https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/</code></pre>
                     - Set the Widget Width to 2
                 - Set the following properties for the Right button
                     - Rename Button Text `Button` to: <pre><code>Open QrCode 🔳</code></pre>
-                    - Assign WidgetId: <pre><code>wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/</code></pre>
+                    - Assign WidgetId: <pre><code>wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/</code></pre>
                     - Set the Widget Width to 2
         - Add a second row, with the name: <pre><code>Reimagine Workspaces</code></pre>
             - Add 2 Buttons to this row
@@ -290,12 +290,12 @@
 
         | Time     | Macro      | WidgetId                                                                                         | Type     | Value |
         |----------|-----------|--------------------------------------------------------------------------------------------------|----------|-------|
-        | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/                  | {++pressed++}  |`    `|
-        | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/                  | ==released== |`    `|
-        | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/                  | `clicked`  |`    `|
-        | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/                   | {++pressed++}  |`    `|
-        | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/                   | ==released== |`    `|
-        | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/                   | `clicked`  |`    `|
+        | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/                  | {++pressed++}  |`    `|
+        | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/                  | ==released== |`    `|
+        | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/                  | `clicked`  |`    `|
+        | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/                   | {++pressed++}  |`    `|
+        | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/                   | ==released== |`    `|
+        | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenQrCode\~https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/                   | `clicked`  |`    `|
         | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenSite\~https://www.webex.com/us/en/workspaces.html                               | {++pressed++}  |`    `|
         | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenSite\~https://www.webex.com/us/en/workspaces.html                               | ==released== |`    `|
         | HH:MM:SS | Room Docs | wx1_QrDocs\~OpenSite\~https://www.webex.com/us/en/workspaces.html                               | `clicked`  |`    `|
@@ -620,9 +620,9 @@
         | Time      | Macro     | Logs                                                   |
         |-----------|-----------|--------------------------------------------------------|
         | HH:MM:SS  | Room Docs | QJS Ready                                              |
-        | HH:MM:SS  | Room Docs | ==OpenQrCode== https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/ |
+        | HH:MM:SS  | Room Docs | ==OpenQrCode== https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/ |
         | HH:MM:SS  | Room Docs | {++OpenSite++} https://www.webex.com/us/en/workspaces.html  |
-        | HH:MM:SS  | Room Docs | {++OpenSite++} https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/ |
+        | HH:MM:SS  | Room Docs | {++OpenSite++} https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/ |
         | HH:MM:SS  | Room Docs | ==OpenQrCode== https://www.webex.com/us/en/workspaces.html  |
 
 - - -
@@ -768,8 +768,8 @@
         | Time      | Macro     | Logs                                                               |
         |-----------|-----------|--------------------------------------------------------------------|
         | HH:MM:SS  | Room Docs | QJS Ready                                                          |
-        | HH:MM:SS  | Room Docs | Site Webview Opened for: [https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/] {"status":"OK"} |
-        | HH:MM:SS  | Room Docs | OpenQrCode  https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/  |
+        | HH:MM:SS  | Room Docs | Site Webview Opened for: [https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/] {"status":"OK"} |
+        | HH:MM:SS  | Room Docs | OpenQrCode  https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/  |
         | HH:MM:SS  | Room Docs | Site Webview Opened for: [https://www.webex.com/us/en/workspaces.html] {"status":"OK"} |
         | HH:MM:SS  | Room Docs | OpenQrCode  https://www.webex.com/us/en/workspaces.html          |
 
@@ -939,8 +939,8 @@
         | Time      | Macro     | Logs                                                               |
         |-----------|-----------|--------------------------------------------------------------------|
         | HH:MM:SS  | Room Docs | QJS Ready                                                          |
-        | HH:MM:SS  | Room Docs | Site Webview Opened for: [https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/] {"status":"OK"} |
-        | HH:MM:SS  | Room Docs | QR Webview Opened for: [https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_3/] {"status":"OK"} |
+        | HH:MM:SS  | Room Docs | Site Webview Opened for: [https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/] {"status":"OK"} |
+        | HH:MM:SS  | Room Docs | QR Webview Opened for: [https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/] {"status":"OK"} |
         | HH:MM:SS  | Room Docs | Site Webview Opened for: [https://www.webex.com/us/en/workspaces.html] {"status":"OK"} |
         | HH:MM:SS  | Room Docs | QR Webview Opened for: [https://www.webex.com/us/en/workspaces.html] {"status":"OK"} |
 
