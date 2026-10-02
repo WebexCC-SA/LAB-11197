@@ -1,12 +1,14 @@
 {{ config.cProps.devNotice }}
 {{ config.cProps.acronyms }}
 
+{{ instructions.find.hostAddress.touch }}
+
 !!! important "Access your Pod Information"
     - Your Device Pod # is located on the bottom left had corder of the display
     - Download this CSV file, open and locate your Pod Information
 
     <figure markdown="span">
-          [![Lab Pod Details](../GlobalImages/cisco-logo-transparent.png){ width="200" }](https://raw.githubusercontent.com/WebexCC-SA/LAB-1451/main/docs/Main-Lab/DownloadContent/WbxOne2025PodDetails.xlsx)
+          [![Lab Pod Details](../GlobalImages/cisco-logo-transparent.png){ width="200" }](https://raw.githubusercontent.com/WebexCC-SA/LAB-1451/main/docs/Main-Lab/DownloadContent/WbxOne2026PodDetails.xlsx)
         <figcaption>Device Pod Assignment Sheet</figcaption>
     </figure>
 

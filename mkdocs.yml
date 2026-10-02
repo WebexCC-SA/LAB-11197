@@ -51,6 +51,7 @@ plugins:
   - macros:
       include_yaml:
         - apps: docs/ref/applications/bruno.yml
+        - instructions: docs/ref/deviceInstructions/deviceInstructions.yml
   - open-in-new-tab
   # - with-pdf:
   #     cover_title: LABXXX-1234

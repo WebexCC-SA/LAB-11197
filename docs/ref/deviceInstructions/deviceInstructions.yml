@@ -1,0 +1,17 @@
+find:
+  hostAddress:
+    touch: |
+      !!! note "Locate the host address of a RoomOS Device"
+
+          1. Open the Control Panel of the RoomOS Device by swiping from the right of the screen
+          2. Select <hl_0>Settings</hl_0>
+          3. Select <hl_3>About this device</hl_3>
+          4. Locate the <hl_6>IP Address</hl_6> field
+          5. Note down the IP Address displayed in the <hl_6>IP Address</hl_6> field
+              - This can by an IPv4, IPv6 address or FQDN
+
+          !!! gif "View how to access the IP Address field"
+
+              <figure markdown>
+                ![access host address](../../../ref/deviceInstructions/deviceInstructionImages/find_device_ip.gif){ width="600" }
+              </figure>

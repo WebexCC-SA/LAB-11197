@@ -31,7 +31,7 @@
             === "Download"
 
                 <figure markdown="span">
-                    [![SubAssist Macro](../GlobalImages/cisco-logo-transparent.png){ width="300" }](https://raw.githubusercontent.com/WebexCC-SA/{{ config.cProps.labId }}/main/docs/Main-Lab/DownloadContent/Subscription-Assistant.zip)
+                    [![SubAssist Macro](../GlobalImages/cisco-logo-transparent.png){ width="300" }](https://raw.githubusercontent.com/WebexCC-SA/{{ config.cProps.labId }}/main/docs/Main-Lab/DownloadContent/Subscription Assistant Macro/Subscription-Assistant.zip)
                     <figcaption>Subscription-Assistant Macro</figcaption>
                 </figure>
 

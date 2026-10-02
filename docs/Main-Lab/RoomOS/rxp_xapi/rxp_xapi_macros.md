@@ -38,7 +38,7 @@
         ---
 
         <figure markdown="span">
-              [![MacroPak](./images/cisco-logo-transparent.png){ width="200" }](https://github.com/WebexCC-SA/LAB-1451/raw/refs/heads/main/docs/Main-Lab/DownloadContent/MacroPak.zip)
+              [![MacroPak](./images/cisco-logo-transparent.png){ width="200" }](https://github.com/WebexCC-SA/LAB-1451/raw/refs/heads/main/docs/Main-Lab/DownloadContent/MacroPak/MacroPak2026.zip)
             <figcaption>MacroPak</figcaption>
         </figure>
     </div>
