@@ -87,6 +87,7 @@
             - {{config.cProps.webhookClientSite}}
 
     - RoomOS Device
+        - Admin Access to the device
         - RoomOS Version: Current On Premise or Cloud Stable release
         - Install [Subscription Assistant Macro](https://webexcc-sa.github.io/LAB-11197/Main-Lab/RoomOS/rxp_intro/)
 

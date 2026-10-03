@@ -31,7 +31,7 @@
 
 </div>
 
-??? lesson "{{config.cProps.dep.sectionIds.cD}}.7 Lab"
+???+ lesson "{{config.cProps.dep.sectionIds.cD}}.7 Lab"
 
     <highlight_1>{{config.cProps.dep.sectionIds.cD}}.7.1</highlight_1> Open CE-Deploy. Use the organization switcher at the top of the
     window (or the ==Organizations== screen in the left sidebar) to activate your ==Cloud==

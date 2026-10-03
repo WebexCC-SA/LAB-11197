@@ -1,31 +1,32 @@
 {{ config.cProps.devNotice }}
 {{ config.cProps.acronyms }}
 
-# Accessing the xAPI via the Macro Editor** ~(section\ {{config.cProps.rxp.sectionIds.macro}})~
+# Accessing the xAPI via the Macro Editor ~(section\ {{config.cProps.rxp.sectionIds.macro}})~
 
 !!! abstract
 
-    The Macro Editor is a `Web Based IDE` that's built into each Cisco Codec running {++ce9.2.X or higher (excluding the Sx10)++} that allows for the development of solutions using the ==Device xAPI and ES6 Javascript==. In a sense, the Macro Editor is like a virtual room control processor built right into the product.
+    The Macro Editor is a <hl_1>Web Based IDE</hl_1> that's built into each Cisco Codec running <hl_6>ce9.2.X or higher (excluding the Sx10)</hl_6> that allows for the development of solutions using the <hl_0>Device xAPI and ES6 JavaScript</hl_0>. In a sense, the Macro Editor is like a virtual room control processor built right into the product.
 
-    It's capable of running {++10 active macros++} at any given time and allows for storage of up to ==2mb of text across all files== (Sounds small, but it's more than you think :smiley:).
+    It's capable of running <hl_4>10 active macros</hl_4> at any given time and allows for storage of up to <hl_4>2mb of text across all files</hl_4> (Sounds small, but it's more than you think :smiley:).
 
     You may have as many inactive macros as you can contain with the 2mb limit, which can be useful for storing information, organizing and modularizing work.
 
     -  For example, some developers in the community have implemented function libraries formatted as a macro, such as 
         - <a href="https://github.com/cisco-ce/guido">Gui-Do</a>: A suite of functions that enables dynamic UI generation with the use of JSON Object
-        - <a href="https://github.com/ctg-tme/audio-zone-manager-library-macro/tree/main">Audio Zone Manager</a>: Or AZM is a suite of function that enables the mapping of audio microphones inputs to other resources for audio based automation in space.
+        - <a href="https://github.com/ctg-tme/Memory-Storage-Functions-V2">Memory Storage</a>: is a suite of function that enables persistent storage of custom object content. Great for information that needs to continue after a device boot or when the macro runtime restarts.
     
 !!! important
 
     !!! example "Note"
 
-        This section is meant to teach your the structure of the xAPI when working the Macro Editor. 
-        
-        Though written in Javascript, this is not a javascript tutorial. There are links to relevant topics throughout the section in case you're stuck on any particular topic
+        This section is meant to teach you to structure the xAPI as JavaScript when working the Macro Editor, <hl_7>but this is not a JavaScript tutorial</hl_7>. There are links to relevant JavaScript topics throughout the section in case you're stuck on any particular topic.
 
-    {++Part 3: Building a Customization using Macros++} will leverage the Macro Editor and the UI Extensions of your codec to develop a solution using the xAPI
-
-    Syntax covered here is also relevant to the JSXAPI Node.js SDK, which is covered in JSXAPI ^{{ config.cProps.rxp.sectionIds.jsxapi }}^.
+    Later in this lab under <hl_6>Solution Exercises > Macro Based Exercises</hl_6> you'll learn to leverage the Macro Editor and the UserInterface Extensions of your codec to develop a full solution.
+    
+<!-- 
+    Syntax covered here is also relevant to the JSXAPI Node.js SDK, which is covered in JSXAPI ^{{ config.cProps.rxp.sectionIds.jsxapi }}^. 
+    
+-->
 
 !!! important "Section Requirements"
 
@@ -43,23 +44,72 @@
         </figure>
     </div>
 
+    **Required Learning**
+
+    - SSH Section {{config.cProps.rxp.sectionIds.ssh}}
+
+    **Hardware**
+
+    - A Laptop
+    - A Cisco Desk, Board or Room Series Device running the most recent On Premise or Cloud Stable software
+        - <hl_0>Preferred Device:</hl_0> <hl_4>Cisco Desk Pro</hl_4>
+        - A Touch Controller is required when working on a Room Series Device. 
+            - Room navigator or 3rd part touch display
+    - A minimum of 1 camera (Either Integrated or External)
+
+    **Software**
+
+    - Laptop
+        - Applications: 
+            - Chrome or Firefox
+        - Section {{config.cProps.rxp.sectionIds.http}} {{config.cProps.apiClientApplication}} Collection
+
+    - RoomOS Device
+        - Admin Access to the device
+        - RoomOS Version: Current On Premise or Cloud Stable release
+        - Install [Subscription Assistant Macro](https://webexcc-sa.github.io/LAB-11197/Main-Lab/RoomOS/rxp_intro/)
+
 
 ## **Enabling Macros** ~({{config.cProps.rxp.sectionIds.macro}}.1)~
 
 !!! blank ""
 
     - Login to your Codec's Web UI
-    - Navigate to Settings>Macro Editor
-        - The Macro Editor is disabled by Default, press enable
+        - Copy your device Host Address: <hl_4><copy>{{config.cProps.auth.roomosIp}}</copy></hl_4>
+        - Enter this into a Web Browser as the URL
+            - If your device does not have a cert installed, accept the self signed cert
+        - Enter your devices
+            - Username: <hl_1><copy>{{config.cProps.auth.roomosUser}}</copy></hl_1>
+            - Password: <hl_7><copy>{{config.cProps.auth.roomosPass}}</copy></hl_7>
+    - Select Macro Editor on the left side navigation interface
+        - You may see an "Enable Macros" pop-up
+        - If you do, enable it
 
     ???+ tip
-        Enabling through the WebUI as we had above can be don via the xAPI as well.
+
+        You can also enable the Macro Editor via the xAPI
         
-        Running ==xConfiguration Macros Mode: On== does the same thing.
+        Running <hl_0>xConfiguration Macros Mode: On</hl_0> does the same thing.
 
-        You can even run xConfigurations in bulk across your portfolio using Webex Control Hub or Ce-Deploy, both are covered in, regards to Macro Customization, part 4 of this lab.
+        Knowing this, you can run this xConfigurations in bulk across your portfolio using Control Hub or Ce-Deploy, both are covered in later in this lab.
 
-## **Navigating the Macro Editor and installing the MacroPak** ~({{config.cProps.rxp.sectionIds.macro}}.2)~
+## **Get to know the Macro Editor and install the MacroPak** ~({{config.cProps.rxp.sectionIds.macro}}.2)~
+
+The Macro Editor's user interface is based on the [Monaco Editor](https://microsoft.github.io/monaco-editor/). The very same editor found in popular IDE's such as Visual Studio code. If you're already familiar with Visual Studio, many of the same hot keys and tools are available, though no Plugins.
+
+The Macro Editor is where you'll place your Macro code, edit and manage. But this is just the front. The underlying engine is called [QuickJS](https://quick.js.org/docs). This is what runs your Macro code against the codec.
+
+Both the Monaco Editor and QuickJS have been tailored for RoomOS, so some things you may be familiar with in these platforms may not be available or altered.
+
+Knowing the Front end and Back end is not only good for your edification, but is key to working alongside popular AI tools. If you and AI understand the environment, you can work more effectively.
+
+!!! Tip "Fun Fact!"
+
+    - In RoomOS 26.9.1 September 2026, the RoomOS engineering team added a new xStatus for us to understand the Macro Runtime a bit better.
+
+    <roomosdoc>xStatus Macros JsEngineVersion</roomosdoc>
+
+    > This xStatus shows the name and version of the JavaScript engine that the macro runtime is currently using.
 
 ??? vidcast "Vidcast: Macro Editor IDE Review"
 
@@ -73,13 +123,33 @@
       <iframe src="https://app.vidcast.io/share/embed/f31a92e0-609d-430c-bb45-d834c52cb1d3" width="100%" height="100%" title="Installing MacroPak Files - WX1 2024 Lab 1451" frameborder="0" loading="lazy" allowfullscreen style="position:absolute; top:0; left: 0;border: solid; border-radius:12px;"></iframe>
     </div>
 
+- - -
+
+!!! important "Before you Begin"
+
+    In addition to the Subscription Assistant, this section also leverages the MacroPak Manager UserInterface
+
+    Since we have a limit to how many macros we can have active, and in an effort to keep the console clean and easy to read, the MacroPal Manager will endure only 1 Lesson Macro is active at a time.
+
+    <hl_7>Do not activate or deactivate macros using the Macro Editor</hl_7>. The **MacroPak Manager will override your selection**, which may be the incorrect lesson macro.
+
+    Please follow the instructions in each lesson below for guidance on using the MacroPak Manager.
+
+- - -
+
 ## **Executing xCommands** ~({{config.cProps.rxp.sectionIds.macro}}.3)~
 
 ???+ lesson "Lesson: Execute an xCommand ~({{config.cProps.rxp.sectionIds.macro}}.3.1)~"
 
-    All device xAPIs are referenced by the imported `xapi` object. By default, a new Macro will contain
+    !!! important inline end "The xapi import is `Import`ant!"
 
-    ``` { .javascript , title="xAPI Import" }
+        Though the <hl_5>xapi</hl_5> object is automatically added to all new macros, it's important to understand you can't access the RoomOS xAPI without it.
+
+        It's best to leave this at the top of your Macro. There are more advanced JS concepts that may allow removing this object, but those are not covered in this lab.
+
+    All device xAPIs are referenced by the imported <hl_5>xapi</hl_5> object. By default, a new Macro will contain
+
+    ``` { .JavaScript , title="xAPI Import" }
     import xapi from 'xapi';
     ```
 
@@ -87,11 +157,11 @@
           Learn more about <strong>Imports</strong> <i class="fa-solid fa-square-up-right"></i>
     </a>
 
-    Unlike other ES6 Javascript environments, you only have access to base Javascript functions and techniques as well as the device's xAPI
+    Unlike other ES6 JavaScript environments, you only have access to base JavaScript functions and techniques as well as the device's xAPI. You're <hl_7>**NOT**</hl_7> able to import external libraries into this environment.
+    
+    - Though, you can define you're own imports via another macro.
 
-    - You're **==NOT==** able to import external libraries into this environment.
-
-    All xAPI can be accessed by first referencing the `xapi` object following by the same command path using dot notation
+    All xAPI are accessed by referencing the <hl_5>xapi</hl_5> object following by the same command path using dot notation
 
     !!! example "Click on the tabs to see how Terminal Syntax relates to Macro Syntax"
 
@@ -113,7 +183,7 @@
 
         === "Macro Syntax"
 
-            ``` javascript
+            ``` JavaScript
             import xapi from 'xapi';
 
             xapi.Command.Time.DateTime.Get().then(time => console.log(time))
@@ -133,11 +203,11 @@
 
             ??? curious ":thinking: Why is `.then(time => console.log(time))` trailing the command?"
 
-                Well that's the nature of this environment. In a terminal session, the command is immediately followed by a response
+                Well that's the nature of a JavaScript environment. In a terminal session, the command is immediately followed by a response.
 
-                But in working with the xAPI in a Macro or `jsxapi` NodeJs environment, the response is certainly there, but we need to capture in an object and then log it to the console.
+                Working in a Macro, or `jsxapi` NodeJs environment, the response is certainly there but we need to capture the response in an object and then log it to the console.
 
-                Most, if not all, functions from the `xapi` object are Javascript Promises. When executed, they'll either resolve or reject (OK or Error) and you can handle them as you see fit in your automation.
+                Most, if not all, functions nested in the <hl_5>xapi</hl_5> object are JavaScript Promises. When executed, they'll either resolve or reject, similar to the OK or Error responses in SSH, and you can handle them as you see fit in your automation.
 
                 <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" >
                       Learn more about <strong>Promises</strong> <i class="fa-solid fa-square-up-right"></i>
@@ -149,51 +219,111 @@
 
                     If your function is rejected, then the `.catch()` method  can handle those outcomes in the same way `.then()` works on resolutions.
 
-    !!! Tip
+    ??? Tip "Understand function parameters as they relate to xCommands"
 
-        Parameters for Macro Syntax are setup as a JSON Object and must be passed into a function as a parameter
+        xCommand arguments, or parameters, for Macro syntax are setup as a JSON Object and must be passed into a function as a funtion parameter.
 
         <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON" target="_blank" >
           Learn more about <strong>JSON</strong> <i class="fa-solid fa-square-up-right"></i>
         </a>
 
-        At a high level, functions defined in the `xapi` can have 1 or 2 function parameters pass. One being the parameters for the xAPI call writing in a JSON Object [Represented by `myChildParams` below], the other for multiline content (if available) [Represented by `myMultiLineContent` below]
+        At a high level, functions defined in the <hl_5>xapi</hl_5> can have 1 or 2 JavaScript function parameters pass. 
+        
+        - The first function parameter for the <hl_5>xapi</hl_5> object are the xAPI xCommand arguments.
+        - The second object is only used for multiline xCommand content.
+            - NOTE: Not all xCommands have multiline content, so not all xCommands need 2 function parameters.
 
-        It's important to note that not all `xapi` functions have multiline input, but it's good to know where it's placed should there be any
+        !!! example " Click on the tabs below to see compare a generic JavaScript function definition and an xAPI xCOmmand declaration"
 
-        === "Parameter Example"
+            === "Generic JavaScript function Definition"
 
-            ``` { .js }
-            import xapi from 'xapi';
+                A function declaration is where we as developer define our own functions
 
-            const myChildParams = { Parameter: 'One', Parameter: 2, Parameter: '...' };
-            const myMultiLineContent= `...`;
+                We're using this example to show you a very high level structure of what function parameters look like and what a promise looks like within a function. This should give you a glimpse of how the <hl_5>xapi</hl_5> object defines xAPI resolutions and rejections.
 
-            xapi.Parent.Child(myChildParams, myMultiLineContent);
-            ```
+                ``` { .js , .no-copy }
+                // Here we define the function
+                // Number A is divided by Number B
+                function divide_2_numbers(number_a, number_b){                  
+                  return new Promise((resolve, reject) => {
+                    if (number_b === 0){
+                      reject('Can not divide by 0!');
+                    }
 
-            <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions" target="_blank" >
-                  Learn more about <strong>Functions</strong> <i class="fa-solid fa-square-up-right"></i>
-            </a>
+                    resolve(number_a/number_b);
+                  })
+                }
 
-    - **xAPI:** xCommand Video Selfview Set
+                // Now we run the function
+
+                divide_2_numbers(2, 2).then(resolution => {
+                  console.log(resolution); Resolves: 1
+                }).catch(e => {
+                  console.error(e); // This does nothing due to Promise Resolution
+                })
+
+                divide_2_numbers(2, 0).then(resolution => {
+                  console.log(resolution); // This does nothing due to Promise Rejection
+                }).catch(e => {
+                  console.error(e); // Rejects: 'Can not divide by 0!'
+                });
+                ```
+
+            === "xAPI xCommand Declaration"
+
+                In this example, we'll use a Mock xAPI with a branch of Parent, just to show how this is structured. 
+
+                myChildParams serves as our xAPI's arguments
+
+                myMultiLineContent serves as our xAPI's multiline content
+
+                ``` { .js , .no-copy }
+                // xAPI functions are already defined in this object
+                import xapi from 'xapi';
+
+                const myChildParams = { Parameter: 'One', Parameter: 2, Parameter: '...' };
+                const myMultiLineContent= `...`;
+
+                // Simply call the xAPI and add in it's function parameters
+                xapi.Parent.Child(myChildParams, myMultiLineContent);
+                ```
+
+                <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions" target="_blank" >
+                      Learn more about <strong>Functions</strong> <i class="fa-solid fa-square-up-right"></i>
+                </a>
+
+    - **xAPI:** 
+        - <hl_0>xCommand Video Selfview Set</hl_0>
+
+    {{config.cProps.macroPak.instructions | indent (4) }}
 
     - **Task:** 
-        - Activate the ==xCommands_Lesson-1_MacroPak_2-6-3== macro
-        - Structure the xAPI Path above using Macro Syntax and apply the following parameters
+        - Activate this Lesson Macro using the MacroPak Manager Button
+        - Format the xAPI path above using Macro syntaxand apply the following xAPI Parameters
             - Mode: On
             - FullScreenMode: On
             - OnMonitorRole: First
     
-    - Save your Macro and monitor the Macro Console as well as the Device to see if you had a successful response
-
-    - When Complete, deactivate the ==xCommands_Lesson-1_MacroPak_2-6-3== macro
+    - Save the lesson Macro
+    - Monitor the Macro console and the OSD of your device for any changes
     
     ??? success "View Successful Macro Syntax"
 
+        ??? curious "Why are there 3 answers?"
+
+            To put it simply, because they are all correct.
+
+            JavaScript has many ways for you to do similar work, which allows you to organize work the way you see fit as a developer.
+
+            Click on each solution below and see how each differ from one another, but all achieve the same result.
+
         === "Simple Execution"
 
-            ``` javascript
+            This example is a bare bones execution of the xAPI.
+
+            Nothing wring here, but it doesn't account for error handling or asynchronous execution
+
+            ``` JavaScript
 
             import xapi from 'xapi';
 
@@ -203,7 +333,9 @@
           
         === "Promises > `.then()` Method"
 
-            ``` javascript
+            This example makes use of JavaScripts promise capabilities. Allows us to know when the xCommand resolved or when it was rejected, should there be an error. Finally just tells us it's done, no rejection or resolution coming here, we just need to know it's done
+
+            ``` JavaScript
 
             import xapi from 'xapi';
 
@@ -221,6 +353,10 @@
 
               /* Run Additional Function Here*/
 
+            }).finally(() => {
+              console.info('Config.Video.Selfview.Set Completed running regardless of state')
+
+              /* Run Additional Function Here*/
             });
             ```
 
@@ -230,7 +366,9 @@
         
         === "Promises > Async Await"
 
-            ``` javascript
+            Using async await, we can still reap the benefits of then, catch and finally, from promises, but we can be precise in the order in which we call our xAPI and group errors for multiple xAPI into 1 stack; improving readability.
+
+            ``` JavaScript
             import xapi from 'xapi';
 
             const setSelfview = async function(parameters => {
@@ -263,7 +401,7 @@
 
 ??? lesson "Lesson: Execute an xCommand with multiple arguments with the same name ~({{config.cProps.rxp.sectionIds.macro}}.3.2)~"
 
-    In cases where we need to declare multiple arguments of the same name, rather than duplicating and re-running the parameters, we instead leverage Javascript's Array capabilities
+    In cases where we need to declare multiple arguments of the same name, rather than duplicating and re-running the arguments as we did with SSH, we instead leverage JavaScript's Array capabilities
 
     <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" >
       Learn more about <strong>Arrays</strong> <i class="fa-solid fa-square-up-right"></i>
@@ -280,7 +418,7 @@
 
         === "Macro Syntax"
 
-            ``` { .javascript }
+            ``` { .JavaScript }
             import xapi from 'xapi';
 
             xapi.Parent.Child({
@@ -289,23 +427,28 @@
             ```
     
     - **xAPI(s):** 
-        - xCommand Video Selfview Set
-        - xCommand Video Input SetMainVideoSource
+        - <hl_0>xCommand Video Selfview Set</hl_0>
+        - <hl_0>xCommand Video Input SetMainVideoSource</hl_0>
+
+    !!! note
+        The following xAPI(s) come pre-formatted in the Macro. You must find the correct position for the final xAPI
+
+        - <hl_0>xCommand Video Selfview Set</hl_0>
+
+    {{config.cProps.macroPak.instructions | indent (4) }}
 
     - **Task:** 
-
-        - Activate the ==xCommands_Lesson-2_MacroPak_2-6-3== macro
-        - Structure ==xCommand Video Input SetMainVideoSource== using Macro Syntax and apply the following parameters, but assign the value `1` to ConnectorId twice
-          - ConnectorId: 1
-          - Layout: Equal
-        - Add this xCommand to the ==showAndCompose()== function
-        - Save your Macro and monitor the Macro Console as well as the Device to see if you had a successful response
-
-        - When Complete, deactivate the ==xCommands_Lesson-2_MacroPak_2-6-3== macro
+        - Activate this Lesson Macro using the MacroPak Manager Button
+        - Format the <hl_4>xCommand Video Input SetMainVideoSource</hl_4> using Macro syntax and apply the following xAPI Parameters
+            - ConnectorId: 1
+            - Layout: Equal
+        - Using an array, duplicate ConnectorId 1 and place it in the correct location
+        - Save the lesson Macro
+        - Monitor the Macro console and the OSD of your device for any changes
 
     ??? success "View Successful Macro Syntax"
 
-        ``` javascript
+        ``` JavaScript
         import xapi from 'xapi';
 
         /**
@@ -328,20 +471,8 @@
         showAndComposeCamera();
         ```
 
-    <!-- ??? challenge "Challenge: Log and Handle Errors"
 
-        - Convert the `showAndComposeCamera()` function into an Async Function
-        - Wrap all xAPI references in a Try Catch block
-        - Add a console log for a Successful outcome
-        - Add a console log for an Error
-
-        - Save the Macro and observe the log
-
-        <a class="md-button md-button--primary" href="../challengeAnswers/" target="_blank" >
-          Giving Up? Check out the Challenge Answers Page <i class="fa-solid fa-square-up-right"></i>
-        </a> -->
-
-??? lesson "Lesson: Execute an xCommand with a multiline argument ~({{config.cProps.rxp.sectionIds.macro}}.3.3)~"
+??? lesson "Lesson: Execute an xCommand with a multiline arguments ~({{config.cProps.rxp.sectionIds.macro}}.3.3)~"
 
     !!! example "Click on the tabs to see how Terminal Syntax relates to Macro Syntax"
 
@@ -356,7 +487,7 @@
 
         === "Macro Syntax"
 
-            ``` { .javascript }
+            ``` { .JavaScript }
             import xapi from 'xapi';
 
             const myChildParams = { Parameter: 'One', Parameter: 2, Parameter: '...' };
@@ -388,17 +519,18 @@
               </Panel>
             </Extensions>
             ```
-        - Structure ==xCommand UserInterface Extensions Panel Save== using Macro Syntax and apply the following parameters
+        - Structure ==xCommand UserInterface Extensions Panel Save== using Macro syntaxand apply the following parameters
             - PanelId [Use the ==myPanelId== object for this field]
             - body [Use the ==myUserinterfaceXML== object for this field] (This is a MultiLine Argument)
         - Add this xCommand to the ==buildUserInterface()== function
-        - Save your Macro and monitor the Macro Console as well as the Device to see if you had a successful response
+        - Save the lesson Macro
+    - Monitor the Macro console and the OSD of your device for any changes
 
         - When Complete, deactivate the ==xCommands_Lesson-3_MacroPak_2-6-3== macro
 
     ??? success "View Successful Macro Syntax and Log output"
 
-        ``` javascript
+        ``` JavaScript
         import xapi from 'xapi';
 
         /**
@@ -500,7 +632,7 @@
 
     - **Task:**
         - Activate the ==xCommands_Lesson-4_MacroPak_2-6-3== macro
-        - Structure ==xCommand UserInterface Extensions List== using Macro Syntax and do 1 of the following
+        - Structure ==xCommand UserInterface Extensions List== using Macro syntaxand do 1 of the following
 
             - Use `.then()` to capture the value of ==xCommand UserInterface Extensions List== then log that value to the console
 
@@ -511,7 +643,8 @@
                 - Assign the value of the xAPI to an object
                 - Then log the value of that object to the console
 
-        - Save your Macro and monitor the Macro Console as well as the Device to see if you had a successful response
+        - Save the lesson Macro
+    - Monitor the Macro console and the OSD of your device for any changes
 
         - When Complete, deactivate the ==xCommands_Lesson-4_MacroPak_2-6-3== macro
 
@@ -528,7 +661,7 @@
 
         === "Using `.then()`"
 
-            ```javascript
+            ```JavaScript
             import xapi from 'xapi';
 
             /**
@@ -546,7 +679,7 @@
 
         === "Using `Async Await`"
 
-            ```javascript
+            ```JavaScript
             import xapi from 'xapi';
 
             /**
@@ -605,7 +738,8 @@
     - **Task:**
         - Activate the ==xConfigs_Lesson-1_MacroPak_2-6-4== macro
         - Modify the `getConfigValue()` function by replacing the existing value of `targetConfig` with ==xConfig Audio DefaultVolume== written in Macro Syntax
-        - Save your Macro and monitor the Macro Console as well as the Device to see if you had a successful response
+        - Save the lesson Macro
+    - Monitor the Macro console and the OSD of your device for any changes
 
         - When Complete, deactivate the ==xConfigs_Lesson-1_MacroPak_2-6-4== macro
 
@@ -614,7 +748,7 @@
 
         === "Macro"
 
-            ``` javascript
+            ``` JavaScript
             import xapi from 'xapi';
 
             /**
@@ -661,7 +795,8 @@
         - Modify the `setConfigValue()` function by replacing the existing value of `targetConfig` with ==xConfig Audio DefaultVolume== written in Macro Syntax
         - Instead of hardcoding the value we want to set, place the `value` parameter into the `.set(value)` method instead
             - This will allow us to change this value easier as we call the function in different parts of our script
-        - Save your Macro and monitor the Macro Console as well as the Device to see if you had a successful response
+        - Save the lesson Macro
+    - Monitor the Macro console and the OSD of your device for any changes
 
         - When Complete, deactivate the ==xConfigs_Lesson-2_MacroPak_2-6-4== macro
 
@@ -670,7 +805,7 @@
 
         === "Macro"
 
-            ``` javascript
+            ``` JavaScript
             import xapi from 'xapi';
 
             /**
@@ -732,7 +867,8 @@
     - **Task:**
         - Activate the ==xConfigs_Lesson-3_MacroPak_2-6-4== macro
         - Modify the `getConfigValue()` function by replacing the existing value of `targetConfig` with ==xConfig Audio== written in Macro Syntax
-        - Save your Macro and monitor the Macro Console as well as the Device to see if you had a successful response
+        - Save the lesson Macro
+    - Monitor the Macro console and the OSD of your device for any changes
 
         - When Complete, deactivate the ==xConfigs_Lesson-3_MacroPak_2-6-4== macro
 
@@ -741,7 +877,7 @@
 
         === "Macro"
 
-            ``` javascript
+            ``` JavaScript
             import xapi from 'xapi';
 
             /**
@@ -807,7 +943,7 @@
 
             === "Macro Syntax"
 
-                ``` javascript
+                ``` JavaScript
                 import xapi from 'xapi';
 
                 xapi.Configuration.Child.Child.on(ChildValue => {
@@ -829,7 +965,8 @@
         - Modify the `subscribeToDefaultVolume` object by replacing it's value with ==xConfig Audio== written in Macro Syntax using the `.on()` method
             - In order to unsubscribe, we need to assign our xAPI subscription to an object, so we can later call it, which will end it's subscription
             - For example, after you assign the ==subscribeToDefaultVolume== properly, running ==subscribeToDefaultVolume=={++()++} will stop your active subscription
-        - Save your Macro and monitor the Macro Console as well as the Device to see if you had a successful response
+        - Save the lesson Macro
+    - Monitor the Macro console and the OSD of your device for any changes
             - NOTE: This macro will automatically unsubscribe for you. Review those steps, to get a better understand as to how we unsubscribe.
 
         - When Complete, deactivate the ==xConfigs_Lesson-4_MacroPak_2-6-4== macro
@@ -838,7 +975,7 @@
 
         === "Macro"
 
-            ``` javascript
+            ``` JavaScript
             import xapi from 'xapi';
 
             /**
@@ -943,7 +1080,8 @@
         - Modify the `subscribeToAirplay` object by replacing it's value with ==xConfiguration Video Input Airplay== written in Macro Syntax using the `.on()` method
             - In order to unsubscribe, we need to assign our xAPI subscription to an object, so we can later call it, which will end it's subscription
             - For example, after you assign the ==subscribeToAirplay== properly, running ==subscribeToAirplay=={++()++} will stop your active subscription
-        - Save your Macro and monitor the Macro Console as well as the Device to see if you had a successful response
+        - Save the lesson Macro
+    - Monitor the Macro console and the OSD of your device for any changes
             - NOTE: This macro will automatically unsubscribe for you. Review those steps, to get a better understand as to how we unsubscribe.
 
         - When Complete, deactivate the ==xConfigs_Lesson-5_MacroPak_2-6-4== macro
@@ -952,7 +1090,7 @@
 
         === "Macro"
 
-            ``` javascript
+            ``` JavaScript
             import xapi from 'xapi';
 
             /**
@@ -1082,7 +1220,8 @@
     - **Task:**
         - Activate the ==xStatuses_Lesson-1_MacroPak_2-6-4== macro
         - Modify the `getStatusValue()` function by replacing the existing value of `targetStatus` with ==xStatus Audio Volume== written in Macro Syntax
-        - Save your Macro and monitor the Macro Console as well as the Device to see if you had a successful response
+        - Save the lesson Macro
+    - Monitor the Macro console and the OSD of your device for any changes
 
         - When Complete, deactivate the ==xStatuses_Lesson-1_MacroPak_2-6-4== macro
 
@@ -1091,7 +1230,7 @@
 
         === "Macro"
 
-            ``` javascript
+            ``` JavaScript
             import xapi from 'xapi';
 
             /**
@@ -1135,7 +1274,8 @@
     - **Task:**
         - Activate the ==xStatuses_Lesson-2_MacroPak_2-6-4== macro
         - Modify the `getStatusValue()` function by replacing the existing value of `targetStatus` with ==xStatus Audio== written in Macro Syntax
-        - Save your Macro and monitor the Macro Console as well as the Device to see if you had a successful response
+        - Save the lesson Macro
+    - Monitor the Macro console and the OSD of your device for any changes
 
         - When Complete, deactivate the ==xStatuses_Lesson-2_MacroPak_2-6-4== macro
 
@@ -1144,7 +1284,7 @@
 
         === "Macro"
 
-            ``` javascript
+            ``` JavaScript
             import xapi from 'xapi';
 
             /**
@@ -1200,7 +1340,7 @@
 
         === "Macro"
 
-            ``` javascript
+            ``` JavaScript
             import xapi from 'xapi';
 
             /**
@@ -1312,7 +1452,7 @@
 
         === "Macro"
 
-            ``` javascript
+            ``` JavaScript
             import xapi from 'xapi';
 
             /**
@@ -1424,7 +1564,7 @@
 
         === "Macro"
 
-            ``` javascript
+            ``` JavaScript
             import xapi from 'xapi';
 
             /**
@@ -1642,7 +1782,7 @@
 
         === "Macro"
 
-            ``` javascript
+            ``` JavaScript
             import xapi from 'xapi';
 
             /**

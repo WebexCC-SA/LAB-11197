@@ -54,7 +54,7 @@
 
 </div>
 
-??? lesson "{{config.cProps.dep.sectionIds.cH}}.2 Lab"
+???+ lesson "{{config.cProps.dep.sectionIds.cH}}.2 Lab"
 
     <highlight_1>{{config.cProps.dep.sectionIds.cH}}.2.1</highlight_1> Return to Control Hub and sign in with your lab admin credentials
     if necessary.

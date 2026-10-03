@@ -32,7 +32,7 @@
 
 </div>
 
-??? lesson "{{config.cProps.dep.sectionIds.cD}}.4 Lab"
+???+ lesson "{{config.cProps.dep.sectionIds.cD}}.4 Lab"
 
     <highlight_1>{{config.cProps.dep.sectionIds.cD}}.4.1</highlight_1> Open CE-Deploy. Check the organization switcher at the top of the
     window and confirm your Cloud organization (added in "Connect CE-Deploy to Your Organization")

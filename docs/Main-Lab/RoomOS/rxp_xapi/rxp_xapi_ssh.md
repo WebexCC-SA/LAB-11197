@@ -34,6 +34,7 @@
             - [PuTTy](https://apps.microsoft.com/detail/xpfnzksklbp7rj?hl=en-US&gl=US) (Windows)
             - [Termius](https://termius.com/) (Windows, MAC, Linux)
     - RoomOS Device
+        - Admin Access to the device
         - Either the current On Premise or Cloud stable release RoomOS software
         - Ensure the [Subscription Assistant Macro](https://webexcc-sa.github.io/LAB-11197/Main-Lab/RoomOS/rxp_intro/) is installed
 

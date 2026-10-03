@@ -33,7 +33,7 @@
 
 </div>
 
-??? lesson "{{config.cProps.dep.sectionIds.cD}}.1 Lab"
+???+ lesson "{{config.cProps.dep.sectionIds.cD}}.1 Lab"
 
     <highlight_1>{{config.cProps.dep.sectionIds.cD}}.1.1</highlight_1> Open CE-Deploy and select ==Organizations== in the left sidebar.
 

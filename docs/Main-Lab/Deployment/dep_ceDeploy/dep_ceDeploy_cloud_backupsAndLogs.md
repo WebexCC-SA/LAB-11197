@@ -35,7 +35,7 @@
 
 </div>
 
-??? lesson "{{config.cProps.dep.sectionIds.cD}}.6 Lab Part 1: Backups"
+???+ lesson "{{config.cProps.dep.sectionIds.cD}}.6 Lab Part 1: Backups"
 
     <highlight_1>{{config.cProps.dep.sectionIds.cD}}.6.1</highlight_1> Open CE-Deploy. Use the organization switcher at the top of the
     window (or the ==Organizations== screen in the left sidebar) to activate your ==On-Premise==

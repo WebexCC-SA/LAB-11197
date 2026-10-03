@@ -54,12 +54,16 @@
                         ![Register To Webex](images%2F4-1-3b.png){ width="600" }
                     </figure>
 
-??? tool "Download Device Pod Assignment Sheet"
+!!! tool "Access your Pod Information"
+    - Your Device Pod # is located on the bottom left had corder of the display
+    - Download this CSV file, open and locate your Pod Information
 
     <figure markdown="span">
-          [![Download the Device Pod Assignment Sheet](../GlobalImages/cisco-logo-transparent.png){ width="200" }](../DownloadContent/WbxOne2025PodDetails.xlsx)
+          [![Lab Pod Details](../GlobalImages/cisco-logo-transparent.png){ width="200" }](https://raw.githubusercontent.com/WebexCC-SA/{{ config.cProps.labId }}/main/docs/Main-Lab/DownloadContent/WbxOne2026PodDetails.xlsx)
         <figcaption>Device Pod Assignment Sheet</figcaption>
     </figure>
+
+    - Fill in the information for your RoomOS Device below
 
     !!! important "Record Your Pod Details"
 
@@ -79,11 +83,11 @@
 
     !!! important "CE-Deploy Install"
 
-        Before we begin our lab you will need to download and install CE-Deploy 16 (v16.3.1 or later) using the links below:
+        Before we begin our lab you will need to download and install CE-Deploy 16 (v16.4.1 or later) using the links below:
 
-        - <a target="_blank" href="https://github.com/voipnorm/CE-Deploy/releases/download/v16.3.1/CE-Deploy-Installer.16.3.1.exe">Windows Installer <i class="fa-solid fa-square-arrow-up-right"></i></a>
+        - <a target="_blank" href="https://github.com/voipnorm/CE-Deploy/releases/download/v16.4.1/CE-Deploy-Installer.16.4.1.exe">Windows Installer <i class="fa-solid fa-square-arrow-up-right"></i></a>
 
-        - <a target="_blank" href="https://github.com/voipnorm/CE-Deploy/releases/download/v16.3.1/CE-Deploy-16.3.1-universal.dmg">Mac Installer <i class="fa-solid fa-square-arrow-up-right"></i></a>
+        - <a target="_blank" href="https://github.com/voipnorm/CE-Deploy/releases/download/v16.4.1/CE-Deploy-16.4.1-universal.dmg">Mac Installer <i class="fa-solid fa-square-arrow-up-right"></i></a>
 
         If this is your first time opening CE-Deploy 16, don't worry about signing in yet — the
         "Connect Your Organization" lesson coming up walks you through it. The old token-download

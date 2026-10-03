@@ -187,6 +187,7 @@ cProps:
     *[MainSource]: Your camera feed rendered in SelfView or sent to the Far End of a Video Call
     *[URL]: Uniform Resource Locator
     *[XML]: Extensible Markup Language
+    *[IDE]: Integrated Development Environment
   rxp:
     x: placeholder
     name: RoomOS xAPI & UserInterfaces
@@ -252,3 +253,11 @@ cProps:
       cD: dep-2
   res: 
     x: placeholder
+  macroPak: 
+    instructions: |
+      ??? info inline end "Lesson Activation Instructions"
+      
+          - Click the MacroPak Manager Button on your Touch Interface
+          - Find this lesson in the list by the Lesson Name
+              - Ex: "Execute and xCommand rxp-6.3.1"
+          - Toggle on your Lesson
