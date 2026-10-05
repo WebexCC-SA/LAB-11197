@@ -327,7 +327,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             import xapi from 'xapi';
 
-            xapi.Config.Video.Selfview.Set({ Mode: "On", FullscreenMode: "On", OnMonitorRole: "On" });
+            xapi.Config.Video.Selfview.Set({ Mode: "On", FullscreenMode: "On", OnMonitorRole: "First" });
 
             ```
           
@@ -339,7 +339,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             import xapi from 'xapi';
 
-            xapi.Config.Video.Selfview.Set({ Mode: "On", FullscreenMode: "On", OnMonitorRole: "Off" }).then(resolution => {
+            xapi.Config.Video.Selfview.Set({ Mode: "On", FullscreenMode: "On", OnMonitorRole: "First" }).then(resolution => {
 
               // Log the xAPI resolution
               console.log('Config.Video.Selfview.Set Resolution', resolution);
@@ -489,8 +489,8 @@ Knowing the Front end and Back end is not only good for your edification, but is
               <XML_Child_1>
                 <XML_Sub_Child_1>SubChild_Value</XML_Sub_Child_1>
               </XML_Child_1>
-              <XML_Child_2>Child_2_Value</XML_Child_1>
-            </XML_Parent>;
+              <XML_Child_2>Child_2_Value</XML_Child_2>
+            </XML_Parent>`;
 
             xapi.Parent.Child(myChildParams, myMultiLineContent);
             ```
@@ -952,7 +952,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
     - **Task:** 
         - **Disable all MacroPak macros by selecting the Stop button in the MacroPak Manager**
-        - Add the following to the <hl_5>getConfigValue()</hl_5> function
+        - Modify the <hl_5>subscribeToDefaultVolume</hl_5> object
             - Format <hl_4>xConfiguration Audio DefaultVolume</hl_4> using Macro syntax and use the <hl_2>.on()</hl_2> method and assign it to the <hl_1>subscribeToDefaultVolume</hl_1> object
             - Note: This macro is designed to randomly set the value of <hl_4>xConfiguration Audio DefaultVolume</hl_4> when enabled. It will unsubscribe from our xAPI in 10 seconds.
         - Activate this Lesson Macro using the MacroPak Manager Button
@@ -984,6 +984,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
             setTimeout(() => {
 
               subscribeToDefaultVolume(); //<-- By calling the Object we assigned our Subscription too as a function(), we will unsubscribe from it
+              clearInterval(configInterval);
 
               console.warn("DefaultVolume Subscription stopped!");
 
@@ -1018,7 +1019,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
             }
 
             function init() {
-              setInterval(() => {
+              configInterval = setInterval(() => {
                 setRandomDefaultVolume();
               }, 500)
 
@@ -1059,15 +1060,15 @@ Knowing the Front end and Back end is not only good for your edification, but is
         Just like we can subscribe to 1 point of interest in an xConfig branch, we can subscribe to a Higher Common Node as well
 
     - **xAPI:** 
-        - <hl_0>xConfiguration Video Input Airplay</hl_0>
+        - <hl_0>xConfiguration Video Input AirPlay</hl_0>
 
     {{config.cProps.macroPak.instructions | indent (4) }}
 
     - **Task:** 
         - **Disable all MacroPak macros by selecting the Stop button in the MacroPak Manager**
-        - Add the following to the <hl_5>getConfigValue()</hl_5> function
-            - Format <hl_4>xConfiguration Video Input Airplay</hl_4> using Macro syntax and use the <hl_2>.on()</hl_2> method and assign it to the <hl_1>subscribeToAirplay</hl_1> object
-            - Note: This macro is designed to randomly set the value of <hl_4>xConfiguration Video Input Airplay</hl_4> when enabled. It will unsubscribe from our xAPI in 10 seconds.
+        - Modify the <hl_5>subscribeToAirPlay</hl_5> object
+            - Format <hl_4>xConfiguration Video Input AirPlay</hl_4> using Macro syntax and use the <hl_2>.on()</hl_2> method and assign it to the <hl_1>subscribeToAirPlay</hl_1> object
+            - Note: This macro is designed to randomly set the value of <hl_4>xConfiguration Video Input AirPlay</hl_4> when enabled. It will unsubscribe from our xAPI in 10 seconds.
         - Activate this Lesson Macro using the MacroPak Manager Button
 
     - Save the lesson Macro
@@ -1087,8 +1088,8 @@ Knowing the Front end and Back end is not only good for your edification, but is
             const delay_in_seconds = 5;
 
             // Edit this Object to include your xConfiguration Subscription
-            const subscribeToAirplay = xapi.Config.Video.Input.Airplay.on(event => {
-              console.log('Airplay Changes:', event)
+            const subscribeToAirPlay = xapi.Config.Video.Input.AirPlay.on(event => {
+              console.log('AirPlay Changes:', event)
             })
 
             // Do not edit past this line, but feel free to review what's going on :)
@@ -1096,15 +1097,15 @@ Knowing the Front end and Back end is not only good for your edification, but is
             // Here, we use JS Timeouts to set an action to run after X seconds. Timeouts use milliseconds, hence why we multiply by 1000
             setTimeout(() => {
 
-              subscribeToAirplay(); //<-- By calling the Object we assigned our Subscription too as a function(), we will unsubscribe from it
+              subscribeToAirPlay(); //<-- By calling the Object we assigned our Subscription too as a function(), we will unsubscribe from it
 
-              console.warn("Airplay Subscription stopped!");
+              console.warn("AirPlay Subscription stopped!");
 
             }, delay_in_seconds * 1000)
 
 
-            // Here, we're randomly assigning a values to the Airplay config, so we can see that configuration on our Subscription
-            function setRandomAirplayConfigs() {
+            // Here, we're randomly assigning a values to the AirPlay config, so we can see that configuration on our Subscription
+            function setRandomAirPlayConfigs() {
 
               function randomNumber() {
                 return Math.floor(Math.random() * 10);
@@ -1125,12 +1126,12 @@ Knowing the Front end and Back end is not only good for your edification, but is
             function countdown(startNumber) {
               let currentNumber = startNumber;
 
-              console.warn(`Airplay Subscription stopping in [${currentNumber}] seconds`);
+              console.warn(`AirPlay Subscription stopping in [${currentNumber}] seconds`);
 
               const interval = setInterval(() => {
                 currentNumber--;
                 if (currentNumber > 0) {
-                  console.warn(`Airplay Subscription stopping in [${currentNumber}] seconds`);
+                  console.warn(`AirPlay Subscription stopping in [${currentNumber}] seconds`);
                 }
 
                 if (currentNumber < 1) {
@@ -1141,7 +1142,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             function init() {
               setInterval(() => {
-                setRandomAirplayConfigs();
+                setRandomAirPlayConfigs();
               }, 500)
 
               countdown(delay_in_seconds);
@@ -1157,32 +1158,32 @@ Knowing the Front end and Back end is not only good for your edification, but is
             | HH:MM:SS   | [system]                       | Runtime stopped!                               |
             | HH:MM:SS   | [system]                       | Using XAPI transport: WebSocket                |
             | HH:MM:SS   | [system]                       | Starting macros...                             |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Subscription stopping in [5] seconds   |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Subscription stopping in [5] seconds   |
             | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | QJS Ready                                      |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Mode":"On"}                 |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Beacon":"Off"}              |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Subscription stopping in [4] seconds    |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Mode":"Off"}                |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Mode":"On"}                 |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Subscription stopping in [3] seconds    |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Beacon":"Auto"}             |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Subscription stopping in [2] seconds    |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Mode":"Off"}                |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Beacon":"Off"}              |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Beacon":"Auto"}             |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Subscription stopping in [1] seconds    |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Mode":"On"}                 |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Mode":"Off"}                |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | Airplay Subscription stopped!                   |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Mode":"On"}                 |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Beacon":"Off"}              |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Subscription stopping in [4] seconds    |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Mode":"Off"}                |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Mode":"On"}                 |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Subscription stopping in [3] seconds    |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Beacon":"Auto"}             |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Subscription stopping in [2] seconds    |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Mode":"Off"}                |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Beacon":"Off"}              |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Beacon":"Auto"}             |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Subscription stopping in [1] seconds    |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Mode":"On"}                 |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Mode":"Off"}                |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Subscription stopped!                   |
 
 <!-- ??? challenge "Challenge: Can you spot the Error?"
 
