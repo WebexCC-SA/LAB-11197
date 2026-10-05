@@ -711,36 +711,38 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
     Getting xConfiguration values, and later on xStatus Values, use the nearly same techniques for xCommands that generate data and respond.
 
-    However, when ==Getting== an xConfiguration or an xStatus, you'll need to add the `.get()` method at the end of the xAPI call.
+    However, when <hl_0>Getting</hl_0> an xConfiguration or an xStatus, you'll need to add the <hl_4>.get()</hl_4> method at the end of the xAPI call.
 
-    Subsequently, when ==Setting== an xConfiguration, you'll need to add the `.set()` method at the end of the xAPI call.
+    Subsequently, when <hl_0>Setting</hl_0> an xConfiguration, you'll need to add the <hl_7>.set()</hl_7> method at the end of the xAPI call. Note: You can not use <hl_7>.set()</hl_7> with an xStatus
 
     !!! example "Compare Macro Command vs Config syntax"
 
         === "xCommands"
 
-            xapi.==Command==.ChildPath ==(childParameter, childMultiLine)==
+            xapi.<hl_1>Command.ChildPath</hl_1><hl_6>(childParameter, childMultiLine)</hl_6>
 
         === "xConfigurations Get"
 
-            xapi.==Config==.ChildPath ==.get()==
+            xapi.<hl_1>Config.ChildPath</hl_1><hl_4>.get()</hl_4>
 
         === "xConfigurations Set"
 
-            xapi.==Config==.ChildPath ==.get({++'ChildValue'++})==
+            xapi.<hl_1>Config.ChildPath</hl_1><hl_7>.set('ChildValue')</hl_7>
 
 ???+ lesson "Lesson: Get an xConfiguration Value ~({{config.cProps.rxp.sectionIds.macro}}.4.1)~"
 
-    - **xAPI:** xConfig Audio DefaultVolume
+    - **xAPI:** 
+        - <hl_0>xConfig Audio DefaultVolume</hl_0>
 
-    - **Task:**
-        - Activate the ==xConfigs_Lesson-1_MacroPak_2-6-4== macro
-        - Modify the `getConfigValue()` function by replacing the existing value of `targetConfig` with ==xConfig Audio DefaultVolume== written in Macro Syntax
-        - Save the lesson Macro
+    {{config.cProps.macroPak.instructions | indent (4) }}
+
+    - **Task:** 
+        - Activate this Lesson Macro using the MacroPak Manager Button
+        - Add the following to the <hl_5>getConfigValue()</hl_5> function
+            - Format <hl_4>xConfig Audio DefaultVolume</hl_4> using Macro syntax and use the <hl_4>.get()</hl_4> method and assign it to the <hl_1>targetConfig</hl_1> object
+    
+    - Save the lesson Macro
     - Monitor the Macro console and the OSD of your device for any changes
-
-        - When Complete, deactivate the ==xConfigs_Lesson-1_MacroPak_2-6-4== macro
-
 
     ??? "View Successful Macro Syntax and Log output"
 
@@ -774,23 +776,27 @@ Knowing the Front end and Back end is not only good for your edification, but is
             | HH:MM:SS  | [system]                             | Runtime stopped!          |
             | HH:MM:SS  | [system]                             | Using XAPI transport: WebSocket |
             | HH:MM:SS  | [system]                             | Starting macros...        |
-            | HH:MM:SS  | xConfigs_Lesson-1_MacroPak_2-6-4   | QJS Ready                 |
-            | HH:MM:SS  | xConfigs_Lesson-1_MacroPak_2-6-4   | DefaultVolume: 75         |
+            | HH:MM:SS  | get-an-xconfiguration-value          | QJS Ready                 |
+            | HH:MM:SS  | get-an-xconfiguration-value          | DefaultVolume: 75         |
 
 ??? lesson "Lesson: Set a new xConfiguration Value ~({{config.cProps.rxp.sectionIds.macro}}.4.2)~"
 
-    - **xAPI:** xConfig Audio DefaultVolume
+    - **xAPI:** 
+        - <hl_0>xConfig Audio DefaultVolume</hl_0>
 
-    - **Task:**
-        - Activate the ==xConfigs_Lesson-2_MacroPak_2-6-4== macro
-        - Modify the `setConfigValue()` function by replacing the existing value of `targetConfig` with ==xConfig Audio DefaultVolume== written in Macro Syntax
-        - Instead of hardcoding the value we want to set, place the `value` parameter into the `.set(value)` method instead
-            - This will allow us to change this value easier as we call the function in different parts of our script
-        - Save the lesson Macro
+    {{config.cProps.macroPak.instructions | indent (4) }}
+
+    - **Task:** 
+        - Activate this Lesson Macro using the MacroPak Manager Button
+        - Add the following to the <hl_5>setConfigValue()</hl_5> function
+            - Format <hl_4>xConfig Audio DefaultVolume</hl_4> using Macro syntax and use the <hl_7>.set()</hl_7> method and assign it to the <hl_1>targetConfig</hl_1> object
+            - Pass the <hl_6>value</hl_6> function parameter the value for the <hl_7>.set()</hl_7>
+        - Optional: 
+            - In the <hl_5>setConfigValue()</hl_5> function, change the value of the <hl_5>setConfigValue()</hl_5> parameter to any value between 0 and 100.
+                - Note: Leaving this blank will result default to 50
+    
+    - Save the lesson Macro
     - Monitor the Macro console and the OSD of your device for any changes
-
-        - When Complete, deactivate the ==xConfigs_Lesson-2_MacroPak_2-6-4== macro
-
 
     ??? "View Successful Macro Syntax and Log output"
 
@@ -841,21 +847,23 @@ Knowing the Front end and Back end is not only good for your edification, but is
             | HH:MM:SS  | [system]                             | Runtime stopped!          |
             | HH:MM:SS  | [system]                             | Using XAPI transport: WebSocket |
             | HH:MM:SS  | [system]                             | Starting macros...        |
-            | HH:MM:SS  | xConfigs_Lesson-2_MacroPak_2-6-4   | QJS Ready                 |
-            | HH:MM:SS  | xConfigs_Lesson-2_MacroPak_2-6-4   | DefaultVolume: [Some Value]         |
+            | HH:MM:SS  | set-a-new-xconfiguration-value   | QJS Ready                 |
+            | HH:MM:SS  | set-a-new-xconfiguration-value   | DefaultVolume: [Some Value]         |
 
 ??? lesson "Lesson: Get multiple xConfigurations under a Common Node ~({{config.cProps.rxp.sectionIds.macro}}.4.3)~"
 
-    - **xAPI:** xConfig Audio
+    - **xAPI:** 
+        - <hl_0>xConfig Audio</hl_0>
 
-    - **Task:**
-        - Activate the ==xConfigs_Lesson-3_MacroPak_2-6-4== macro
-        - Modify the `getConfigValue()` function by replacing the existing value of `targetConfig` with ==xConfig Audio== written in Macro Syntax
-        - Save the lesson Macro
+    {{config.cProps.macroPak.instructions | indent (4) }}
+
+    - **Task:** 
+        - Activate this Lesson Macro using the MacroPak Manager Button
+        - Add the following to the <hl_5>getConfigValue()</hl_5> function
+            - Format <hl_4>xConfig Audio</hl_4> using Macro syntax and use the <hl_4>.get()</hl_4> method and assign it to the <hl_1>targetConfig</hl_1> object
+    
+    - Save the lesson Macro
     - Monitor the Macro console and the OSD of your device for any changes
-
-        - When Complete, deactivate the ==xConfigs_Lesson-3_MacroPak_2-6-4== macro
-
 
     ??? "View Successful Macro Syntax and Log output"
 
@@ -889,18 +897,20 @@ Knowing the Front end and Back end is not only good for your edification, but is
             | HH:MM:SS  | [system]                             | Runtime stopped!          |
             | HH:MM:SS  | [system]                             | Using XAPI transport: WebSocket |
             | HH:MM:SS  | [system]                             | Starting macros...        |
-            | HH:MM:SS  | xConfigs_Lesson-3_MacroPak_2-6-4   | QJS Ready                 |
-            | HH:MM:SS  | xConfigs_Lesson-3_MacroPak_2-6-4   | `{"DefaultVolume":"100","Ethernet":{"Encryption":"Required","SAPDiscovery":{"Address":"239.255.255.255","Mode":"Off"}},"Input":{"Ethernet":[{"Channel":[{"Gain":"45","Mode":"On","Pan":"Mono","Zone":"1","id":"1"},{"Gain":"45","Mode":"On","Pan":"Mono","Zone":"1","id":"2"},{"Gain":"45","Mode":"On","Pan":"Mono","Zone":"1","id":"3"},{"Gain":"45","Mode":"On","Pan":"Mono","Zone":"1","id":"4"},{"Gain":"45","Mode":"On","Pan":"Mono","Zone":"1","id":"5"},{"Gain":"45","Mode":"On","Pan":"Mono","Zone":"1","id":"6"},{"... And the list goes on"}],"EchoControl":{"Mode":"On","NoiseReduction":"On"},"Equalizer":{"ID":"1","Mode":"Off"},"Mode":"On","id":"1"}]}}{..."And the List Goes On"}`         |
+            | HH:MM:SS  | get-multiple-xconfigurations-under-a-common-node   | QJS Ready                 |
+            | HH:MM:SS  | get-multiple-xconfigurations-under-a-common-node   | `{"DefaultVolume":"100","Ethernet":{"Encryption":"Required","SAPDiscovery":{"Address":"239.255.255.255","Mode":"Off"}},"Input":{"Ethernet":[{"Channel":[{"Gain":"45","Mode":"On","Pan":"Mono","Zone":"1","id":"1"},{"Gain":"45","Mode":"On","Pan":"Mono","Zone":"1","id":"2"},{"Gain":"45","Mode":"On","Pan":"Mono","Zone":"1","id":"3"},{"Gain":"45","Mode":"On","Pan":"Mono","Zone":"1","id":"4"},{"Gain":"45","Mode":"On","Pan":"Mono","Zone":"1","id":"5"},{"Gain":"45","Mode":"On","Pan":"Mono","Zone":"1","id":"6"},{"... And the list goes on"}],"EchoControl":{"Mode":"On","NoiseReduction":"On"},"Equalizer":{"ID":"1","Mode":"Off"},"Mode":"On","id":"1"}]}}{..."And the List Goes On"}`         |
 
 ??? lesson "Lesson: Subscribe and Unsubscribe to an xConfiguration ~({{config.cProps.rxp.sectionIds.macro}}.4.4)~"
 
     !!! info
 
-        Subscriptions in the Macro Editor introduce another method we can append to the end of the path called `.on()`
+        Subscriptions in the Macro Editor introduce another method we can append to the end of the path called <hl_2>.on()</hl_2>
 
-        `.on()` allows us to subscribe to any changes in xConfigurations, xStatuses and xEvents until the script has either stopped or until the xAPI path is unsubscribed too
+        <hl_2>.on()</hl_2> allows us to subscribe to any changes in xConfigurations, xStatuses and xEvents until the script has either stopped or until the xAPI path is unsubscribed too
 
-        `.on()` expect an object, similar to using `.then()` for you to place the incoming data and run function off of it
+        <hl_2>.on()</hl_2> expects an object, similar to using `.then()` for you to place the incoming data. 
+        
+        Unlike the <hl_4>.get()</hl_4> method, the <hl_2>.on()</hl_2> method will not retrieve information as soon as it's called, but subscribes to it and will fire each time this subscriptions value changes.
 
         !!! example "Click on the tabs to see how Terminal Syntax relates to Macro Syntax"
 
@@ -935,19 +945,24 @@ Knowing the Front end and Back end is not only good for your edification, but is
                 */
                 ```
 
-    
-    - **xAPI:** xConfiguration Audio DefaultVolume
+    - **xAPI:** 
+        - <hl_0>xConfiguration Audio DefaultVolume</hl_0>
 
-    - **Task**:
-        - Activate the ==xConfigs_Lesson-4_MacroPak_2-6-4== macro
-        - Modify the `subscribeToDefaultVolume` object by replacing it's value with ==xConfig Audio== written in Macro Syntax using the `.on()` method
-            - In order to unsubscribe, we need to assign our xAPI subscription to an object, so we can later call it, which will end it's subscription
-            - For example, after you assign the ==subscribeToDefaultVolume== properly, running ==subscribeToDefaultVolume=={++()++} will stop your active subscription
-        - Save the lesson Macro
+    {{config.cProps.macroPak.instructions | indent (4) }}
+
+    - **Task:** 
+        - **Disable all MacroPak macros by selecting the Stop button in the MacroPak Manager**
+        - Add the following to the <hl_5>getConfigValue()</hl_5> function
+            - Format <hl_4>xConfiguration Audio DefaultVolume</hl_4> using Macro syntax and use the <hl_2>.on()</hl_2> method and assign it to the <hl_1>subscribeToDefaultVolume</hl_1> object
+            - Note: This macro is designed to randomly set the value of <hl_4>xConfiguration Audio DefaultVolume</hl_4> when enabled. It will unsubscribe from our xAPI in 10 seconds.
+        - Activate this Lesson Macro using the MacroPak Manager Button
+
+    - Save the lesson Macro
     - Monitor the Macro console and the OSD of your device for any changes
-            - NOTE: This macro will automatically unsubscribe for you. Review those steps, to get a better understand as to how we unsubscribe.
 
-        - When Complete, deactivate the ==xConfigs_Lesson-4_MacroPak_2-6-4== macro
+    - Review the contents of this Macro and take note of how we unsubscribe
+        - Unsubscribing requires us to assign our xAPI path to an object
+        - Calling this object as a function by appending <hl_0>()</hl_0>; the subscription will stop
 
     ??? success "View Successful Macro Syntax and Log output"
 
@@ -1020,22 +1035,22 @@ Knowing the Front end and Back end is not only good for your edification, but is
             | HH:MM:SS   | [system]                       | Runtime stopped!                               |
             | HH:MM:SS   | [system]                       | Using XAPI transport: WebSocket                |
             | HH:MM:SS   | [system]                       | Starting macros...                             |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Subscription stopping in [5] seconds |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | QJS Ready                                      |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Set to: 70                       |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Subscription stopping in [4] seconds |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Set to: 48                       |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Set to: 13                       |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Subscription stopping in [3] seconds |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Set to: 92                       |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Set to: 52                       |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Subscription stopping in [2] seconds |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Set to: 46                       |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Set to: 69                       |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Subscription stopping in [1] seconds |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Set to: 21                       |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Set to: 57                       |
-            | HH:MM:SS   | xConfigs_Lesson-4_MacroPak_2-6-4 | DefaultVolume Subscription stopped!             |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Subscription stopping in [5] seconds |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| QJS Ready                                      |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Set to: 70                       |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Subscription stopping in [4] seconds |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Set to: 48                       |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Set to: 13                       |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Subscription stopping in [3] seconds |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Set to: 92                       |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Set to: 52                       |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Subscription stopping in [2] seconds |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Set to: 46                       |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Set to: 69                       |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Subscription stopping in [1] seconds |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Set to: 21                       |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Set to: 57                       |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-an-xconfiguration| DefaultVolume Subscription stopped!             |
 
 ??? lesson "Lesson: Subscribe and Unsubscribe to Multiple xConfigurations under a Common Node ~({{config.cProps.rxp.sectionIds.macro}}.4.5)~"
 
@@ -1043,20 +1058,24 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
         Just like we can subscribe to 1 point of interest in an xConfig branch, we can subscribe to a Higher Common Node as well
 
-        We'll do so for the Airplay Config section of you codec
-    
-    - **xAPI:** xConfiguration Video Input Airplay
+    - **xAPI:** 
+        - <hl_0>xConfiguration Video Input Airplay</hl_0>
 
-    - **Task**:
-        - Activate the ==xConfigs_Lesson-5_MacroPak_2-6-4== macro
-        - Modify the `subscribeToAirplay` object by replacing it's value with ==xConfiguration Video Input Airplay== written in Macro Syntax using the `.on()` method
-            - In order to unsubscribe, we need to assign our xAPI subscription to an object, so we can later call it, which will end it's subscription
-            - For example, after you assign the ==subscribeToAirplay== properly, running ==subscribeToAirplay=={++()++} will stop your active subscription
-        - Save the lesson Macro
+    {{config.cProps.macroPak.instructions | indent (4) }}
+
+    - **Task:** 
+        - **Disable all MacroPak macros by selecting the Stop button in the MacroPak Manager**
+        - Add the following to the <hl_5>getConfigValue()</hl_5> function
+            - Format <hl_4>xConfiguration Video Input Airplay</hl_4> using Macro syntax and use the <hl_2>.on()</hl_2> method and assign it to the <hl_1>subscribeToAirplay</hl_1> object
+            - Note: This macro is designed to randomly set the value of <hl_4>xConfiguration Video Input Airplay</hl_4> when enabled. It will unsubscribe from our xAPI in 10 seconds.
+        - Activate this Lesson Macro using the MacroPak Manager Button
+
+    - Save the lesson Macro
     - Monitor the Macro console and the OSD of your device for any changes
-            - NOTE: This macro will automatically unsubscribe for you. Review those steps, to get a better understand as to how we unsubscribe.
 
-        - When Complete, deactivate the ==xConfigs_Lesson-5_MacroPak_2-6-4== macro
+    - Review the contents of this Macro and take note of how we unsubscribe
+        - Unsubscribing requires us to assign our xAPI path to an object
+        - Calling this object as a function by appending <hl_0>()</hl_0>; the subscription will stop
 
     ??? success "View Successful Macro Syntax and Log output"
 
@@ -1281,7 +1300,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
     - **Task**:
         - Activate the ==xStatuses_Lesson-3_MacroPak_2-6-5== macro
-        - Modify the `subscribeToVolume` object by replacing it's value with ==xStatus Audio Volume== written in Macro Syntax using the `.on()` method
+        - Modify the `subscribeToVolume` object by replacing it's value with ==xStatus Audio Volume== written in Macro Syntax using the <hl_2>.on()</hl_2> method
             - In order to unsubscribe, we need to assign our xAPI subscription to an object, so we can later call it, which will end it's subscription
             - For example, after you assign the ==subscribeToVolume== properly, running ==subscribeToVolume=={++()++} will stop your active subscription
         - Save your Macro, raise and lower the volume on your Codec and monitor the Macro Console to see if you had a successful response
@@ -1377,7 +1396,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
     - **Task**:
         - Activate the ==xStatuses_Lesson-4_MacroPak_2-6-5== macro
-        - Modify the `subscribeToCameraPositions` object by replacing it's value with ==xStatus Cameras Camera[N] Position== written in Macro Syntax using the `.on()` method
+        - Modify the `subscribeToCameraPositions` object by replacing it's value with ==xStatus Cameras Camera[N] Position== written in Macro Syntax using the <hl_2>.on()</hl_2> method
             - In order to unsubscribe, we need to assign our xAPI subscription to an object, so we can later call it, which will end it's subscription
             - For example, after you assign the ==subscribeToCameraPositions== properly, running ==subscribeToCameraPositions=={++()++} will stop your active subscription
         - Save your Macro, and perform the following steps
@@ -1487,7 +1506,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
     - **Task**:
         - Activate the ==xEvents_Lesson-1_MacroPak_2-6-6== macro
-        - Modify the `subscribeToWidgetActions` object by replacing it's value with ==xEvent UserInterface Widget Action== written in Macro Syntax using the `.on()` method
+        - Modify the `subscribeToWidgetActions` object by replacing it's value with ==xEvent UserInterface Widget Action== written in Macro Syntax using the <hl_2>.on()</hl_2> method
             - In order to unsubscribe, we need to assign our xAPI subscription to an object, so we can later call it, which will end it's subscription
             - For example, after you assign the ==subscribeToWidgetActions== properly, running ==subscribeToWidgetActions=={++()++} will stop your active subscription
         - Save your Macro, open the ==MultiLine Command [2.6.6]== Panel on your Codec's touch interface, press one or more of the buttons and observe the Macro Log Output
@@ -1699,7 +1718,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
     - **Task**:
         - Activate the ==xEvents_Lesson-1_MacroPak_2-6-6== macro
-        - Modify the `subscribeToAllExtensions` object by replacing it's value with ==xEvent UserInterface== written in Macro Syntax using the `.on()` method
+        - Modify the `subscribeToAllExtensions` object by replacing it's value with ==xEvent UserInterface== written in Macro Syntax using the <hl_2>.on()</hl_2> method
             - In order to unsubscribe, we need to assign our xAPI subscription to an object, so we can later call it, which will end it's subscription
             - For example, after you assign the ==subscribeToAllExtensions== properly, running ==subscribeToAllExtensions=={++()++} will stop your active subscription
         - Save your Macro, open the ==MultiLine Command [2.6.6]== Panel on your Codec's touch interface, press one or more of the buttons and observe the Macro Log Output
