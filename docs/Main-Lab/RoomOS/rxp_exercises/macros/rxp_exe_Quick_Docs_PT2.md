@@ -764,7 +764,7 @@
         // EDIT MANIFEST URL HERE
         const config = {
           manifestVisibility: 'merge', // localOnly, remoteOnly, merge
-          remoteSiteManifest: 'https://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json',
+          remoteSiteManifest: 'http://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json',
           localSiteManifest: [
             {
               Name: 'Deep-dive into Cisco RoomOS xAPIs',
@@ -800,7 +800,7 @@
 
         This lab is hosting a file called `QuickDocs_remoteManifest.json` on GitHub which contains 6 additional sites pre-configured in the same format as the local sites configured on the endpoint
 
-        <a class="md-button md-button--primary" href="https://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json" target="_blank" >
+        <a class="md-button md-button--primary" href="http://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json" target="_blank" >
           Review the Remote Manifest File <i class="fa-solid fa-square-up-right"></i>
         </a>
 
@@ -813,7 +813,7 @@
         - Select the ==Room Docs Configuration== macro
         - Edit the `remoteSiteManifest` object and assign the following url as a string
             <!-- // EDIT MANIFEST URL HERE -->
-            - https://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json
+            - http://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json
         - Once complete, ==Save==, keep this macro Inactive
         
     ??? "Compare your ==Room Docs Configuration== Macro"
@@ -822,7 +822,7 @@
         // EDIT MANIFEST URL HERE
         const config = {
           manifestVisibility: 'merge', // localOnly, remoteOnly, merge
-          remoteSiteManifest: 'https://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json',
+          remoteSiteManifest: 'http://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json',
           localSiteManifest: [
             {
               Name: 'Deep-dive into Cisco RoomOS xAPIs',
@@ -1179,7 +1179,7 @@
         | Time       | Macro      | Log                                                                                                                                                        |
         |------------|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
         | 23:50:16   | Room Docs  | QJS Ready                                                                                                                                                  |
-        | 23:50:16   | Room Docs  | Config: {"manifestVisibility":"merge","remoteSiteManifest":"https://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json","localSiteManifest":[{"Name":"Deep-dive into Cisco RoomOS xAPIs","Url":"https://webexcc-sa.github.io/LAB-11197/","QrEnabled":true},{"Name":"Reimagine Workspaces","Url":"https://www.webex.com/us/en/workspaces.html","QrEnabled":true},{"Name":"Cisco","Url":"https://www.cisco.com","QrEnabled":true}]} |
+        | 23:50:16   | Room Docs  | Config: {"manifestVisibility":"merge","remoteSiteManifest":"http://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json","localSiteManifest":[{"Name":"Deep-dive into Cisco RoomOS xAPIs","Url":"https://webexcc-sa.github.io/LAB-11197/","QrEnabled":true},{"Name":"Reimagine Workspaces","Url":"https://www.webex.com/us/en/workspaces.html","QrEnabled":true},{"Name":"Cisco","Url":"https://www.cisco.com","QrEnabled":true}]} |
         | 23:50:16   | Room Docs  | Appending [Deep-dive into Cisco RoomOS xAPIs] Site to UI                                                                                                                          |
         | 23:50:16   | Room Docs  | Appending [Reimagine Workspaces] Site to UI                                                                                                              |
         | 23:50:16   | Room Docs  | Appending [Cisco] Site to UI                                                                                                                              |
