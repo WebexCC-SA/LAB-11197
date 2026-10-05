@@ -301,7 +301,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
         - Activate this Lesson Macro using the MacroPak Manager Button
         - Format the xAPI path above using Macro syntaxand apply the following xAPI Parameters
             - Mode: On
-            - FullScreenMode: On
+            - FullscreenMode: On
             - OnMonitorRole: First
     
     - Save the lesson Macro
@@ -327,7 +327,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             import xapi from 'xapi';
 
-            xapi.Config.Video.Selfview.Set({ Mode: "On", FullScreenMode: "On", OnMonitorRole: "Off" });
+            xapi.Config.Video.Selfview.Set({ Mode: "On", FullscreenMode: "On", OnMonitorRole: "On" });
 
             ```
           
@@ -339,7 +339,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             import xapi from 'xapi';
 
-            xapi.Config.Video.Selfview.Set({ Mode: "On", FullScreenMode: "On", OnMonitorRole: "Off" }).then(resolution => {
+            xapi.Config.Video.Selfview.Set({ Mode: "On", FullscreenMode: "On", OnMonitorRole: "Off" }).then(resolution => {
 
               // Log the xAPI resolution
               console.log('Config.Video.Selfview.Set Resolution', resolution);
@@ -391,7 +391,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
             });
 
             // Run the setSelfview Function and pass in the Parameters for xCommand Video Selfview Set
-            setSelfview({ Mode: "On", FullScreenMode: "On", OnMonitorRole: "Off" });
+            setSelfview({ Mode: "On", FullscreenMode: "On", OnMonitorRole: "First" });
             ```
 
             <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank" >
@@ -490,7 +490,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
             ``` { .JavaScript }
             import xapi from 'xapi';
 
-            const myChildParams = { Parameter: 'One', Parameter: 2, Parameter: '...' };
+            const myChildParams = { Parameter_1: 'One', Parameter_2: 'Two', Parameter_X: '...' };
             const myMultiLineContent= `...`;
 
             xapi.Parent.Child(myChildParams, myMultiLineContent);

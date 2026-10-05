@@ -1654,7 +1654,7 @@
                         <Expression>Configuration/Audio/DefaultVolume</Expression>
                         <!-- Do not alter the remaining parameters -->
                         <FeedbackSlot>1</FeedbackSlot>
-                        <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                        <ServerUrl>{% raw %}{{Svix_Unique_URL}}{% endraw %}</ServerUrl>
                     </Register>
                 </HttpFeedback>
             </Command>
@@ -1706,7 +1706,7 @@
                         <Expression>Configuration/Video/Input/AirPlay</Expression>
                         <!-- Do not alter the remaining parameters -->
                         <FeedbackSlot>1</FeedbackSlot>
-                        <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                        <ServerUrl>{% raw %}{{Svix_Unique_URL}}{% endraw %}</ServerUrl>
                     </Register>
                 </HttpFeedback>
             </Command>
@@ -1751,7 +1751,7 @@
                         <Expression>Status/Audio/Volume</Expression>
                         <!-- Do not alter the remaining parameters -->
                         <FeedbackSlot>2</FeedbackSlot>
-                        <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                        <ServerUrl>{% raw %}{{Svix_Unique_URL}}{% endraw %}</ServerUrl>
                     </Register>
                 </HttpFeedback>
             </Command>
@@ -1796,7 +1796,7 @@
                         <Expression>Status/Cameras/Camera/Position</Expression>
                         <!-- Do not alter the remaining parameters -->
                         <FeedbackSlot>2</FeedbackSlot>
-                        <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                        <ServerUrl>{% raw %}{{Svix_Unique_URL}}{% endraw %}</ServerUrl>
                     </Register>
                 </HttpFeedback>
             </Command>
@@ -1841,7 +1841,7 @@
                         <Expression>Event/UserInterface/Message/Prompt/Response</Expression>
                         <!-- Do not alter the remaining parameters -->
                         <FeedbackSlot>3</FeedbackSlot>
-                        <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                        <ServerUrl>{% raw %}{{Svix_Unique_URL}}{% endraw %}</ServerUrl>
                     </Register>
                 </HttpFeedback>
             </Command>
@@ -1886,7 +1886,7 @@
                         <Expression>Event/UserInterface</Expression>
                         <!-- Do not alter the remaining parameters -->
                         <FeedbackSlot>3</FeedbackSlot>
-                        <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                        <ServerUrl>{% raw %}{{Svix_Unique_URL}}{% endraw %}</ServerUrl>
                     </Register>
                 </HttpFeedback>
             </Command>
@@ -1947,7 +1947,7 @@
                   <Expression>Event</Expression>
                   <!-- Do not alter the remaining parameters -->
                   <FeedbackSlot>4</FeedbackSlot>
-                  <ServerUrl>{{Svix_Unique_URL}}</ServerUrl>
+                  <ServerUrl>{% raw %}{{Svix_Unique_URL}}{% endraw %}</ServerUrl>
                 </Register>
               </HttpFeedback>
             </Command>
