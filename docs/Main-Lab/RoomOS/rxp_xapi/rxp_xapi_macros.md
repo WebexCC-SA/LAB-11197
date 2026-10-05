@@ -299,7 +299,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
     - **Task:** 
         - Activate this Lesson Macro using the MacroPak Manager Button
-        - Format the xAPI path above using Macro syntaxand apply the following xAPI Parameters
+        - Format the xAPI path above using Macro syntax and apply the following xAPI Parameters
             - Mode: On
             - FullscreenMode: On
             - OnMonitorRole: First
@@ -439,7 +439,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
     - **Task:** 
         - Activate this Lesson Macro using the MacroPak Manager Button
-        - Format the <hl_4>xCommand Video Input SetMainVideoSource</hl_4> using Macro syntax and apply the following xAPI Parameters
+        - Format <hl_4>xCommand Video Input SetMainVideoSource</hl_4> using Macro syntax and apply the following xAPI Parameters
             - ConnectorId: 1
             - Layout: Equal
         - Using an array, duplicate ConnectorId 1 and place it in the correct location
@@ -450,12 +450,6 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
         ``` JavaScript
         import xapi from 'xapi';
-
-        /**
-         * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#263-executing-xcommands
-         * 
-         * Lesson 2: Execute an xCommand with multiple arguments with the same name
-         */
 
         const showAndComposeCamera = function () {
           xapi.Command.Video.Selfview.Set({ Mode: 'On', FullscreenMode: 'On', OnMonitorRole: 'First' });
@@ -491,53 +485,52 @@ Knowing the Front end and Back end is not only good for your edification, but is
             import xapi from 'xapi';
 
             const myChildParams = { Parameter_1: 'One', Parameter_2: 'Two', Parameter_X: '...' };
-            const myMultiLineContent= `...`;
+            const myMultiLineContent= `<XML_Parent>
+              <XML_Child_1>
+                <XML_Sub_Child_1>SubChild_Value</XML_Sub_Child_1>
+              </XML_Child_1>
+              <XML_Child_2>Child_2_Value</XML_Child_1>
+            </XML_Parent>;
 
             xapi.Parent.Child(myChildParams, myMultiLineContent);
             ```
-    
-    - **xAPI(s):** 
-        - xCommand Video Selfview Set
-        - xCommand Video Input SetMainVideoSource
-        - xCommand UserInterface Extensions Panel Save
+
+    - **xAPI:** 
+        - <hl_0>xCommand Video Selfview Set</hl_0>
+        - <hl_0>xCommand Video Input SetMainVideoSource</hl_0>
+        - <hl_0>xCommand UserInterface Extensions Panel Save</hl_0>
+
+    {{config.cProps.macroPak.instructions | indent (4) }}
 
     - **Task:** 
-
-        - Activate the ==xCommands_Lesson-3_MacroPak_2-6-3== macro
-        - Assign the value `wx1_lab_multilineCommand` to the ==myPanelId== object
-        - Assign the following XML payload to the ==myUserinterface== object
+        - Activate this Lesson Macro using the MacroPak Manager Button
+        - Assign the value <hl_4>wx1_lab_multilineCommand</hl_4> to the <hl_1>myPanelId</hl_1> object as a string
+        - Assign the following XML payload to the <hl_1>myUserinterfaceXML</hl_1> object as a multiline string
             ```xml
             <Extensions>
               <Panel>
                 <Order>1</Order>
-                <PanelId>wx1_lab_multilineCommand</PanelId>
                 <Location>HomeScreen</Location>
                 <Icon>Info</Icon>
                 <Color>#00FFFF</Color>
-                <Name>MultiLine Command [2.6.3]</Name>
+                <Name>MultiLine Command</Name>
                 <ActivityType>Custom</ActivityType>
               </Panel>
             </Extensions>
             ```
-        - Structure ==xCommand UserInterface Extensions Panel Save== using Macro syntaxand apply the following parameters
-            - PanelId [Use the ==myPanelId== object for this field]
-            - body [Use the ==myUserinterfaceXML== object for this field] (This is a MultiLine Argument)
-        - Add this xCommand to the ==buildUserInterface()== function
-        - Save the lesson Macro
+        - Add the following to the <hl_5>buildUserInterface()</hl_5> function
+            - Format <hl_4>xCommand UserInterface Extensions Panel Save</hl_4> using Macro syntax and apply the following xAPI Parameters
+                - PanelId: Use the <hl_1>myPanelId</hl_1> object for this vale
+                - body: Use the <hl_1>myUserinterfaceXML</hl_1> object for this value (Note: This is a MultiLine Argument)
+    
+    - Save the lesson Macro
     - Monitor the Macro console and the OSD of your device for any changes
+  
 
-        - When Complete, deactivate the ==xCommands_Lesson-3_MacroPak_2-6-3== macro
-
-    ??? success "View Successful Macro Syntax and Log output"
+    ??? success "View Successful Macro Syntax"
 
         ``` JavaScript
         import xapi from 'xapi';
-
-        /**
-         * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#263-executing-xcommands
-         * 
-         * Lesson 3: Execute an xCommand with a multiline argument
-         */
 
         // Assign values to these Objects
         const myPanelId = 'wx1_lab_multilineCommand';
@@ -549,7 +542,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
                 <Location>HomeScreen</Location>
                 <Icon>Info</Icon>
                 <Color>#00FFFF</Color>
-                <Name>MultiLine Command [2.6.3]</Name>
+                <Name>MultiLine Command</Name>
                 <ActivityType>Custom</ActivityType>
               </Panel>
             </Extensions>`
@@ -601,7 +594,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
                   <tr>
                       <td>`'`</td>
                       <td style="white-space: nowrap;">Single Quote</td>
-                      <td style="white-space: nowrap;"><code>const myString = "It's a sunny day."</code></td>
+                      <td style="white-space: nowrap;"><code>const myString = "It's a sunny day.";</code></td>
                       <td>Can encapsulate a string with single quotes `'` inside</td>
                   </tr>
                   <tr>
@@ -612,9 +605,21 @@ Knowing the Front end and Back end is not only good for your edification, but is
                   </tr>
                   <tr>
                       <td>`` ` ``</td>
-                      <td style="white-space: nowrap;">Backtick Quote</td>
-                      <td style="white-space: nowrap;"><code>const myFinalString = `They didn't say "World"`</code></td>
+                      <td style="white-space: nowrap;">Backtick Quote<br>SingleLine Example</td>
+                      <td style="white-space: nowrap;"><code>const myBacktickString = \`They didn't say "World"\`;</code></td>
                       <td>Can encapsulate double and single quotes, allows for multiline strings, allows for string interpolation</td>
+                  </tr>
+                  <tr>
+                      <td>`` ` ``</td>
+                      <td style="white-space: nowrap;">Backtick Quote<br>MultiLine Example</td>
+                      <td style="white-space: nowrap;"><code>const myMultiLineString = \`You know...<br>Not everyone needs to log Hello World to the console\`;</code></td>
+                      <td>Your strings can be drafted as multiline within code, preserving their readability and any whitespace characters</td>
+                  </tr>
+                  <tr>
+                      <td>`` ` ``</td>
+                      <td style="white-space: nowrap;">Backtick Quote<br>Interpolation Example</td>
+                      <td style="white-space: nowrap;"><code>const happyNow = 'Hello World';<br><br>const myFancyString = \`${happyNow}\`;</code></td>
+                      <td>Using `${}` and placing a JavaScript object with the {} brackets, you can alter strings on the fly.</td>
                   </tr>
               </tbody>
           </table>
@@ -628,25 +633,28 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
     When collecting data from an xCommand in the Macro Editor, you either need to use the `.then()` method and log that value to the console or use an Async function to capture the value of that xCommand into a object, then log that object
 
-    - **xAPI:** xCommand UserInterface Extensions List
+    - **xAPI:** 
+        - <hl_0>xCommand UserInterface Extensions List</hl_0>
 
-    - **Task:**
-        - Activate the ==xCommands_Lesson-4_MacroPak_2-6-3== macro
-        - Structure ==xCommand UserInterface Extensions List== using Macro syntaxand do 1 of the following
+    {{config.cProps.macroPak.instructions | indent (4) }}
 
-            - Use `.then()` to capture the value of ==xCommand UserInterface Extensions List== then log that value to the console
+    - **Task:** 
+        - Activate this Lesson Macro using the MacroPak Manager Button
+        - Format the xAPI above using Macro syntax and log it's response to the console using 1 of the 2 options below
 
-                <strong>Or<strong>
+        ??? example "Option 1"
+            Capture the promise from <hl_4>xCommand UserInterface Extensions List</hl_4> using the <hl_5>.then()</hl_5> method, and log the value of the xAPI to the console
+          
+        ??? example "Option 2 [Preferred]"
+            Declare an async function called <hl_1>checkExtensions</hl_1>, place <hl_4>xCommand UserInterface Extensions List</hl_4> within that function
 
-            - declare an async function called `checkExtensions`, place ==xCommand UserInterface Extensions List== written in Macro Syntax
-                - Wrap that in a Try Catch statement
-                - Assign the value of the xAPI to an object
-                - Then log the value of that object to the console
+            - Wrap your xAPI call in a <hl_6>Try Catch</hl_6> statement
+            - Assign the value of the xAPI call to a new object
+            - Then log the value of that new object to the console
 
-        - Save the lesson Macro
+    
+    - Save the lesson Macro
     - Monitor the Macro console and the OSD of your device for any changes
-
-        - When Complete, deactivate the ==xCommands_Lesson-4_MacroPak_2-6-3== macro
 
     <div style="display: flex; gap: 10px;">
         <a class="md-button md-button--primary" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">
@@ -657,18 +665,18 @@ Knowing the Front end and Back end is not only good for your edification, but is
         </a>
     </div>
     
-    ??? success "View Successful Macro Syntax and Log output"
+    ??? success "View Successful Macro Syntax"
+
+        !!! important "Moving Forward"
+
+            All future examples moving forward will only use <hl_4>Async Await</hl_4> syntax as a best practice. 
+            
+            If you're familiar with `.then()`, `.catch()` and `.finally()` syntax and prefer writing this way, feel free to do so. Comparing your answers to the lab will require you to understand <hl_4>Async Await</hl_4> in order to validate your answers.
 
         === "Using `.then()`"
 
             ```JavaScript
             import xapi from 'xapi';
-
-            /**
-             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#263-executing-xcommands
-             * 
-             * Lesson 4: Execute an xCommand which generates data and responds
-             */
 
             xapi.Command.UserInterface.Extensions.List().then(ext => {
               console.log(ext);
@@ -681,12 +689,6 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             ```JavaScript
             import xapi from 'xapi';
-
-            /**
-             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#263-executing-xcommands
-             * 
-             * Lesson 4: Execute an xCommand which generates data and responds
-             */
             
             const checkExtensions = async function () {
 
@@ -727,10 +729,6 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             xapi.==Config==.ChildPath ==.get({++'ChildValue'++})==
 
-    !!! important ""
-
-        We'll continue the remainder of the examples with only Async Await syntax, as a best practice, but if you're familiar with `.then()`, `.catch()` and `.finally()` syntax and prefer writing like that, feel free to do so
-
 ???+ lesson "Lesson: Get an xConfiguration Value ~({{config.cProps.rxp.sectionIds.macro}}.4.1)~"
 
     - **xAPI:** xConfig Audio DefaultVolume
@@ -751,14 +749,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
             ``` JavaScript
             import xapi from 'xapi';
 
-            /**
-             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
-             * 
-             * Lesson 1: Getting an xConfiguration Value
-             */
-
             // Enter your solution below this line
-
 
             const getConfigValue = async function () {
               try {
@@ -808,14 +799,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
             ``` JavaScript
             import xapi from 'xapi';
 
-            /**
-             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
-             * 
-             * Lesson 2: Set a new xConfiguration Value
-             */
-
             // Enter your solution below this line
-
 
             const setConfigValue = async function (value = 50) {
               try {
@@ -879,12 +863,6 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             ``` JavaScript
             import xapi from 'xapi';
-
-            /**
-             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
-             * 
-             * Lesson 1: Getting an xConfiguration Value
-             */
 
             // Enter your solution below this line
 
@@ -977,12 +955,6 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             ``` JavaScript
             import xapi from 'xapi';
-
-            /**
-             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
-             * 
-             * Lesson 4: Subscribe and Unsubscribe to an xConfiguration
-            */
 
             const delay_in_seconds = 10;
 
@@ -1092,12 +1064,6 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             ``` JavaScript
             import xapi from 'xapi';
-
-            /**
-             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
-             * 
-             * Lesson 5: Subscribe and Unsubscribe to Multiple xConfigurations under a Common Node
-             */
 
             const delay_in_seconds = 5;
 
@@ -1233,12 +1199,6 @@ Knowing the Front end and Back end is not only good for your edification, but is
             ``` JavaScript
             import xapi from 'xapi';
 
-            /**
-             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#265-getting-and-subscribing-to-xstatuses
-             * 
-             * Lesson 1: Getting an xStatus Value
-             */
-
             // Enter your solution below this line
 
             const getStatusValue = async function () {
@@ -1286,12 +1246,6 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             ``` JavaScript
             import xapi from 'xapi';
-
-            /**
-             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#265-getting-and-subscribing-to-xstatuses
-             * 
-             * Lesson 2: Getting an xStatus Value
-             */
 
             // Enter your solution below this line
 
@@ -1342,12 +1296,6 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             ``` JavaScript
             import xapi from 'xapi';
-
-            /**
-             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#265-getting-and-subscribing-to-xstatuses
-             * 
-             * Lesson 3: Subscribe and Unsubscribe to an xStatus
-            */
 
             const delay_in_seconds = 10;
 
@@ -1455,12 +1403,6 @@ Knowing the Front end and Back end is not only good for your edification, but is
             ``` JavaScript
             import xapi from 'xapi';
 
-            /**
-             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#265-getting-and-subscribing-to-xstatuses
-             * 
-             * Lesson 4: Subscribe and Unsubscribe to Multiple xStatuses under a Common Node
-            */
-
             const delay_in_seconds = 10;
 
             // Edit this Object to include your xStatus Subscription
@@ -1566,12 +1508,6 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             ``` JavaScript
             import xapi from 'xapi';
-
-            /**
-             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#266-subscribing-to-xevents
-             * 
-             * Lesson 1: Subscribe and Unsubscribe to an xEvent
-            */
 
             const delay_in_seconds = 10;
 
@@ -1784,12 +1720,6 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             ``` JavaScript
             import xapi from 'xapi';
-
-            /**
-             * Lab Guide: https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_2/#266-subscribing-to-xevents
-             * 
-             * Lesson 2: Subscribe and Unsubscribe to Multiple xEvents under a Common Node
-            */
 
             const delay_in_seconds = 10;
 

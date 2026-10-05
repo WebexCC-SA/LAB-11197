@@ -14,12 +14,6 @@ or implied.
 
 import xapi from 'xapi';
 
-/**
- * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#265-getting-and-subscribing-to-xstatuses
- * 
- * Lesson: Get an xStatus Value
- */
-
 // Enter your solution below this line
 
 const getStatusValue = async function () {

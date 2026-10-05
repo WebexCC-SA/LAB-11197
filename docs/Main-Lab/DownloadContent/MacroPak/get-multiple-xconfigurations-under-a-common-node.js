@@ -14,12 +14,6 @@ or implied.
 
 import xapi from 'xapi';
 
-/**
- * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
- * 
- * Lesson: Get multiple xConfigurations under a Common Node
- */
-
 // Enter your solution below this line
 
 const getConfigValue = async function () {

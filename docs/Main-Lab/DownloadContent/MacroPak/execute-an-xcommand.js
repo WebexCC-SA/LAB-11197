@@ -14,11 +14,5 @@ or implied.
 
 import xapi from 'xapi';
 
-/**
- * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#263-executing-xcommands
- * 
- * Lesson: Execute an xCommand
- */
-
 // Enter your solution below this line
 

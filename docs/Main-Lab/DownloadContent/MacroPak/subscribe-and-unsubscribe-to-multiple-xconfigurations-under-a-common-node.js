@@ -14,12 +14,6 @@ or implied.
 
 import xapi from 'xapi';
 
-/**
- * Lab Guide: https://webexcc-sa.github.io/LAB-1451/wx1_1451_part_2/#264-setting-getting-and-subscribing-to-xconfigurations
- * 
- * Lesson: Subscribe and Unsubscribe to Multiple xConfigurations under a Common Node
- */
-
 const delay_in_seconds = 5;
 
 // Edit this Object to include your xConfiguration Subscription
