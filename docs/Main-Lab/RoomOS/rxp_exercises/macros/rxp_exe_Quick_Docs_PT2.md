@@ -3,7 +3,7 @@
 
 # Quick Docs Macro Exercise - Part 2 - Optimize ~(section\ {{config.cProps.rxp.sectionIds.exe.macros.quickDocs_pt2}})~
 
-## Section {{config.cProps.rxp.sectionIds.exe.macros.quickDocs_pt1}} Requirements
+## Section {{config.cProps.rxp.sectionIds.exe.macros.quickDocs_pt2}} Requirements
 
 !!! important ""
 
@@ -104,8 +104,8 @@
           remoteSiteManifest: '',
           localSiteManifest: [
             {
-              Name: 'Lab 1451',
-              Url: 'https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/',
+              Name: 'Deep-dive into Cisco RoomOS xAPIs',
+              Url: 'https://webexcc-sa.github.io/LAB-11197/',
               QrEnabled: false
             },
             {
@@ -131,13 +131,13 @@
               remoteSiteManifest: '',
               localSiteManifest: [
                 {
-                  Name: 'Lab 1451',
-                  Url: '',
+                  Name: 'Deep-dive into Cisco RoomOS xAPIs',
+                  Url: 'https://webexcc-sa.github.io/LAB-11197/',
                   QrEnabled: false
                 },
                 {
                   Name: 'Reimagine Workspaces',
-                  Url: '',
+                  Url: 'https://www.webex.com/us/en/workspaces.html',
                   QrEnabled: true
                 }
               ]
@@ -170,7 +170,7 @@
               remoteSiteManifest: '',
               localSiteManifest: [
                 {
-                  Name: 'Lab 1451',
+                  Name: 'Deep-dive into Cisco RoomOS xAPIs',
                   Url: '',
                   QrEnabled: false
                 },
@@ -254,7 +254,7 @@
         }
 
         async function openQrCode(url, target = 'OSD') {
-          const encodedUrl = encodeURI(url);
+          const encodedUrl = encodeURIComponent(url);
           const qrURL = `https://api.qrserver.com/v1/create-qr-code/?data=` + encodedUrl;
           try {
             const openPage = await xapi.Command.UserInterface.WebView.Display({
@@ -299,7 +299,7 @@
         | Time      | App       | Logs                                                                                          |
         |-----------|-----------|-----------------------------------------------------------------------------------------------|
         | HH:MM:SS  | Room Docs | QJS Ready                                                                                     |
-        | HH:MM:SS  | Room Docs | Config: {"manifestVisibility":"localOnly","remoteSiteManifest":"","localSiteManifest":[{"Name":"Lab 1451","Url":"","QrEnabled":false},{"Name":"Reimagine Workspaces","Url":"","QrEnabled":true}]} |
+        | HH:MM:SS  | Room Docs | Config: {"manifestVisibility":"localOnly","remoteSiteManifest":"","localSiteManifest":[{"Name":"Deep-dive into Cisco RoomOS xAPIs","Url":"","QrEnabled":false},{"Name":"Reimagine Workspaces","Url":"","QrEnabled":true}]} |
 
 - - -
 - - -
@@ -460,15 +460,15 @@
 
                     ```xml title="Replace ME with ${rows}"
                     <Row>
-                      <Name>Lab 1451</Name>
+                      <Name>Deep-dive into Cisco RoomOS xAPIs</Name>
                       <Widget>
-                        <WidgetId>wx1_QrDocs~OpenSite~https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/</WidgetId>
+                        <WidgetId>wx1_QrDocs~OpenSite~https://webexcc-sa.github.io/LAB-11197/</WidgetId>
                         <Name>Open Site</Name>
                         <Type>Button</Type>
                         <Options>size=2</Options>
                       </Widget>
                       <Widget>
-                        <WidgetId>wx1_QrDocs~OpenQrCode~https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/</WidgetId>
+                        <WidgetId>wx1_QrDocs~OpenQrCode~https://webexcc-sa.github.io/LAB-11197/</WidgetId>
                         <Name>Open QrCode 🔳</Name>
                         <Type>Button</Type>
                         <Options>size=2</Options>
@@ -608,7 +608,7 @@
         }
 
         async function openQrCode(url, target = 'OSD') {
-          const encodedUrl = encodeURI(url);
+          const encodedUrl = encodeURIComponent(url);
           const qrURL = `https://api.qrserver.com/v1/create-qr-code/?data=` + encodedUrl;
           try {
             const openPage = await xapi.Command.UserInterface.WebView.Display({
@@ -714,13 +714,13 @@
         | Time      | App       | Logs                                                                                                         |
         |-----------|-----------|--------------------------------------------------------------------------------------------------------------|
         | HH:MM:SS  | Room Docs | QJS Ready                                                                                                   |
-        | HH:MM:SS  | Room Docs | Config: {"manifestVisibility":"localOnly","remoteSiteManifest":"","localSiteManifest":[{"Name":"Lab 1451","Url":"https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/","QrEnabled":true},{"Name":"Reimagine Workspaces","Url":"https://www.webex.com/us/en/workspaces.html","QrEnabled":true},{"Name":"Cisco","Url":"https://www.cisco.com","QrEnabled":true}]} |
-        | HH:MM:SS  | Room Docs | Appending [Lab 1451] Site to UI                                                                             |
+        | HH:MM:SS  | Room Docs | Config: {"manifestVisibility":"localOnly","remoteSiteManifest":"","localSiteManifest":[{"Name":"Deep-dive into Cisco RoomOS xAPIs","Url":"https://webexcc-sa.github.io/LAB-11197/","QrEnabled":true},{"Name":"Reimagine Workspaces","Url":"https://www.webex.com/us/en/workspaces.html","QrEnabled":true},{"Name":"Cisco","Url":"https://www.cisco.com","QrEnabled":true}]} |
+        | HH:MM:SS  | Room Docs | Appending [Deep-dive into Cisco RoomOS xAPIs] Site to UI                                                                             |
         | HH:MM:SS  | Room Docs | Appending [Reimagine Workspaces] Site to UI                                                                 |
         | HH:MM:SS  | Room Docs | Appending [Cisco] Site to UI                                                                                 |
         | HH:MM:SS  | Room Docs | UserInterface Built! {"status":"OK"}                                                                        |
-        | HH:MM:SS  | Room Docs | Site Webview Opened for: [https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/] {"status":"OK"}       |
-        | HH:MM:SS  | Room Docs | QR Webview Opened for: [https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/] {"status":"OK"} https://api.qrserver.com/v1/create-qr-code/?data=https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/ |
+        | HH:MM:SS  | Room Docs | Site Webview Opened for: [https://webexcc-sa.github.io/LAB-11197/] {"status":"OK"}       |
+        | HH:MM:SS  | Room Docs | QR Webview Opened for: [https://webexcc-sa.github.io/LAB-11197/] {"status":"OK"} https://api.qrserver.com/v1/create-qr-code/?data=https://webexcc-sa.github.io/LAB-11197/ |
         | HH:MM:SS  | Room Docs | Site Webview Opened for: [https://www.webex.com/us/en/workspaces.html] {"status":"OK"}                    |
         | HH:MM:SS  | Room Docs | QR Webview Opened for: [https://www.webex.com/us/en/workspaces.html] {"status":"OK"} https://api.qrserver.com/v1/create-qr-code/?data=https://www.webex.com/us/en/workspaces.html |
 
@@ -764,11 +764,11 @@
         // EDIT MANIFEST URL HERE
         const config = {
           manifestVisibility: 'merge', // localOnly, remoteOnly, merge
-          remoteSiteManifest: 'https://raw.githubusercontent.com/WebexCC-SA/{{ config.cProps.labId }}/refs/heads/main/docs/assets/downloadable_resources/3-4-3_remoteManifest.json',
+          remoteSiteManifest: 'https://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json',
           localSiteManifest: [
             {
-              Name: 'Lab 1451',
-              Url: 'https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/',
+              Name: 'Deep-dive into Cisco RoomOS xAPIs',
+              Url: 'https://webexcc-sa.github.io/LAB-11197/',
               QrEnabled: true
             },
             {
@@ -779,7 +779,7 @@
             {
               Name: 'Cisco',                // <-- Cisco Homepage Added
               Url: 'https://www.cisco.com',
-              QrEnabled: true
+              QrEnabled: false
             },
             // Your Org Details Below Here
           ]
@@ -800,7 +800,7 @@
 
         This lab is hosting a file called `QuickDocs_remoteManifest.json` on GitHub which contains 6 additional sites pre-configured in the same format as the local sites configured on the endpoint
 
-        <a class="md-button md-button--primary" href="https://github.com/WebexCC-SA/{{ config.cProps.labId }}/blob/main/docs/assets/downloadable_resources/3-4-3_remoteManifest.json" target="_blank" >
+        <a class="md-button md-button--primary" href="https://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json" target="_blank" >
           Review the Remote Manifest File <i class="fa-solid fa-square-up-right"></i>
         </a>
 
@@ -813,7 +813,7 @@
         - Select the ==Room Docs Configuration== macro
         - Edit the `remoteSiteManifest` object and assign the following url as a string
             <!-- // EDIT MANIFEST URL HERE -->
-            - https://raw.githubusercontent.com/WebexCC-SA/{{ config.cProps.labId }}/refs/heads/main/docs/assets/downloadable_resources/3-4-3_remoteManifest.json
+            - https://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json
         - Once complete, ==Save==, keep this macro Inactive
         
     ??? "Compare your ==Room Docs Configuration== Macro"
@@ -822,11 +822,11 @@
         // EDIT MANIFEST URL HERE
         const config = {
           manifestVisibility: 'merge', // localOnly, remoteOnly, merge
-          remoteSiteManifest: 'https://raw.githubusercontent.com/WebexCC-SA/{{ config.cProps.labId }}/refs/heads/main/docs/assets/downloadable_resources/3-4-3_remoteManifest.json',
+          remoteSiteManifest: 'https://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json',
           localSiteManifest: [
             {
-              Name: 'Lab 1451',
-              Url: 'https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/',
+              Name: 'Deep-dive into Cisco RoomOS xAPIs',
+              Url: 'https://webexcc-sa.github.io/LAB-11197/',
               QrEnabled: true
             },
             {
@@ -1038,7 +1038,7 @@
         }
 
         async function openQrCode(url, target = 'OSD') {
-          const encodedUrl = encodeURI(url);
+          const encodedUrl = encodeURIComponent(url);
           const qrURL = `https://api.qrserver.com/v1/create-qr-code/?data=` + encodedUrl;
           try {
             const openPage = await xapi.Command.UserInterface.WebView.Display({
@@ -1179,8 +1179,8 @@
         | Time       | Macro      | Log                                                                                                                                                        |
         |------------|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
         | 23:50:16   | Room Docs  | QJS Ready                                                                                                                                                  |
-        | 23:50:16   | Room Docs  | Config: {"manifestVisibility":"merge","remoteSiteManifest":"https://raw.githubusercontent.com/WebexCC-SA/{{ config.cProps.labId }}/refs/heads/main/docs/assets/downloadable_resources/3-4-3_remoteManifest.json","localSiteManifest":[{"Name":"Lab 1451","Url":"https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/","QrEnabled":true},{"Name":"Reimagine Workspaces","Url":"https://www.webex.com/us/en/workspaces.html","QrEnabled":true},{"Name":"Cisco","Url":"https://www.cisco.com","QrEnabled":true}]} |
-        | 23:50:16   | Room Docs  | Appending [Lab 1451] Site to UI                                                                                                                          |
+        | 23:50:16   | Room Docs  | Config: {"manifestVisibility":"merge","remoteSiteManifest":"https://raw.githubusercontent.com/WebexCC-SA/LAB-11197/refs/heads/main/docs/Main-Lab/DownloadContent/QuickDocs_remoteManifest.json","localSiteManifest":[{"Name":"Deep-dive into Cisco RoomOS xAPIs","Url":"https://webexcc-sa.github.io/LAB-11197/","QrEnabled":true},{"Name":"Reimagine Workspaces","Url":"https://www.webex.com/us/en/workspaces.html","QrEnabled":true},{"Name":"Cisco","Url":"https://www.cisco.com","QrEnabled":true}]} |
+        | 23:50:16   | Room Docs  | Appending [Deep-dive into Cisco RoomOS xAPIs] Site to UI                                                                                                                          |
         | 23:50:16   | Room Docs  | Appending [Reimagine Workspaces] Site to UI                                                                                                              |
         | 23:50:16   | Room Docs  | Appending [Cisco] Site to UI                                                                                                                              |
         | 23:50:16   | Room Docs  | Appending [Room Kit EQX 🔗] Site to UI                                                                                                                  |
@@ -1190,7 +1190,7 @@
         | 23:50:16   | Room Docs  | Appending [Using Extra LoudSpeakers 🔗] Site to UI                                                                                                        |
         | 23:50:16   | Room Docs  | Appending [Webex AI Codec 🔗] Site to UI                                                                                                                  |
         | 23:50:16   | Room Docs  | UserInterface Built! {"status":"OK"}                                                                                                                     |
-        | 23:50:31   | Room Docs  | Site Webview Opened for: [https://webexcc-sa.github.io/{{ config.cProps.labId }}/wx1_1451_part_3/] {"status":"OK"}                                                    |
+        | 23:50:31   | Room Docs  | Site Webview Opened for: [https://webexcc-sa.github.io/LAB-11197/] {"status":"OK"}                                                    |
         | 23:50:50   | Room Docs  | QR Webview Opened for: [https://www.cisco.com] {"status":"OK"} https://api.qrserver.com/v1/create-qr-code/?data=https://www.cisco.com                 |
         | 23:50:54   | Room Docs  | Site Webview Opened for: [https://roomos.cisco.com/xapi] {"status":"OK"}                                                                                |
         | 23:51:02   | Room Docs  | QR Webview Opened for: [https://www.cisco.com/c/dam/en/us/td/docs/telepresence/endpoint/ce97/extra-loudspeakers-local-reinforcement-guide-ce97.pdf] {"status":"OK"} https://api.qrserver.com/v1/create-qr-code/?data=https://www.cisco.com/c/dam/en/us/td/docs/telepresence/endpoint/ce97/extra-loudspeakers-local-reinforcement-guide-ce97.pdf |
@@ -1267,7 +1267,7 @@
         }
 
         async function openQrCode(url, target = 'OSD') {
-          const encodedUrl = encodeURI(url);
+          const encodedUrl = encodeURIComponent(url);
           const qrURL = `https://api.qrserver.com/v1/create-qr-code/?data=` + encodedUrl;
           try {
             const openPage = await xapi.Command.UserInterface.WebView.Display({

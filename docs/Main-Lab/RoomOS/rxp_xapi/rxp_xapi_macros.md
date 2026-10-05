@@ -739,7 +739,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
     - **Task:** 
         - Activate this Lesson Macro using the MacroPak Manager Button
         - Add the following to the <hl_5>getConfigValue()</hl_5> function
-            - Format <hl_4>xConfig Audio DefaultVolume</hl_4> using Macro syntax and use the <hl_4>.get()</hl_4> method and assign it to the <hl_1>targetConfig</hl_1> object
+            - Format <hl_4>xConfig Audio DefaultVolume</hl_4> using Macro syntax and use the <hl_4>.get()</hl_4> method. Assign it to the <hl_1>targetConfig</hl_1> object
     
     - Save the lesson Macro
     - Monitor the Macro console and the OSD of your device for any changes
@@ -789,7 +789,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
     - **Task:** 
         - Activate this Lesson Macro using the MacroPak Manager Button
         - Add the following to the <hl_5>setConfigValue()</hl_5> function
-            - Format <hl_4>xConfig Audio DefaultVolume</hl_4> using Macro syntax and use the <hl_7>.set()</hl_7> method and assign it to the <hl_1>targetConfig</hl_1> object
+            - Format <hl_4>xConfig Audio DefaultVolume</hl_4> using Macro syntax and use the <hl_7>.set()</hl_7> method. Assign it to the <hl_1>targetConfig</hl_1> object
             - Pass the <hl_6>value</hl_6> function parameter the value for the <hl_7>.set()</hl_7>
         - Optional: 
             - In the <hl_5>setConfigValue()</hl_5> function, change the value of the <hl_5>setConfigValue()</hl_5> parameter to any value between 0 and 100.
@@ -860,7 +860,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
     - **Task:** 
         - Activate this Lesson Macro using the MacroPak Manager Button
         - Add the following to the <hl_5>getConfigValue()</hl_5> function
-            - Format <hl_4>xConfig Audio</hl_4> using Macro syntax and use the <hl_4>.get()</hl_4> method and assign it to the <hl_1>targetConfig</hl_1> object
+            - Format <hl_4>xConfig Audio</hl_4> using Macro syntax and use the <hl_4>.get()</hl_4> method. Assign it to the <hl_1>targetConfig</hl_1> object
     
     - Save the lesson Macro
     - Monitor the Macro console and the OSD of your device for any changes
@@ -953,7 +953,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
     - **Task:** 
         - **Disable all MacroPak macros by selecting the Stop button in the MacroPak Manager**
         - Modify the <hl_5>subscribeToDefaultVolume</hl_5> object
-            - Format <hl_4>xConfiguration Audio DefaultVolume</hl_4> using Macro syntax and use the <hl_2>.on()</hl_2> method and assign it to the <hl_1>subscribeToDefaultVolume</hl_1> object
+            - Format <hl_4>xConfiguration Audio DefaultVolume</hl_4> using Macro syntax and use the <hl_2>.on()</hl_2> method. Assign it to the <hl_1>subscribeToDefaultVolume</hl_1> object
             - Note: This macro is designed to randomly set the value of <hl_4>xConfiguration Audio DefaultVolume</hl_4> when enabled. It will unsubscribe from our xAPI in 10 seconds.
         - Activate this Lesson Macro using the MacroPak Manager Button
 
@@ -1067,7 +1067,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
     - **Task:** 
         - **Disable all MacroPak macros by selecting the Stop button in the MacroPak Manager**
         - Modify the <hl_5>subscribeToAirPlay</hl_5> object
-            - Format <hl_4>xConfiguration Video Input AirPlay</hl_4> using Macro syntax and use the <hl_2>.on()</hl_2> method and assign it to the <hl_1>subscribeToAirPlay</hl_1> object
+            - Format <hl_4>xConfiguration Video Input AirPlay</hl_4> using Macro syntax and use the <hl_2>.on()</hl_2> method. Assign it to the <hl_1>subscribeToAirPlay</hl_1> object
             - Note: This macro is designed to randomly set the value of <hl_4>xConfiguration Video Input AirPlay</hl_4> when enabled. It will unsubscribe from our xAPI in 10 seconds.
         - Activate this Lesson Macro using the MacroPak Manager Button
 
@@ -1158,36 +1158,36 @@ Knowing the Front end and Back end is not only good for your edification, but is
             | HH:MM:SS   | [system]                       | Runtime stopped!                               |
             | HH:MM:SS   | [system]                       | Using XAPI transport: WebSocket                |
             | HH:MM:SS   | [system]                       | Starting macros...                             |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Subscription stopping in [5] seconds   |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | QJS Ready                                      |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Mode":"On"}                 |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Beacon":"Off"}              |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Subscription stopping in [4] seconds    |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Mode":"Off"}                |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Mode":"On"}                 |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Subscription stopping in [3] seconds    |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Beacon":"Auto"}             |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Subscription stopping in [2] seconds    |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Mode":"Off"}                |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Beacon":"Off"}              |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Beacon":"Auto"}             |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Subscription stopping in [1] seconds    |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Mode":"On"}                 |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Mode":"Off"}                |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Changes: \{"Password":"***"}            |
-            | HH:MM:SS   | xConfigs_Lesson-5_MacroPak_2-6-4 | AirPlay Subscription stopped!                   |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Subscription stopping in [5] seconds   |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | QJS Ready                                      |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Mode":"On"}                 |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Beacon":"Off"}              |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Subscription stopping in [4] seconds    |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Mode":"Off"}                |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Mode":"On"}                 |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Subscription stopping in [3] seconds    |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Beacon":"Auto"}             |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Subscription stopping in [2] seconds    |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Mode":"Off"}                |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Beacon":"Off"}              |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Beacon":"Auto"}             |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Subscription stopping in [1] seconds    |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Mode":"On"}                 |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Mode":"Off"}                |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Changes: \{"Password":"***"}            |
+            | HH:MM:SS   | subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node | AirPlay Subscription stopped!                   |
 
 <!-- ??? challenge "Challenge: Can you spot the Error?"
 
-    In both the `xConfigs_Lesson-4_MacroPak_2-6-4` and `xConfigs_Lesson-5_MacroPak_2-6-4` macros, there is an error
+    In both the `xConfigs_Lesson-4_MacroPak_2-6-4` and `subscribe-and-unsubscribe-to-multiple-xconfigurations-under-a-common-node` macros, there is an error
 
     It's not an error in the syntax or format, but an error in the automation
 
@@ -1201,16 +1201,17 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
 ???+ lesson "Lesson: Get an xStatus Value ~({{config.cProps.rxp.sectionIds.macro}}.5.1)~"
 
-    - **xAPI:** xStatus Audio Volume
+    - **xAPI:**
+        - <hl_0>xStatus Audio Volume</hl_0>
+
+    {{config.cProps.macroPak.instructions | indent (4) }}
 
     - **Task:**
-        - Activate the ==xStatuses_Lesson-1_MacroPak_2-6-4== macro
-        - Modify the `getStatusValue()` function by replacing the existing value of `targetStatus` with ==xStatus Audio Volume== written in Macro Syntax
-        - Save the lesson Macro
+        - Activate this Lesson Macro using the MacroPak Manager Button
+        - Add the following to the <hl_5>getStatusValue()</hl_5> function
+            - Format <hl_4>xStatus Audio Volume</hl_4> using Macro syntax and use the <hl_4>.get()</hl_4> method. Assign it to the <hl_1>targetStatus</hl_1> object
+    - Save the lesson Macro
     - Monitor the Macro console and the OSD of your device for any changes
-
-        - When Complete, deactivate the ==xStatuses_Lesson-1_MacroPak_2-6-4== macro
-
 
     ??? "View Successful Macro Syntax and Log output"
 
@@ -1244,21 +1245,22 @@ Knowing the Front end and Back end is not only good for your edification, but is
             | HH:MM:SS  | [system]                             | Runtime stopped!          |
             | HH:MM:SS  | [system]                             | Using XAPI transport: WebSocket |
             | HH:MM:SS  | [system]                             | Starting macros...        |
-            | HH:MM:SS  | xStatuses_Lesson-1_MacroPak_2-6-4   | QJS Ready                 |
-            | HH:MM:SS  | xStatuses_Lesson-1_MacroPak_2-6-4   | Volume: 50         |
+            | HH:MM:SS  | get-an-xstatus-value   | QJS Ready                 |
+            | HH:MM:SS  | get-an-xstatus-value   | Volume: 50         |
 
 ??? lesson "Lesson: Get multiple xStatuses under a Common Node ~({{config.cProps.rxp.sectionIds.macro}}.5.2)~"
 
-    - **xAPI:** xStatus Audio
+    - **xAPI:**
+        - <hl_0>xStatus Audio</hl_0>
+
+    {{config.cProps.macroPak.instructions | indent (4) }}
 
     - **Task:**
-        - Activate the ==xStatuses_Lesson-2_MacroPak_2-6-4== macro
-        - Modify the `getStatusValue()` function by replacing the existing value of `targetStatus` with ==xStatus Audio== written in Macro Syntax
-        - Save the lesson Macro
+        - Activate this Lesson Macro using the MacroPak Manager Button
+        - Add the following to the <hl_5>getStatusValue()</hl_5> function
+            - Format <hl_4>xStatus Audio</hl_4> using Macro syntax and use the <hl_4>.get()</hl_4> method. Assign it to the <hl_1>targetStatus</hl_1> object
+    - Save the lesson Macro
     - Monitor the Macro console and the OSD of your device for any changes
-
-        - When Complete, deactivate the ==xStatuses_Lesson-2_MacroPak_2-6-4== macro
-
 
     ??? "View Successful Macro Syntax and Log output"
 
@@ -1292,23 +1294,29 @@ Knowing the Front end and Back end is not only good for your edification, but is
             | HH:MM:SS  | [system]                             | Runtime stopped!          |
             | HH:MM:SS  | [system]                             | Using XAPI transport: WebSocket |
             | HH:MM:SS  | [system]                             | Starting macros...        |
-            | HH:MM:SS  | xStatuses_Lesson-2_MacroPak_2-6-4   | QJS Ready                 |
-            | HH:MM:SS  | xStatuses_Lesson-2_MacroPak_2-6-4   | `{ "Devices": { "Bluetooth": { "ActiveProfile": "None" }, "HandsetUSB": { "ConnectionStatus": "NotConnected", "Cradle": "OnHook" }, "HeadsetUSB": { "ConnectionStatus": "NotConnected", "Description": "", "Manufacturer": "" } }, "Input": { "Connectors": { "HDMI": [ { "Mute": "On", "id": "1" } ], "Microphone": [ { "ConnectionStatus": "Connected", "id": "1" }, { "ConnectionStatus": "NotConnected", "id": "2" }, { "ConnectionStatus": "NotConnected", "id": "3" } ], "USBC": [ { "Mute": "On", "id": "1" } ] } } }{..."And the List Goes On"}`         |
+            | HH:MM:SS  | get-an-xstatus-value   | QJS Ready                 |
+            | HH:MM:SS  | get-an-xstatus-value   | `{ "Devices": { "Bluetooth": { "ActiveProfile": "None" }, "HandsetUSB": { "ConnectionStatus": "NotConnected", "Cradle": "OnHook" }, "HeadsetUSB": { "ConnectionStatus": "NotConnected", "Description": "", "Manufacturer": "" } }, "Input": { "Connectors": { "HDMI": [ { "Mute": "On", "id": "1" } ], "Microphone": [ { "ConnectionStatus": "Connected", "id": "1" }, { "ConnectionStatus": "NotConnected", "id": "2" }, { "ConnectionStatus": "NotConnected", "id": "3" } ], "USBC": [ { "Mute": "On", "id": "1" } ] } } }{..."And the List Goes On"}`         |
 
 ??? lesson "Lesson: Subscribe and Unsubscribe to an xStatus ~({{config.cProps.rxp.sectionIds.macro}}.5.3)~"
 
-    - **xAPI:** xStatus Audio Volume
+    - **xAPI:**
+        - <hl_0>xStatus Audio Volume</hl_0>
 
-    - **Task**:
-        - Activate the ==xStatuses_Lesson-3_MacroPak_2-6-5== macro
-        - Modify the `subscribeToVolume` object by replacing it's value with ==xStatus Audio Volume== written in Macro Syntax using the <hl_2>.on()</hl_2> method
-            - In order to unsubscribe, we need to assign our xAPI subscription to an object, so we can later call it, which will end it's subscription
-            - For example, after you assign the ==subscribeToVolume== properly, running ==subscribeToVolume=={++()++} will stop your active subscription
-        - Save your Macro, raise and lower the volume on your Codec and monitor the Macro Console to see if you had a successful response
+    {{config.cProps.macroPak.instructions | indent (4) }}
 
-            - NOTE: This macro will automatically unsubscribe for you. Review those steps, to get a better understand as to how we unsubscribe.
+    - **Task:**
+        - **Disable all MacroPak macros by selecting the Stop button in the MacroPak Manager**
+        - Modify the <hl_1>subscribeToVolume</hl_1> object
+            - Format <hl_4>xStatus Audio Volume</hl_4> using Macro syntax and use the <hl_2>.on()</hl_2> method. Assign it to the <hl_1>subscribeToVolume</hl_1> object
+            - Note: This macro automatically unsubscribes after 10 seconds.
+        - Activate this Lesson Macro using the MacroPak Manager Button
+    - Save the lesson Macro
+    - Raise and lower the volume on your Codec and monitor the Macro Console
+        - If you missed the volume events, re-save the macro and perform this task within 10 seconds
 
-        - When Complete, deactivate the ==xStatuses_Lesson-3_MacroPak_2-6-5== macro
+    - Review the contents of this Macro and take note of how we unsubscribe
+        - Unsubscribing requires us to assign our xAPI path to an object
+        - Calling this object as a function by appending <hl_0>()</hl_0>; the subscription will stop
 
     ??? success "View Successful Macro Syntax and Log output"
 
@@ -1368,53 +1376,52 @@ Knowing the Front end and Back end is not only good for your edification, but is
             |------------|------------------------------------------|----------------------------------------------|
             | HH:MM:SS  | [system]                                 | Using XAPI transport: WebSocket              |
             | HH:MM:SS  | [system]                                 | Starting macros...                           |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume Subscription stopping in [10] seconds |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | QJS Ready                                    |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume Subscription stopping in [9] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume Subscription stopping in [8] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume Subscription stopping in [7] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume: 80                                   |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume: 85                                   |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume Subscription stopping in [6] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume: 90                                   |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume Subscription stopping in [5] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume: 85                                   |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume Subscription stopping in [4] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume: 80                                   |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume Subscription stopping in [3] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume: 75                                   |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume: 70                                   |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume Subscription stopping in [2] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume: 65                                   |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume Subscription stopping in [1] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume: 60                                   |
-            | HH:MM:SS  | xStatuses_Lesson-3_MacroPak_2-6-5      | Volume Subscription stopped!                  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume Subscription stopping in [10] seconds |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | QJS Ready                                    |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume Subscription stopping in [9] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume Subscription stopping in [8] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume Subscription stopping in [7] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume: 80                                   |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume: 85                                   |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume Subscription stopping in [6] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume: 90                                   |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume Subscription stopping in [5] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume: 85                                   |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume Subscription stopping in [4] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume: 80                                   |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume Subscription stopping in [3] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume: 75                                   |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume: 70                                   |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume Subscription stopping in [2] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume: 65                                   |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume Subscription stopping in [1] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume: 60                                   |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xstatus      | Volume Subscription stopped!                  |
 
 
 ??? lesson "Lesson: Subscribe and Unsubscribe to Multiple xStatuses under a Common Node ~({{config.cProps.rxp.sectionIds.macro}}.5.4)~"
 
-    - **xAPI:** xStatus Cameras Camera[N] Position
+    - **xAPI:**
+        - <hl_0>xStatus Cameras Camera[N] Position</hl_0>
 
-    - **Task**:
-        - Activate the ==xStatuses_Lesson-4_MacroPak_2-6-5== macro
-        - Modify the `subscribeToCameraPositions` object by replacing it's value with ==xStatus Cameras Camera[N] Position== written in Macro Syntax using the <hl_2>.on()</hl_2> method
-            - In order to unsubscribe, we need to assign our xAPI subscription to an object, so we can later call it, which will end it's subscription
-            - For example, after you assign the ==subscribeToCameraPositions== properly, running ==subscribeToCameraPositions=={++()++} will stop your active subscription
-        - Save your Macro, and perform the following steps
-            - Access the Codec's Control Panel on it's touch interface
-            - Select Cameras
-            - Select Manual
-            - Then use the Control Wheel, Zoom In (+) and and Zoom out (-) buttons and observe your Macro Log output
+    {{config.cProps.macroPak.instructions | indent (4) }}
 
-            - NOTE: This macro will automatically unsubscribe for you. Review those steps, to get a better understand as to how we unsubscribe.
+    - **Task:**
+        - **Disable all MacroPak macros by selecting the Stop button in the MacroPak Manager**
+        - Modify the <hl_1>subscribeToCameraPositions</hl_1> object
+            - Format <hl_4>xStatus Cameras Camera[N] Position</hl_4> using Macro syntax and use the <hl_2>.on()</hl_2> method. Assign it to the <hl_1>subscribeToCameraPositions</hl_1> object
+            - Note: This macro automatically unsubscribes after 10 seconds.
+        - Activate this Lesson Macro using the MacroPak Manager Button
+    - Save the lesson Macro
+    - Perform the following steps
+        - Open the Subscription Assistant
+        - Select the xStatus Page
+        - Then use the Control Wheel, Zoom In (+) and and Zoom out (-) buttons and observe your Macro Log output
+        - If you missed the camera events, re-save the macro and perform this task within 10 seconds
 
-        - When Complete, deactivate the ==xStatuses_Lesson-4_MacroPak_2-6-5== macro
-
-    ??? gif "Accessing the Camera Menu"
-
-        <figure markdown>
-          ![Navigate to Camera Control Menu GIF](./images/2-2-4_CameraMenuAccess.gif){ width="600" }
-        </figure>
+    - Review the contents of this Macro and take note of how we unsubscribe
+        - Unsubscribing requires us to assign our xAPI path to an object
+        - Calling this object as a function by appending <hl_0>()</hl_0>; the subscription will stop
 
     ??? success "View Successful Macro Syntax and Log output"
 
@@ -1475,52 +1482,54 @@ Knowing the Front end and Back end is not only good for your edification, but is
             | HH:MM:SS  | [system]                                 | Runtime stopped!                             |
             | HH:MM:SS  | [system]                                 | Using XAPI transport: WebSocket              |
             | HH:MM:SS  | [system]                                 | Starting macros...                           |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | CameraPositions Subscription stopping in [10] seconds |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | QJS Ready                                    |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | {"Zoom":"4295"}                             |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | CameraPositions Subscription stopping in [9] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | {"Zoom":"5662"}                             |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | CameraPositions Subscription stopping in [8] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | {"Pan":"-65"}                               |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | CameraPositions Subscription stopping in [7] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | {"Pan":"-64","Tilt":"123"}                  |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | CameraPositions Subscription stopping in [6] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | {"Pan":"-61","Tilt":"-20"}                  |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | {"Pan":"-24","Tilt":"-19"}                  |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | CameraPositions Subscription stopping in [5] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | {"Tilt":"47"}                               |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | CameraPositions Subscription stopping in [4] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | {"Zoom":"4384"}                             |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | CameraPositions Subscription stopping in [3] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | {"Tilt":"-14"}                              |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | CameraPositions Subscription stopping in [2] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | {"Pan":"14"}                                |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | CameraPositions Subscription stopping in [1] seconds  |
-            | HH:MM:SS  | xStatuses_Lesson-4_MacroPak_2-6-5      | CameraPositions Subscription stopped!        |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | CameraPositions Subscription stopping in [10] seconds |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | QJS Ready                                    |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | {"Zoom":"4295"}                             |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | CameraPositions Subscription stopping in [9] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | {"Zoom":"5662"}                             |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | CameraPositions Subscription stopping in [8] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | {"Pan":"-65"}                               |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | CameraPositions Subscription stopping in [7] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | {"Pan":"-64","Tilt":"123"}                  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | CameraPositions Subscription stopping in [6] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | {"Pan":"-61","Tilt":"-20"}                  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | {"Pan":"-24","Tilt":"-19"}                  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | CameraPositions Subscription stopping in [5] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | {"Tilt":"47"}                               |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | CameraPositions Subscription stopping in [4] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | {"Zoom":"4384"}                             |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | CameraPositions Subscription stopping in [3] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | {"Tilt":"-14"}                              |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | CameraPositions Subscription stopping in [2] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | {"Pan":"14"}                                |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | CameraPositions Subscription stopping in [1] seconds  |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-multiple-xstatuses-under-a-common-node      | CameraPositions Subscription stopped!        |
 
 
 ## **Subscribing to xEvents** ~({{config.cProps.rxp.sectionIds.macro}}.6)~
 
 ???+ lesson "Lesson: Subscribe and Unsubscribe to an xEvent ~({{config.cProps.rxp.sectionIds.macro}}.6.1)~"
 
-    - **xAPI:** xEvent UserInterface Extensions Widget Action
+    - **xAPI:**
+        - <hl_0>xEvent UserInterface Extensions Widget Action</hl_0>
 
-    - **Task**:
-        - Activate the ==xEvents_Lesson-1_MacroPak_2-6-6== macro
-        - Modify the `subscribeToWidgetActions` object by replacing it's value with ==xEvent UserInterface Widget Action== written in Macro Syntax using the <hl_2>.on()</hl_2> method
-            - In order to unsubscribe, we need to assign our xAPI subscription to an object, so we can later call it, which will end it's subscription
-            - For example, after you assign the ==subscribeToWidgetActions== properly, running ==subscribeToWidgetActions=={++()++} will stop your active subscription
-        - Save your Macro, open the ==MultiLine Command [2.6.6]== Panel on your Codec's touch interface, press one or more of the buttons and observe the Macro Log Output
+    {{config.cProps.macroPak.instructions | indent (4) }}
 
-            - NOTE: This macro will automatically unsubscribe for you. Review those steps, to get a better understand as to how we unsubscribe.
+    - **Task:**
+        - **Disable all MacroPak macros by selecting the Stop button in the MacroPak Manager**
+        - Modify the <hl_1>subscribeToWidgetActions</hl_1> object
+            - Format <hl_4>xEvent UserInterface Extensions Widget Action</hl_4> using Macro syntax and use the <hl_2>.on()</hl_2> method. Assign it to the <hl_1>subscribeToWidgetActions</hl_1> object
+            - Note: This macro automatically unsubscribes after 10 seconds.
+        - Activate this Lesson Macro using the MacroPak Manager Button
+    - Save the lesson Macro
+    - Perform the following steps
+        - Open the MultiLine Command button
+        - Press one or more buttons and observe your Macro Log output
+        - If you missed the widget events, re-save the macro and perform this task within 10 seconds
 
-        - When Complete, deactivate the ==xEvents_Lesson-1_MacroPak_2-6-6== macro
-
-    ??? gif "Open the **MultiLine Command [2.6.6]** Panel"
-
-        <figure markdown>
-          ![Open the MultiLine Command [2.6.6] Panel](./images/2-6-6_Get-xEvent-WidgetActions.gif){ width="600" }
-        </figure>
+    - Review the contents of this Macro and take note of how we unsubscribe
+        - Unsubscribing requires us to assign our xAPI path to an object
+        - Calling this object as a function by appending <hl_0>()</hl_0>; the subscription will stop
 
     ??? success "View Successful Macro Syntax and Log output"
 
@@ -1576,7 +1585,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
                 <Location>HomeScreen</Location>
                 <Icon>Info</Icon>
                 <Color>#FC5143</Color>
-                <Name>MultiLine Command [2.6.6]</Name>
+                <Name>MultiLine Command</Name>
                 <ActivityType>Custom</ActivityType>
                 <Page>
                   <Name>Page</Name>
@@ -1670,68 +1679,76 @@ Knowing the Front end and Back end is not only good for your edification, but is
             | HH:MM:SS  | [system]                                 | Runtime stopped!                             |
             | HH:MM:SS  | [system]                                 | Using XAPI transport: WebSocket              |
             | HH:MM:SS  | [system]                                 | Starting macros...                           |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | QJS Ready                                    |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | WidgetActions Subscription stopping in [10] seconds |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"pressed","Value":"GroupButton_A","WidgetId":"wx1_GroupButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"released","Value":"GroupButton_A","WidgetId":"wx1_GroupButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"pressed","Value":"GroupButton_B","WidgetId":"wx1_GroupButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | WidgetActions Subscription stopping in [9] seconds |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | Panel [wx1_lab_multilineCommand] saved to the codec |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"released","Value":"GroupButton_B","WidgetId":"wx1_GroupButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"pressed","Value":"GroupButton_C","WidgetId":"wx1_GroupButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"released","Value":"GroupButton_C","WidgetId":"wx1_GroupButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | WidgetActions Subscription stopping in [8] seconds |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"pressed","Value":"","WidgetId":"wx1_TextButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"released","Value":"","WidgetId":"wx1_TextButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"clicked","Value":"","WidgetId":"wx1_TextButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"pressed","Value":"","WidgetId":"wx1_IconButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | WidgetActions Subscription stopping in [7] seconds |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"released","Value":"","WidgetId":"wx1_IconButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"clicked","Value":"","WidgetId":"wx1_IconButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"pressed","Value":"decrement","WidgetId":"wx1_SpinnerButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | WidgetActions Subscription stopping in [6] seconds |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"released","Value":"decrement","WidgetId":"wx1_SpinnerButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"clicked","Value":"decrement","WidgetId":"wx1_SpinnerButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | WidgetActions Subscription stopping in [5] seconds |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"pressed","Value":"increment","WidgetId":"wx1_SpinnerButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"released","Value":"increment","WidgetId":"wx1_SpinnerButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"clicked","Value":"increment","WidgetId":"wx1_SpinnerButton","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | WidgetActions Subscription stopping in [4] seconds |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"pressed","Value":"up","WidgetId":"wx1_ControlWheel","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"released","Value":"up","WidgetId":"wx1_ControlWheel","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"clicked","Value":"up","WidgetId":"wx1_ControlWheel","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"pressed","Value":"left","WidgetId":"wx1_ControlWheel","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | WidgetActions Subscription stopping in [3] seconds |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"released","Value":"left","WidgetId":"wx1_ControlWheel","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"clicked","Value":"left","WidgetId":"wx1_ControlWheel","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | WidgetActions Subscription stopping in [2] seconds |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"pressed","Value":"center","WidgetId":"wx1_ControlWheel","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"released","Value":"center","WidgetId":"wx1_ControlWheel","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"clicked","Value":"center","WidgetId":"wx1_ControlWheel","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | WidgetActions Subscription stopping in [1] seconds |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | {"Type":"changed","Value":"off","WidgetId":"wx1_Toggle","id":"1"} |
-            | HH:MM:SS  | xEvents_Lesson-1_MacroPak_2-6-6        | WidgetActions Subscription stopped!        |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | QJS Ready                                    |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | WidgetActions Subscription stopping in [10] seconds |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"pressed","Value":"GroupButton_A","WidgetId":"wx1_GroupButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"released","Value":"GroupButton_A","WidgetId":"wx1_GroupButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"pressed","Value":"GroupButton_B","WidgetId":"wx1_GroupButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | WidgetActions Subscription stopping in [9] seconds |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | Panel [wx1_lab_multilineCommand] saved to the codec |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"released","Value":"GroupButton_B","WidgetId":"wx1_GroupButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"pressed","Value":"GroupButton_C","WidgetId":"wx1_GroupButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"released","Value":"GroupButton_C","WidgetId":"wx1_GroupButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | WidgetActions Subscription stopping in [8] seconds |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"pressed","Value":"","WidgetId":"wx1_TextButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"released","Value":"","WidgetId":"wx1_TextButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"clicked","Value":"","WidgetId":"wx1_TextButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"pressed","Value":"","WidgetId":"wx1_IconButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | WidgetActions Subscription stopping in [7] seconds |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"released","Value":"","WidgetId":"wx1_IconButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"clicked","Value":"","WidgetId":"wx1_IconButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"pressed","Value":"decrement","WidgetId":"wx1_SpinnerButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | WidgetActions Subscription stopping in [6] seconds |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"released","Value":"decrement","WidgetId":"wx1_SpinnerButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"clicked","Value":"decrement","WidgetId":"wx1_SpinnerButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | WidgetActions Subscription stopping in [5] seconds |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"pressed","Value":"increment","WidgetId":"wx1_SpinnerButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"released","Value":"increment","WidgetId":"wx1_SpinnerButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"clicked","Value":"increment","WidgetId":"wx1_SpinnerButton","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | WidgetActions Subscription stopping in [4] seconds |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"pressed","Value":"up","WidgetId":"wx1_ControlWheel","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"released","Value":"up","WidgetId":"wx1_ControlWheel","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"clicked","Value":"up","WidgetId":"wx1_ControlWheel","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"pressed","Value":"left","WidgetId":"wx1_ControlWheel","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | WidgetActions Subscription stopping in [3] seconds |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"released","Value":"left","WidgetId":"wx1_ControlWheel","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"clicked","Value":"left","WidgetId":"wx1_ControlWheel","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | WidgetActions Subscription stopping in [2] seconds |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"pressed","Value":"center","WidgetId":"wx1_ControlWheel","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"released","Value":"center","WidgetId":"wx1_ControlWheel","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"clicked","Value":"center","WidgetId":"wx1_ControlWheel","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | WidgetActions Subscription stopping in [1] seconds |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | {"Type":"changed","Value":"off","WidgetId":"wx1_Toggle","id":"1"} |
+            | HH:MM:SS  | subscribe-and-unsubscribe-to-an-xevent        | WidgetActions Subscription stopped!        |
 
 
 ??? lesson "Lesson: Subscribe and Unsubscribe to Multiple xEvents under a Common Node ~({{config.cProps.rxp.sectionIds.macro}}.6.2)~"
 
-    - **xAPI:** xEvent UserInterface Extensions
+    - **xAPI:**
+        - <hl_0>xEvent UserInterface Extensions</hl_0>
 
-    - **Task**:
-        - Activate the ==xEvents_Lesson-1_MacroPak_2-6-6== macro
-        - Modify the `subscribeToAllExtensions` object by replacing it's value with ==xEvent UserInterface== written in Macro Syntax using the <hl_2>.on()</hl_2> method
-            - In order to unsubscribe, we need to assign our xAPI subscription to an object, so we can later call it, which will end it's subscription
-            - For example, after you assign the ==subscribeToAllExtensions== properly, running ==subscribeToAllExtensions=={++()++} will stop your active subscription
-        - Save your Macro, open the ==MultiLine Command [2.6.6]== Panel on your Codec's touch interface, press one or more of the buttons and observe the Macro Log Output
+    {{config.cProps.macroPak.instructions | indent (4) }}
 
-            - NOTE: This macro will automatically unsubscribe for you. Review those steps, to get a better understand as to how we unsubscribe.
+    - **Task:**
+        - **Disable all MacroPak macros by selecting the Stop button in the MacroPak Manager**
+        - Modify the <hl_1>subscribeToAllExtensions</hl_1> object
+            - Format <hl_4>xEvent UserInterface Extensions</hl_4> using Macro syntax and use the <hl_2>.on()</hl_2> method. Assign it to the <hl_1>subscribeToAllExtensions</hl_1> object
+            - Note: This macro automatically unsubscribes after 10 seconds.
+        - Activate this Lesson Macro using the MacroPak Manager Button
+    - Save the lesson Macro
+    - Perform the following steps
+        - Open the MultiLine Command button
+        - Press one or more buttons and observe your Macro Log output
+        - If you missed the widget events, re-save the macro and perform this task within 10 seconds
 
-        - When Complete, deactivate the ==xEvents_Lesson-1_MacroPak_2-6-6== macro
+    - Review the contents of this Macro and take note of how we unsubscribe
+        - Unsubscribing requires us to assign our xAPI path to an object
+        - Calling this object as a function by appending <hl_0>()</hl_0>; the subscription will stop
 
-    ??? gif "Open the **MultiLine Command [2.6.6]** Panel"
+    ??? gif "Open the **MultiLine Command** Panel"
 
         <figure markdown>
-          ![Open the MultiLine Command [2.6.6] Panel](./images/2-6-6_Get-xEvent-WidgetActions.gif){ width="600" }
+          ![Open the MultiLine Command Panel](./images/2-6-6_Get-xEvent-WidgetActions.gif){ width="600" }
         </figure>
 
     ??? success "View Successful Macro Syntax and Log output"
@@ -1788,7 +1805,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
                 <Location>HomeScreen</Location>
                 <Icon>Info</Icon>
                 <Color>#FF6F20</Color>
-                <Name>MultiLine Command [2.6.6]</Name>
+                <Name>MultiLine Command</Name>
                 <ActivityType>Custom</ActivityType>
                 <Page>
                   <Name>Page</Name>
@@ -1882,50 +1899,50 @@ Knowing the Front end and Back end is not only good for your edification, but is
             | HH:MM:SS | [system]                                   | Runtime stopped!                                                                           |
             | HH:MM:SS | [system]                                   | Using XAPI transport: WebSocket                                                             |
             | HH:MM:SS | [system]                                   | Starting macros...                                                                          |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | AllExtensions Subscription stopping in [10] seconds                                         |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | QJS Ready                                                                                   |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | Panel [wx1_lab_multilineCommand] saved to the codec                                        |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"LayoutUpdated":{"id":"1"},"id":"1"},"id":"1"}                                 |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Panel":{"Clicked":{"PanelId":"wx1_lab_multilineCommand","id":"1"},"id":"1"},"id":"1"}  |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | AllExtensions Subscription stopping in [9] seconds                                          |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | AllExtensions Subscription stopping in [8] seconds                                          |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Pressed":{"Signal":"wx1_GroupButton:GroupButton_A","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"pressed","Value":"GroupButton_A","WidgetId":"wx1_GroupButton","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Released":{"Signal":"wx1_GroupButton:GroupButton_A","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"released","Value":"GroupButton_A","WidgetId":"wx1_GroupButton","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | AllExtensions Subscription stopping in [7] seconds                                          |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Pressed":{"Signal":"wx1_IconButton","id":"1"},"id":"1"},"id":"1"}               |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"pressed","Value":"","WidgetId":"wx1_IconButton","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Released":{"Signal":"wx1_IconButton","id":"1"},"id":"1"},"id":"1"}              |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"released","Value":"","WidgetId":"wx1_IconButton","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Clicked":{"Signal":"wx1_IconButton","id":"1"},"id":"1"},"id":"1"}               |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"clicked","Value":"","WidgetId":"wx1_IconButton","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | AllExtensions Subscription stopping in [6] seconds                                          |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Pressed":{"Signal":"wx1_ControlWheel:center","id":"1"},"id":"1"},"id":"1"}     |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"pressed","Value":"center","WidgetId":"wx1_ControlWheel","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Released":{"Signal":"wx1_ControlWheel:center","id":"1"},"id":"1"},"id":"1"}   |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"released","Value":"center","WidgetId":"wx1_ControlWheel","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Clicked":{"Signal":"wx1_ControlWheel:center","id":"1"},"id":"1"},"id":"1"}   |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"clicked","Value":"center","WidgetId":"wx1_ControlWheel","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | AllExtensions Subscription stopping in [5] seconds                                          |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | AllExtensions Subscription stopping in [4] seconds                                          |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Pressed":{"Signal":"wx1_Slider:188","id":"1"},"id":"1"},"id":"1"}            |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"pressed","Value":"188","WidgetId":"wx1_Slider","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Changed":{"Signal":"wx1_Slider:98","id":"1"},"id":"1"},"id":"1"}              |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"changed","Value":"98","WidgetId":"wx1_Slider","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Changed":{"Signal":"wx1_Slider:98","id":"1"},"id":"1"},"id":"1"}              |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"changed","Value":"98","WidgetId":"wx1_Slider","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Released":{"Signal":"wx1_Slider:98","id":"1"},"id":"1"},"id":"1"}            |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"released","Value":"98","WidgetId":"wx1_Slider","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | AllExtensions Subscription stopping in [3] seconds                                          |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Changed":{"Signal":"wx1_Toggle:on","id":"1"},"id":"1"},"id":"1"}             |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"changed","Value":"on","WidgetId":"wx1_Toggle","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | AllExtensions Subscription stopping in [2] seconds                                          |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Pressed":{"Signal":"wx1_SpinnerButton:decrement","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"pressed","Value":"decrement","WidgetId":"wx1_SpinnerButton","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | AllExtensions Subscription stopping in [1] seconds                                          |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Released":{"Signal":"wx1_SpinnerButton:decrement","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"released","Value":"decrement","WidgetId":"wx1_SpinnerButton","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Event":{"Clicked":{"Signal":"wx1_SpinnerButton:decrement","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | {"Widget":{"Action":{"Type":"clicked","Value":"decrement","WidgetId":"wx1_SpinnerButton","id":"1"},"id":"1"},"id":"1"} |
-            | HH:MM:SS | xEvents_Lesson-2_MacroPak_2-6-6           | AllExtensions Subscription stopped!                                                         |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | AllExtensions Subscription stopping in [10] seconds                                         |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | QJS Ready                                                                                   |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | Panel [wx1_lab_multilineCommand] saved to the codec                                        |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"LayoutUpdated":{"id":"1"},"id":"1"},"id":"1"}                                 |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Panel":{"Clicked":{"PanelId":"wx1_lab_multilineCommand","id":"1"},"id":"1"},"id":"1"}  |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | AllExtensions Subscription stopping in [9] seconds                                          |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | AllExtensions Subscription stopping in [8] seconds                                          |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Pressed":{"Signal":"wx1_GroupButton:GroupButton_A","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"pressed","Value":"GroupButton_A","WidgetId":"wx1_GroupButton","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Released":{"Signal":"wx1_GroupButton:GroupButton_A","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"released","Value":"GroupButton_A","WidgetId":"wx1_GroupButton","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | AllExtensions Subscription stopping in [7] seconds                                          |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Pressed":{"Signal":"wx1_IconButton","id":"1"},"id":"1"},"id":"1"}               |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"pressed","Value":"","WidgetId":"wx1_IconButton","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Released":{"Signal":"wx1_IconButton","id":"1"},"id":"1"},"id":"1"}              |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"released","Value":"","WidgetId":"wx1_IconButton","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Clicked":{"Signal":"wx1_IconButton","id":"1"},"id":"1"},"id":"1"}               |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"clicked","Value":"","WidgetId":"wx1_IconButton","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | AllExtensions Subscription stopping in [6] seconds                                          |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Pressed":{"Signal":"wx1_ControlWheel:center","id":"1"},"id":"1"},"id":"1"}     |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"pressed","Value":"center","WidgetId":"wx1_ControlWheel","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Released":{"Signal":"wx1_ControlWheel:center","id":"1"},"id":"1"},"id":"1"}   |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"released","Value":"center","WidgetId":"wx1_ControlWheel","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Clicked":{"Signal":"wx1_ControlWheel:center","id":"1"},"id":"1"},"id":"1"}   |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"clicked","Value":"center","WidgetId":"wx1_ControlWheel","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | AllExtensions Subscription stopping in [5] seconds                                          |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | AllExtensions Subscription stopping in [4] seconds                                          |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Pressed":{"Signal":"wx1_Slider:188","id":"1"},"id":"1"},"id":"1"}            |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"pressed","Value":"188","WidgetId":"wx1_Slider","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Changed":{"Signal":"wx1_Slider:98","id":"1"},"id":"1"},"id":"1"}              |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"changed","Value":"98","WidgetId":"wx1_Slider","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Changed":{"Signal":"wx1_Slider:98","id":"1"},"id":"1"},"id":"1"}              |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"changed","Value":"98","WidgetId":"wx1_Slider","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Released":{"Signal":"wx1_Slider:98","id":"1"},"id":"1"},"id":"1"}            |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"released","Value":"98","WidgetId":"wx1_Slider","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | AllExtensions Subscription stopping in [3] seconds                                          |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Changed":{"Signal":"wx1_Toggle:on","id":"1"},"id":"1"},"id":"1"}             |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"changed","Value":"on","WidgetId":"wx1_Toggle","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | AllExtensions Subscription stopping in [2] seconds                                          |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Pressed":{"Signal":"wx1_SpinnerButton:decrement","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"pressed","Value":"decrement","WidgetId":"wx1_SpinnerButton","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | AllExtensions Subscription stopping in [1] seconds                                          |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Released":{"Signal":"wx1_SpinnerButton:decrement","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"released","Value":"decrement","WidgetId":"wx1_SpinnerButton","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Event":{"Clicked":{"Signal":"wx1_SpinnerButton:decrement","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | {"Widget":{"Action":{"Type":"clicked","Value":"decrement","WidgetId":"wx1_SpinnerButton","id":"1"},"id":"1"},"id":"1"} |
+            | HH:MM:SS | subscribe-and-unsubscribe-to-multiple-xevents-under-a-common-node           | AllExtensions Subscription stopped!                                                         |

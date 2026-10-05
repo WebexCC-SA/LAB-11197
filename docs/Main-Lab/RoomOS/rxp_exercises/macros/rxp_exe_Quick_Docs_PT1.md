@@ -805,12 +805,12 @@
             - target = 'OSD'
                 - Note: change ==OSD== to ==Controller== if a Room Navigator touch panel is available
         - Within this function:
-            - Use ES6 JS's `encodeURI()` function to modify the URL in and assign it to a new object called `encodedUrl`
+            - Use ES6 JS's `encodeURIComponent()` function to modify the URL in and assign it to a new object called `encodedUrl`
                 - This is because we'll be wrapping our target URL within a URL from our QR Code Service
             - Add your `encodedUrl` object to the data Url Parameter in the URL and assign it to a new object called `qrURL`
                 - <pre><code>https://api.qrserver.com/v1/create-qr-code/?data={++encodedUrl++}</code></pre>
             - Structure the xAPI reference above using Macro Syntax with the following parameters and values
-                - Url: `formattedURL`
+                - Url: `qrURL`
                 - Target: `target`
             - Log a Successful response from your xAPI call
             - Catch and log an error from your xAPI call
@@ -820,7 +820,7 @@
 
             ```javascript
             async function openQrCode(url, target = 'OSD') { //<-- Declare and define your openQrCode function
-              const encodedUrl = encodeURI(url);             //<-- Encode the URL that was provided
+              const encodedUrl = encodeURIComponent(url);    //<-- Encode the URL that was provided
               const qrURL = `https://api.qrserver.com/v1/create-qr-code/?data=` + encodedUrl;
               try {
                 const openPage = await xapi.Command.UserInterface.WebView.Display({
@@ -894,7 +894,7 @@
         }
 
         async function openQrCode(url, target = 'OSD') { //<-- Declare and define your openQrCode function
-          const encodedUrl = encodeURI(url);             //<-- Encode the URL that was provided
+          const encodedUrl = encodeURIComponent(url);    //<-- Encode the URL that was provided
           const qrURL = `https://api.qrserver.com/v1/create-qr-code/?data=` + encodedUrl;
           try {
             const openPage = await xapi.Command.UserInterface.WebView.Display({
