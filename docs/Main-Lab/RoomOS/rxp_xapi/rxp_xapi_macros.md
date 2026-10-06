@@ -327,7 +327,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             import xapi from 'xapi';
 
-            xapi.Config.Video.Selfview.Set({ Mode: "On", FullscreenMode: "On", OnMonitorRole: "First" });
+            xapi.Command.Video.Selfview.Set({ Mode: "On", FullscreenMode: "On", OnMonitorRole: "First" });
 
             ```
           
@@ -339,7 +339,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             import xapi from 'xapi';
 
-            xapi.Config.Video.Selfview.Set({ Mode: "On", FullscreenMode: "On", OnMonitorRole: "First" }).then(resolution => {
+            xapi.Command.Video.Selfview.Set({ Mode: "On", FullscreenMode: "On", OnMonitorRole: "First" }).then(resolution => {
 
               // Log the xAPI resolution
               console.log('Config.Video.Selfview.Set Resolution', resolution);
@@ -373,7 +373,7 @@ Knowing the Front end and Back end is not only good for your edification, but is
 
             const setSelfview = async function(parameters => {
               try {
-                const runxAPI = await xapi.Config.Video.Selfview.Set(parameters);
+                const runxAPI = await xapi.Command.Video.Selfview.Set(parameters);
 
                 // Log the Resolution captured in a runxAPI object
                 console.log(runxAPI);
