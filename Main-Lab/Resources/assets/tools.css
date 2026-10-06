@@ -1,0 +1,232 @@
+.roomos-tool {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.roomos-tool__grid,
+.roomos-tool__results {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.roomos-tool__results[hidden] {
+  display: none;
+}
+
+.roomos-tool__field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.roomos-tool__field[hidden] {
+  display: none;
+}
+
+.roomos-tool__field label,
+.roomos-tool__field h3 {
+  font-weight: 700;
+  margin: 0;
+}
+
+.roomos-tool textarea,
+.roomos-tool__output {
+  box-sizing: border-box;
+  min-height: 8rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 0.2rem;
+  background: var(--md-code-bg-color);
+  color: var(--md-code-fg-color);
+  font-family: var(--md-code-font-family);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.roomos-tool__output {
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.roomos-tool__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.roomos-tool__actions .md-button:not(.md-button--primary) {
+  border-color: var(--md-typeset-a-color);
+  color: var(--md-typeset-a-color);
+}
+
+.roomos-tool__actions .md-button:not(.md-button--primary):disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.roomos-tool__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.roomos-tool__status {
+  min-height: 1.25rem;
+  margin: 0;
+}
+
+.roomos-tool__status[data-state="success"] {
+  color: var(--md-typeset-a-color);
+}
+
+.roomos-tool__status[data-state="error"] {
+  color: #d33;
+}
+
+.roomos-tool__difference {
+  background: color-mix(in srgb, #e55353 30%, transparent);
+}
+
+.roomos-tool__file-input {
+  display: block;
+  max-width: 100%;
+}
+
+.roomos-tool__subtabs {
+  border-bottom: 1px solid var(--md-default-fg-color--lighter);
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+}
+
+.roomos-tool__subtabs button {
+  background: transparent;
+  border: 0;
+  border-bottom: 0.15rem solid transparent;
+  color: var(--md-default-fg-color--light);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.65rem 0.75rem 0.5rem;
+  white-space: nowrap;
+}
+
+.roomos-tool__subtabs button[aria-selected="true"] {
+  border-bottom-color: var(--md-typeset-a-color);
+  color: var(--md-typeset-a-color);
+}
+
+.roomos-tool__subtabs button:focus-visible {
+  outline: 0.15rem solid var(--md-accent-fg-color);
+  outline-offset: -0.15rem;
+}
+
+.roomos-tool__image-preview {
+  background: var(--md-code-bg-color);
+  border: 1px solid var(--md-default-fg-color--lighter);
+  margin: 0.75rem 0;
+  padding: 0.75rem;
+}
+
+.roomos-tool__image-preview img {
+  display: block;
+  margin: 0 auto;
+  max-height: 18rem;
+  max-width: 100%;
+}
+
+.roomos-tool__addition {
+  background: color-mix(in srgb, #37a169 35%, transparent);
+}
+
+.roomos-tool__diff-results {
+  gap: 0;
+}
+
+.roomos-tool__diff-heading,
+.roomos-tool__diff-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(16rem, 1fr));
+}
+
+.roomos-tool__diff-heading {
+  border-bottom: 1px solid var(--md-default-fg-color--lighter);
+  color: var(--md-default-fg-color--light);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.35rem 0;
+  text-transform: uppercase;
+}
+
+.roomos-tool__diff-heading span {
+  padding: 0 0.75rem;
+}
+
+.roomos-tool__diff-heading span + span,
+.roomos-tool__diff-cell + .roomos-tool__diff-cell {
+  border-left: 1px solid var(--md-default-fg-color--lighter);
+}
+
+.roomos-tool__diff-view {
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-top: 0;
+  max-height: 38rem;
+  overflow: auto;
+}
+
+.roomos-tool__diff-row {
+  font-family: var(--md-code-font-family);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  min-width: 36rem;
+}
+
+.roomos-tool__diff-cell {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  min-width: 0;
+}
+
+.roomos-tool__diff-line-number {
+  border-right: 1px solid color-mix(in srgb, var(--md-default-fg-color) 20%, transparent);
+  color: var(--md-default-fg-color--lighter);
+  padding: 0.1rem 0.35rem;
+  text-align: right;
+  user-select: none;
+}
+
+.roomos-tool__diff-content {
+  overflow-wrap: anywhere;
+  padding: 0.1rem 0.75rem;
+  white-space: pre-wrap;
+}
+
+.roomos-tool__diff-cell--delete {
+  background: color-mix(in srgb, #e55353 20%, transparent);
+}
+
+.roomos-tool__diff-cell--insert {
+  background: color-mix(in srgb, #37a169 24%, transparent);
+}
+
+.roomos-tool__diff-row--skip {
+  background: var(--md-code-bg-color);
+  color: var(--md-default-fg-color--light);
+  font-style: italic;
+}
+
+.roomos-tool__diff-row--skip .roomos-tool__diff-content {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+@media screen and (min-width: 76.25em) {
+  .roomos-tool__grid--two-up {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

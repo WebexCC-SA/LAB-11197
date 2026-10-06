@@ -1,0 +1,32 @@
+[
+  {
+    "Name": "Room Kit EQX 🔗",
+    "Url": "https://www.webex.com/us/en/devices/room-series/cisco-room-kit-eqx.html",
+    "QrEnabled": true
+  },
+  {
+    "Name": "WebexOne 🔗",
+    "Url": "https://www.webexone.com/",
+    "QrEnabled": false
+  },
+  {
+    "Name": "RoomOS xAPI References 🔗",
+    "Url": "https://roomos.cisco.com/xapi",
+    "QrEnabled": true
+  },
+  {
+    "Name": "Crossview Room Pre Guidelines 🔗",
+    "Url": "https://www.cisco.com/c/dam/en/us/td/docs/telepresence/endpoint/camera/cross-view_guidelines.pdf",
+    "QrEnabled": true
+  },
+  {
+    "Name": "Using Extra LoudSpeakers 🔗",
+    "Url": "https://www.cisco.com/c/dam/en/us/td/docs/telepresence/endpoint/ce97/extra-loudspeakers-local-reinforcement-guide-ce97.pdf",
+    "QrEnabled": true
+  },
+  {
+    "Name": "Webex AI Codec 🔗",
+    "Url": "https://blog.webex.com/collaboration/hybrid-work/next-level-audio-with-webex-ai-codec/",
+    "QrEnabled": false
+  }
+]

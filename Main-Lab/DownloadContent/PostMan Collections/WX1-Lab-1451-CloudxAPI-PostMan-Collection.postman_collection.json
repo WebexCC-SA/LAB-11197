@@ -1,0 +1,784 @@
+{
+	"info": {
+		"_postman_id": "13c7866a-c1a7-4cbc-8272-883bd1b45c2c",
+		"name": "WX1-Lab:1451-CloudxAPI-PostMan-Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33432647",
+		"_collection_link": "https://bobby-cisco-devicetme.postman.co/workspace/New-Workspace~fa4d23cd-5f87-4d20-a2b2-11760c35282d/collection/33432647-13c7866a-c1a7-4cbc-8272-883bd1b45c2c?action=share&source=collection_link&creator=33432647"
+	},
+	"item": [
+		{
+			"name": "Section: rxp-5.3 - Webex Devices APIs",
+			"item": [
+				{
+					"name": "List Devices",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dveloper_Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://webexapis.com/v1/devices?serial=",
+							"protocol": "https",
+							"host": [
+								"webexapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"devices"
+							],
+							"query": [
+								{
+									"key": "max",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "start",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "displayName",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "personId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "workspaceId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "orgId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "connectionStatus",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "product",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "serial",
+									"value": ""
+								},
+								{
+									"key": "tag",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "software",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "upgradeChannel",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "errorCode",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "capability",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "permission",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "locationId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "workspaceLocationId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "mac",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "devicePlatform",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Workspaces",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dveloper_Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://webexapis.com/v1/workspaces",
+							"protocol": "https",
+							"host": [
+								"webexapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"workspaces"
+							],
+							"query": [
+								{
+									"key": "orgId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "locationId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "workspaceLocationId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "floorId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "displayName",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "capacity",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "start",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "max",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "calling",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "supportedDevices",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "calendar",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "deviceHostedMeetingsEnabled",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "devicePlatform",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Section: rxp-5.4 - Executing xCommands",
+			"item": [
+				{
+					"name": "Execute an xCommand",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dveloper_Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deviceId\": \"{{device_Id}}\",\n    \"arguments\": {}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://webexapis.com/v1/xapi/command/",
+							"protocol": "https",
+							"host": [
+								"webexapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"xapi",
+								"command",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Execute an xCommand with multiple arguments with the same name",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dveloper_Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deviceId\": \"{{device_Id}}\",\n    \"arguments\": {}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://webexapis.com/v1/xapi/command/",
+							"protocol": "https",
+							"host": [
+								"webexapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"xapi",
+								"command",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Execute an xCommand with a multiline argument",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dveloper_Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deviceId\": \"{{device_Id}}\",\n    \"arguments\": {}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://webexapis.com/v1/xapi/command/UserInterface.Extensions.Panel.Save",
+							"protocol": "https",
+							"host": [
+								"webexapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"xapi",
+								"command",
+								"UserInterface.Extensions.Panel.Save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Execute an xCommand which generates data and responds",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dveloper_Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deviceId\": \"{{device_Id}}\",\n    \"arguments\": {}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://webexapis.com/v1/xapi/command/",
+							"protocol": "https",
+							"host": [
+								"webexapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"xapi",
+								"command",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Section: rxp-5.5 - Getting and Setting Configurations",
+			"item": [
+				{
+					"name": "Getting an xConfiguration Value",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dveloper_Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://webexapis.com/v1/deviceConfigurations?deviceId={{device_Id}}&key=",
+							"protocol": "https",
+							"host": [
+								"webexapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"deviceConfigurations"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "{{device_Id}}"
+								},
+								{
+									"key": "key",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Getting multiple xConfiguration Values under a common Node",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dveloper_Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://webexapis.com/v1/deviceConfigurations?deviceId={{device_Id}}&key=",
+							"protocol": "https",
+							"host": [
+								"webexapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"deviceConfigurations"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "{{device_Id}}"
+								},
+								{
+									"key": "key",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set a new xConfiguration Value",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dveloper_Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"op\": \"replace\",\n        \"path\": \"\",\n        \"value\": \"\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://webexapis.com/v1/deviceConfigurations?deviceId={{device_Id}}",
+							"protocol": "https",
+							"host": [
+								"webexapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"deviceConfigurations"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "{{device_Id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set an xConfiguration to it's Default Value",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dveloper_Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"op\": \"remove\",\n        \"path\": \"\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://webexapis.com/v1/deviceConfigurations?deviceId={{device_Id}}",
+							"protocol": "https",
+							"host": [
+								"webexapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"deviceConfigurations"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "{{device_Id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Setting multiple xConfiguration Values in a single Request",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dveloper_Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"op\": \"replace\",\n    \"path\": \"\",\n    \"value\": \"\"\n  },\n  {\n    \"op\": \"replace\",\n    \"path\": \"\",\n    \"value\": \"\"\n  }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://webexapis.com/v1/deviceConfigurations?deviceId={{device_Id}}",
+							"protocol": "https",
+							"host": [
+								"webexapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"deviceConfigurations"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "{{device_Id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Section: rxp-5.6 - Getting xStatuses",
+			"item": [
+				{
+					"name": "Section: rxp-5.5 - Getting xStatuses",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dveloper_Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://webexapis.com/v1/xapi/status?deviceId={{device_Id}}&name=",
+							"protocol": "https",
+							"host": [
+								"webexapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"xapi",
+								"status"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "{{device_Id}}"
+								},
+								{
+									"key": "name",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Getting multiple xConfiguration Statuses under a common Node",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dveloper_Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://webexapis.com/v1/xapi/status?deviceId={{device_Id}}&name=",
+							"protocol": "https",
+							"host": [
+								"webexapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"xapi",
+								"status"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "{{device_Id}}"
+								},
+								{
+									"key": "name",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "dveloper_Token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "device_Id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
