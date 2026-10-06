@@ -1287,7 +1287,7 @@
     ??? success "View properly formatted URL and Successful Response"
 
         <div class="code-label" data-title="Fully Formatted URL">
-            <pre><code>https://{{{% raw %}device_hostAddress{% raw %}}}/getxml<hl_5>?location</hl_5>=<hl_4>Configuration/Audio/DefaultVolume</hl_4></code></pre>
+            <pre><code>https://{{device_hostAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Configuration/Audio/DefaultVolume</hl_4></code></pre>
         </div>
 
         <div class="code-label" data-title="Response">
@@ -1319,7 +1319,7 @@
     ??? success "View properly formatted URL and Successful Response"
 
         <div class="code-label" data-title="Fully Formatted URL">
-            <pre><code>https://{{{% raw %}device_hostAddress{% raw %}}}/getxml<hl_5>?location</hl_5>=<hl_4>Configuration/Audio</hl_4></code></pre>
+            <pre><code>https://{{device_hostAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Configuration/Audio</hl_4></code></pre>
         </div>
 
         <div class="code-label" data-title="Response">
@@ -1367,7 +1367,7 @@
     ??? success "View properly formatted URL and Successful Response"
 
         <div class="code-label" data-title="Fully Formatted URL">
-            <pre><code>https://{{{% raw %}device_hostAddress{% raw %}}}/getxml<hl_5>?location</hl_5>=<hl_4>Status/Audio/Volume</hl_4></code></pre>
+            <pre><code>https://{{device_hostAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Status/Audio/Volume</hl_4></code></pre>
         </div>
 
         <div class="code-label" data-title="Response">
@@ -1393,7 +1393,7 @@
     ??? success "View properly formatted URL and Successful Response"
 
         <div class="code-label" data-title="Fully Formatted URL">
-            <pre><code>https://{{{% raw %}device_hostAddress{% raw %}}}/getxml<hl_5>?location</hl_5>=<hl_4>Status/Audio</hl_4></code></pre>
+            <pre><code>https://{{device_hostAddress}}/getxml<hl_5>?location</hl_5>=<hl_4>Status/Audio</hl_4></code></pre>
         </div>
 
         <div class="code-label" data-title="Response">
